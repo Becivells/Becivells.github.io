@@ -269,9 +269,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
-    
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
     
       <category term="钉钉" scheme="https://becivells.github.io/tags/%E9%92%89%E9%92%89/"/>
     
@@ -368,9 +368,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
-    
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
     
   </entry>
   
@@ -429,7 +429,7 @@
     <link href="https://becivells.github.io/2017/07/CentOS7-install-tokudb/"/>
     <id>https://becivells.github.io/2017/07/CentOS7-install-tokudb/</id>
     <published>2017-07-12T03:53:27.000Z</published>
-    <updated>2019-12-05T05:11:18.616Z</updated>
+    <updated>2019-12-05T07:09:31.917Z</updated>
     
     <summary type="html">
     
@@ -443,6 +443,8 @@
     
     </summary>
     
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   

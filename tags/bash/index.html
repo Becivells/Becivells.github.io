@@ -83,7 +83,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Becivells 的 Blog">
-<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;tags&#x2F;bash&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;tags&#x2F;Bash&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
 <meta property="og:locale" content="zh-Hans">
 <meta name="twitter:card" content="summary">
@@ -116,13 +116,13 @@
 
 
 
-  <link rel="canonical" href="https://becivells.github.io/tags/bash/"/>
+  <link rel="canonical" href="https://becivells.github.io/tags/Bash/"/>
 
 
 
 
 
-  <title>标签: bash | Becivells 的 Blog</title>
+  <title>标签: Bash | Becivells 的 Blog</title>
   
 
 
@@ -188,7 +188,7 @@
       
         
         <li class="menu-item menu-item-home">
-          <a href="/%20" rel="section">
+          <a href="/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
@@ -198,7 +198,7 @@
       
         
         <li class="menu-item menu-item-about">
-          <a href="/about/%20" rel="section">
+          <a href="/about/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
             
@@ -208,7 +208,7 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/%20" rel="section">
+          <a href="/tags/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
@@ -218,7 +218,7 @@
       
         
         <li class="menu-item menu-item-categories">
-          <a href="/categories/%20" rel="section">
+          <a href="/categories/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
             
@@ -228,7 +228,7 @@
       
         
         <li class="menu-item menu-item-archives">
-          <a href="/archives/%20" rel="section">
+          <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -296,7 +296,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>bash<small>标签</small>
+        <h1>Bash<small>标签</small>
         </h1>
       </div>
 
@@ -308,37 +308,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2019/01/exec_tee_a_i_test_log_subshell/" itemprop="url">
+            <a class="post-title-link" href="/2019/02/bats-study01/" itemprop="url">
               
-                <span itemprop="name">理解 exec &> >(tee -a -i test.log) 之 subshell</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-04T16:37:04+08:00"
-              content="2019-01-04" >
-          01-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/01/bash_i_dev_tcp/" itemprop="url">
-              
-                <span itemprop="name">bash -i >& /dev/tcp/localhost/8080 0>&1 的含义</span>
+                <span itemprop="name">Bats Bash版自动化测试工具</span>
               
             </a>
         
@@ -346,9 +318,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2019-01-03T20:37:04+08:00"
-              content="2019-01-03" >
-          01-03
+              datetime="2019-01-06T17:00:00+08:00"
+              content="2019-01-06" >
+          01-06
         </time>
       </div>
 
@@ -410,7 +382,7 @@
             
               <div class="site-state-item site-state-posts">
               
-                <a href="/archives/%20%7C%7C%20archive">
+                <a href="/archives/%7C%7C%20archive">
               
                   <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
@@ -956,6 +928,55 @@
           $('body').css('overflow', '');
 
           proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+();
         }
       });
     }

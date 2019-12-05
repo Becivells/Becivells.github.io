@@ -396,8 +396,8 @@
         <category>zabbix</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>Linux</tag>
+        <tag>zabbix</tag>
         <tag>钉钉</tag>
       </tags>
   </entry>
@@ -712,8 +712,8 @@
         <category>zabbix</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>Linux</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -910,6 +910,9 @@
 <p><strong>参考</strong><br><a href="https://www.percona.com/doc/percona-server/5.6/installation/yum_repo.html" target="_blank" rel="noopener">https://www.percona.com/doc/percona-server/5.6/installation/yum_repo.html</a></p>
 <p><a href="https://www.percona.com/downloads/Percona-Server-5.6/LATEST/" target="_blank" rel="noopener">https://www.percona.com/downloads/Percona-Server-5.6/LATEST/</a></p>
 ]]></content>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>openssl_update</title>
