@@ -149,6 +149,8 @@
       <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
     
     
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
       <category term="bash" scheme="https://becivells.github.io/tags/bash/"/>
     
       <category term="shell" scheme="https://becivells.github.io/tags/shell/"/>
@@ -156,8 +158,6 @@
       <category term="exec" scheme="https://becivells.github.io/tags/exec/"/>
     
       <category term="subshell" scheme="https://becivells.github.io/tags/subshell/"/>
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   
@@ -183,11 +183,11 @@
       <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
     
     
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
       <category term="bash" scheme="https://becivells.github.io/tags/bash/"/>
     
       <category term="shell" scheme="https://becivells.github.io/tags/shell/"/>
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   
@@ -269,9 +269,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
       <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
       <category term="钉钉" scheme="https://becivells.github.io/tags/%E9%92%89%E9%92%89/"/>
     
@@ -368,9 +368,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
       <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   
