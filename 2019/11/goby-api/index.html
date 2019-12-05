@@ -89,11 +89,8 @@
 <meta property="og:site_name" content="Becivells 的 Blog">
 <meta property="og:description" content="goby 介绍goby  一个攻击面梳理工具、资产排查工具，用最少的包完成最多的数据整理，谁用谁说OK 开发说明接口一共有三个模块 client、poc、asset 所有与客户端相关的都放到 client 与资产相关的放到 asset 与 poc 相关的放到 poc。通过抓包进行分析 api 得出接口 使用文档1. 安装模块下载后在此目录下执行 1git clone https:&amp;#x2F;&amp;#x">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;11&#x2F;goby-api&#x2F;goby-index.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;11&#x2F;goby-api&#x2F;asset.png">
-<meta property="og:updated_time" content="2019-12-05T06:53:12.110Z">
+<meta property="og:updated_time" content="2019-12-05T06:57:37.924Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;11&#x2F;goby-api&#x2F;goby-index.png">
 
 
 
@@ -440,7 +437,7 @@
 <h4 id="修改-user-agent"><a href="#修改-user-agent" class="headerlink" title="修改 user-agent"></a>修改 user-agent</h4><p>默认的 user-agent 为 goby-api 0.0.1(api版本号)<br>如果修改可以参考 requests 库<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">headers=&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="string">'User-Agent'</span>: <span class="string">'hack 2.0'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">pam = GobyApi(<span class="string">"http://127.0.0.1:8631"</span>,headers=headers)</span></pre></td></tr></table></figure><br>需要注意 <code>&#39;Content-Type&#39;: &#39;application/json&#39;</code> 因为 goby 接口原因无法修改</p>
 <h4 id="使用代理"><a href="#使用代理" class="headerlink" title="使用代理"></a>使用代理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">proxies=&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    <span class="string">'https'</span>:<span class="string">'http://localhost:8080'</span>,</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    <span class="string">'http'</span>:<span class="string">'http://localhost:8080'</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">pam = GobyApi(proxies=proxies)</span></pre></td></tr></table></figure>
 <p>余下功能可以参考 <a href="https://2.python-requests.org//en/master/user/advanced/" target="_blank" rel="noopener">requests 高级用法</a>   </p>
-<h3 id="API-参考手册"><a href="#API-参考手册" class="headerlink" title="API 参考手册"></a>API 参考手册</h3><p>安装以后可以在命令行中使用<code>pydoc -p 12315</code> 查看文档<br><img src="/2019/11/goby-api/goby-index.png" alt=""><br><img src="/2019/11/goby-api/asset.png" alt=""></p>
+<h3 id="API-参考手册"><a href="#API-参考手册" class="headerlink" title="API 参考手册"></a>API 参考手册</h3><p>安装以后可以在命令行中使用<code>pydoc -p 12315</code> 查看文档</p>
 <h2 id="生成模块"><a href="#生成模块" class="headerlink" title="生成模块"></a>生成模块</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">python setup.py sdist</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sudo python setup.py install</span></pre></td></tr></table></figure>
 <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><ol>
 <li>如果发现查询不到数据请注意查看查询字符串格式<strong>尤其注意引号的规范使用</strong></li>
