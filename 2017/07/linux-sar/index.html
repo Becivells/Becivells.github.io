@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sar," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Becivells 的 Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Linux 命令sar的用法SAR是系统活动报告(System Activity Report)英文单词的首字母缩写。正如它的名字所表示的那样，SAR是一个在Unix和Linux操作系统中用来收集、报告和保存CPU、内存、输入输出端口使用情况的命令。SAR命令可以动态产生报告，也可以把报告保存在日志文件中。 安装如下 1yum install sysstat  iostat 工具提供CPU使用率及">
+<meta name="keywords" content="sar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux sar">
+<meta property="og:url" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;index.html">
+<meta property="og:site_name" content="Becivells 的 Blog">
+<meta property="og:description" content="Linux 命令sar的用法SAR是系统活动报告(System Activity Report)英文单词的首字母缩写。正如它的名字所表示的那样，SAR是一个在Unix和Linux操作系统中用来收集、报告和保存CPU、内存、输入输出端口使用情况的命令。SAR命令可以动态产生报告，也可以把报告保存在日志文件中。 安装如下 1yum install sysstat  iostat 工具提供CPU使用率及">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image001.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image004.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image014.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image006.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image007.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image008.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image010.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image011.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image012.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image013.png">
+<meta property="og:updated_time" content="2019-12-05T05:11:18.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2017&#x2F;07&#x2F;linux-sar&#x2F;pasted_image001.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.seevul.com/2017/07/linux-sar/"/>
+
+
+
+
+
+  <title>linux sar | Becivells 的 Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a657ed7d283067e9c461994ed9d2a6e9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Becivells 的 Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">李大壮</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" target="_blank" rel="noopener" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.seevul.com/2017/07/linux-sar/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Becivells">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Becivells 的 Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">linux sar</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T15:38:31+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-命令sar的用法"><a href="#Linux-命令sar的用法" class="headerlink" title="Linux 命令sar的用法"></a>Linux 命令sar的用法</h1><p>SAR是系统活动报告(System Activity Report)英文单词的首字母缩写。正如它的名字所表示的那样，SAR是一个在Unix和Linux操作系统中用来收集、报告和保存CPU、内存、输入输出端口使用情况的命令。SAR命令可以动态产生报告，也可以把报告保存在日志文件中。</p>
+<p>安装如下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">yum install sysstat</span></pre></td></tr></table></figure>
+<ul>
+<li>iostat 工具提供CPU使用率及硬盘吞吐效率的数据；</li>
+<li>mpstat 工具提供单个处理器或多个处理器相关数据；</li>
+<li>sar 工具负责收集、报告并存储系统活跃的信息；</li>
+<li>sa1 工具负责收集并存储每天系统动态信息到一个二进制的文件中。它是通过计划任务工具cron来运行，</li>
+</ul>
+<ul>
+<li>sa2 工具负责把每天的系统活跃性息写入总结性的报告中。它是为sar所设计的前端 ，要通过cron来调用</li>
+<li>sadc 是系统动态数据收集工具，收集的数据被写一个二进制的文件中，它被用作sar工具的后端；</li>
+<li>sadf 显示被sar通过多种格式收集的数据；</li>
+</ul>
+<p>启动sadc(system activity data collector)服务(sysstat)，这样报告就会被写入到日志文件“/var/log/sa/saDD”中并且已经存在的文档将会被归档。DD表示当前日期</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# systemctl start sysstat</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# systemctl enable sysstat</span></pre></td></tr></table></figure>
+<p>它每隔10分钟收集一次数据并且每天形成一份报告。下图中的crontab文件负责收集和生成报告。</p>
+<p><img src="/2017/07/linux-sar/pasted_image001.png" alt="pasted_image001"></p>
+<p>下图中的是SysStat的Config文件。(sar命令)</p>
+<p><img src="/2017/07/linux-sar/pasted_image.png" alt="pasted_image"></p>
+<p>sar命令常用格式<br>sar [options] [-A] [-o file] t [n]</p>
+<p>其中：</p>
+<p>t为采样间隔，n为采样次数，默认值是1；</p>
+<p>-o file表示将命令结果以二进制格式存放在文件中，file 是文件名。</p>
+<p>options 为命令行选项，sar命令常用选项如下：</p>
+<p>-A：所有报告的总和</p>
+<p>-u：输出CPU使用情况的统计信息</p>
+<p>-v：输出inode、文件和其他内核表的统计信息</p>
+<p>-d：输出每一个块设备的活动信息</p>
+<p>-r：输出内存和交换空间的统计信息</p>
+<p>-b：显示I/O和传送速率的统计信息</p>
+<p>-a：文件读写情况</p>
+<p>-c：输出进程统计信息，每秒创建的进程数</p>
+<p>-R：输出内存页面的统计信息</p>
+<p>-y：终端设备活动情况</p>
+<p>-b：报告I/O使用情况以及传输速率。（只适用于2.5及之前的内核，所以新内核有可能不支持这个选项）</p>
+<p>-B：报告“页”使用情况</p>
+<p>-d：报告每一个块设备的使用情况<br>（当你使用时，你会发现在DEV列有类似dev1-7格式的字符串，<br>其中1代表设备的主序号，n代表设备的从序号，<br>而且rd_sec/s列和wr_sec/s列的单位都是512bytes，也就是512B，也就是0.5KB）</p>
+<p>-I：汇报中断情况</p>
+<p>-n：汇报网络情况</p>
+<p>-P：设定CPU</p>
+<p>-q：汇报队列长度和负载信息</p>
+<p>-R：汇报内存情况</p>
+<p>-u：汇报CPU使用情况</p>
+<p>-v：汇报i节点、文件和其他内核表信息</p>
+<p>-w：汇报系统上下文切换情况</p>
+<p>-x：可以针对某个特定PID给出统计信息，<br>可以直接指定进程ID号；<br>也可以指定为SELF，这样就是检测sar进程本身；<br>如果设定为ALL，则表示汇报所有系统进程信息。</p>
+<p>-X：汇报特定PID的子进程的信息</p>
+<p>-y：设定TTY设备的信息。</p>
+<p><strong>CPU资源监控</strong></p>
+<h2 id="sar-2-5"><a href="#sar-2-5" class="headerlink" title="sar 2 5"></a>sar 2 5</h2><p><img src="/2017/07/linux-sar/pasted_image004.png" alt="pasted_image004"></p>
+<p><strong>查看每个核心的</strong></p>
+<h2 id="sar-P-ALL-1-2"><a href="#sar-P-ALL-1-2" class="headerlink" title="sar -P ALL 1 2"></a>sar -P ALL 1 2</h2><p><img src="/2017/07/linux-sar/pasted_image014.png" alt="pasted_image014"></p>
+<p>屏幕显示如下：</p>
+<p>17:06:16 CPU %user %nice %system %iowait %steal %idle</p>
+<p>17:06:26 all 0.00 0.00 0.20 0.00 0.00 99.80</p>
+<p>17:06:36 all 0.00 0.00 0.20 0.00 0.00 99.80</p>
+<p>17:06:46 all 0.00 0.00 0.10 0.00 0.00 99.90</p>
+<p>Average: all 0.00 0.00 0.17 0.00 0.00 99.83</p>
+<p>输出项说明：</p>
+<p>CPU：all 表示统计信息为所有 CPU 的平均值。</p>
+<p>%user：显示在用户级别(application)运行使用 CPU 总时间的百分比。</p>
+<p>%nice：显示在用户级别，用于nice操作，所占用 CPU 总时间的百分比。</p>
+<p>%system：在核心级别(kernel)运行所使用 CPU 总时间的百分比。</p>
+<p>%iowait：显示用于等待I/O操作占用 CPU 总时间的百分比。</p>
+<p>%steal：管理程序(hypervisor)为另一个虚拟进程提供服务而等待虚拟 CPU 的百分比。</p>
+<p>%idle：显示 CPU 空闲时间占用 CPU 总时间的百分比。</p>
+<ol>
+<li>若 %iowait 的值过高，表示硬盘存在I/O瓶颈</li>
+</ol>
+<ol>
+<li>若 %idle 的值高但系统响应慢时，有可能是 CPU 等待分配内存，此时应加大内存容量</li>
+</ol>
+<ol>
+<li>若 %idle 的值持续低于1，则系统的 CPU 处理能力相对较低，表明系统中最需要解决的资源是 CPU 。</li>
+</ol>
+<p>如果要查看二进制文件test中的内容，需键入如下sar命令：</p>
+<p>sar -u -f test</p>
+<ol>
+<li>inode、文件和其他内核表监控</li>
+</ol>
+<h2 id="sar-v-10-3"><a href="#sar-v-10-3" class="headerlink" title="sar -v 10 3"></a>sar -v 10 3</h2><p><img src="/2017/07/linux-sar/pasted_image006.png" alt="pasted_image006"></p>
+<p>屏幕显示如下：</p>
+<p>17:10:49 dentunusd file-nr inode-nr pty-nr</p>
+<p>17:10:59 6301 5664 12037 4</p>
+<p>17:11:09 6301 5664 12037 4</p>
+<p>17:11:19 6301 5664 12037 4</p>
+<p>Average: 6301 5664 12037 4</p>
+<p>输出项说明：</p>
+<p>dentunusd：目录高速缓存中未被使用的条目数量</p>
+<p>file-nr：文件句柄（file handle）的使用数量</p>
+<p>inode-nr：索引节点句柄（inode handle）的使用数量</p>
+<p>pty-nr：使用的pty数量</p>
+<ol>
+<li>内存和交换空间监控</li>
+</ol>
+<h2 id="sar-r-10-3"><a href="#sar-r-10-3" class="headerlink" title="sar -r 10 3"></a>sar -r 10 3</h2><p>屏幕显示如下：</p>
+<p><img src="/2017/07/linux-sar/pasted_image007.png" alt="pasted_image007"></p>
+<p>输出项说明：</p>
+<p>kbmemfree：这个值和free命令中的free值基本一致,所以它不包括buffer和cache的空间.</p>
+<p>kbmemused：这个值和free命令中的used值基本一致,所以它包括buffer和cache的空间.</p>
+<p>%memused：这个值是kbmemused和内存总量(不包括swap)的一个百分比.</p>
+<p>kbbuffers和kbcached：这两个值就是free命令中的buffer和cache.</p>
+<p>kbcommit：保证当前系统所需要的内存,即为了确保不溢出而需要的内存(RAM+swap).</p>
+<p>%commit：这个值是kbcommit与内存总量(包括swap)的一个百分比.</p>
+<ol>
+<li>内存分页监控</li>
+</ol>
+<h2 id="sar-B-10-3"><a href="#sar-B-10-3" class="headerlink" title="sar -B 10 3"></a>sar -B 10 3</h2><p><img src="/2017/07/linux-sar/pasted_image008.png" alt="pasted_image008"></p>
+<p>屏幕显示如下：</p>
+<p>输出项说明：</p>
+<p>pgpgin/s：表示每秒从磁盘或SWAP置换到内存的字节数(KB)</p>
+<p>pgpgout/s：表示每秒从内存置换到磁盘或SWAP的字节数(KB)</p>
+<p>fault/s：每秒钟系统产生的缺页数,即主缺页与次缺页之和(major + minor)</p>
+<p>majflt/s：每秒钟产生的主缺这个值是kbmemused和内存总量(不包括swap)的一个百分比页数.</p>
+<p>pgfree/s：每秒被放入空闲队列中的页个数</p>
+<p>pgscank/s：每秒被kswapd扫描的页个数</p>
+<p>pgscand/s：每秒直接被扫描的页个数</p>
+<p>pgsteal/s：每秒钟从cache中被清除来满足内存需要的页个数</p>
+<p>%vmeff：每秒清除的页(pgsteal)占总扫描页(pgscank+pgscand)的百分比</p>
+<ol>
+<li>I/O和传送速率监控</li>
+</ol>
+<h2 id="sar-b-10-3"><a href="#sar-b-10-3" class="headerlink" title="sar -b 10 3"></a>sar -b 10 3</h2><p><img src="/2017/07/linux-sar/pasted_image010.png" alt="pasted_image010"></p>
+<p>屏幕显示如下：</p>
+<p>18:51:05 tps rtps wtps bread/s bwrtn/s</p>
+<p>18:51:15 0.00 0.00 0.00 0.00 0.00</p>
+<p>18:51:25 1.92 0.00 1.92 0.00 22.65</p>
+<p>18:51:35 0.00 0.00 0.00 0.00 0.00</p>
+<p>Average: 0.64 0.00 0.64 0.00 7.59</p>
+<p>输出项说明：</p>
+<p>tps：每秒钟物理设备的 I/O 传输总量</p>
+<p>rtps：每秒钟从物理设备读入的数据总量</p>
+<p>wtps：每秒钟向物理设备写入的数据总量</p>
+<p>bread/s：每秒钟从物理设备读入的数据量，单位为 块/s</p>
+<p>bwrtn/s：每秒钟向物理设备写入的数据量，单位为 块/s</p>
+<ol>
+<li>进程队列长度和平均负载状态监控</li>
+</ol>
+<h2 id="sar-q-10-3"><a href="#sar-q-10-3" class="headerlink" title="sar -q 10 3"></a>sar -q 10 3</h2><p><img src="/2017/07/linux-sar/pasted_image011.png" alt="pasted_image011"></p>
+<p>屏幕显示如下：</p>
+<p>19:25:50 runq-sz plist-sz ldavg-1 ldavg-5 ldavg-15</p>
+<p>19:26:00 0 259 0.00 0.00 0.00</p>
+<p>19:26:10 0 259 0.00 0.00 0.00</p>
+<p>19:26:20 0 259 0.00 0.00 0.00</p>
+<p>Average: 0 259 0.00 0.00 0.00</p>
+<p>输出项说明：</p>
+<p>runq-sz：运行队列的长度（等待运行的进程数）</p>
+<p>plist-sz：进程列表中进程（processes）和线程（threads）的数量</p>
+<p>ldavg-1：最后1分钟的系统平均负载（System load average）</p>
+<p>ldavg-5：过去5分钟的系统平均负载</p>
+<p>ldavg-15：过去15分钟的系统平均负载</p>
+<h2 id="系统交换活动信息监控"><a href="#系统交换活动信息监控" class="headerlink" title="系统交换活动信息监控"></a>系统交换活动信息监控</h2><h2 id="sar-W-10-3"><a href="#sar-W-10-3" class="headerlink" title="sar -W 10 3"></a>sar -W 10 3</h2><p><img src="/2017/07/linux-sar/pasted_image012.png" alt="pasted_image012"></p>
+<p>屏幕显示如下：</p>
+<p>19:39:50 pswpin/s pswpout/s</p>
+<p>19:40:00 0.00 0.00</p>
+<p>19:40:10 0.00 0.00</p>
+<p>+19:40:20 0.00 0.00</p>
+<p>Average: 0.00 0.00</p>
+<p>输出项说明：</p>
+<p>pswpin/s：每秒系统换入的交换页面（swap page）数量</p>
+<p>pswpout/s：每秒系统换出的交换页面（swap page）数量</p>
+<h2 id="设备使用情况监控"><a href="#设备使用情况监控" class="headerlink" title="设备使用情况监控+"></a>设备使用情况监控+</h2><h2 id="sar-d-10-3-–p"><a href="#sar-d-10-3-–p" class="headerlink" title="sar -d 10 3 –p"></a>sar -d 10 3 –p</h2><p>+屏幕显示如下：</p>
+<p><img src="/2017/07/linux-sar/pasted_image013.png" alt="pasted_image013"></p>
+<p>17:45:54    DEV    tps    rd_sec/s    wr_sec/s    avgrq-sz    avgqu-sz    await    svctm    %util</p>
+<p>17:46:04    scd0    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>17:46:04    sda    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>17:46:04    vg_livedvd-lv_root    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>17:46:04    vg_livedvd-lv_swap    0.00    0.00    0.00    0.00    0.00    0.00    0.00    0.00</p>
+<p>其中：</p>
+<p>参数-p可以打印出sda,hdc等磁盘设备名称,如果不用参数-p,设备节点则有可能是dev8-0,dev22-0</p>
+<p>tps:每秒从物理磁盘I/O的次数.多个逻辑请求会被合并为一个I/O磁盘请求,一次传输的大小是不确定的.</p>
+<p>rd_sec/s:每秒读扇区的次数.</p>
+<p>wr_sec/s:每秒写扇区的次数.</p>
+<p>avgrq-sz:平均每次设备I/O操作的数据大小(扇区).</p>
+<p>avgqu-sz:磁盘请求队列的平均长度.</p>
+<p>await:从请求磁盘操作到系统完成处理,每次请求的平均消耗时间,包括请求队列等待时间,单位是毫秒(1秒=1000毫秒).</p>
+<p>svctm:系统处理每次请求的平均时间,不包括在请求队列中消耗的时间.</p>
+<p>%util:I/O请求占CPU的百分比,比率越大,说明越饱和.</p>
+<ol>
+<li>avgqu-sz 的值较低时，设备的利用率较高。</li>
+</ol>
+<ol>
+<li>当%util的值接近 1% 时，表示设备带宽已经占满。</li>
+</ol>
+<p>要判断系统瓶颈问题，有时需几个 sar 命令选项结合起来<br>怀疑CPU存在瓶颈，可用 sar -u 和 sar -q 等来查看</p>
+<p>怀疑内存存在瓶颈，可用 sar -B、sar -r 和 sar -W 等来查看</p>
+<p>怀疑I/O存在瓶颈，可用 sar -b、sar -u 和 sar -d 等来查看</p>
+<p>sar命令使用-n选项可以汇报网络相关信息，可用的参数包括：DEV、EDEV、SOCK和FULL。</p>
+<p>如果你使用DEV关键字，那么sar将汇报和网络设备相关的信息，如lo，eth0或eth1等，例如：</p>
+<p>$ sar -n DEV 1 2<br>Linux 2.6.9      10/17/2009</p>
+<p>12:10:49 AM     IFACE   rxpck/s   txpck/s   rxbyt/s   txbyt/s   rxcmp/s   txcmp/s  rxmcst/s<br>12:10:50 AM      eth0     63.64      0.00   4072.73      0.00      0.00      0.00      0.00<br>12:10:50 AM      eth1     30.30     13.13   2907.07   1234.34      0.00      0.00      0.00<br>12:10:50 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br>IFACE：就是网络设备的名称；</p>
+<p>rxpck/s：每秒钟接收到的包数目</p>
+<p>txpck/s：每秒钟发送出去的包数目</p>
+<p>rxbyt/s：每秒钟接收到的字节数</p>
+<p>txbyt/s：每秒钟发送出去的字节数</p>
+<p>rxcmp/s：每秒钟接收到的压缩包数目</p>
+<p>txcmp/s：每秒钟发送出去的压缩包数目</p>
+<p>txmcst/s：每秒钟接收到的多播包的包数目</p>
+<p>如果你使用EDEV关键字，那么会针对网络设备汇报其失败情况，例如：</p>
+<p>$ sar -n EDEV 1 3<br>Linux 2.6.9     10/17/2009</p>
+<p>12:15:06 AM     IFACE   rxerr/s   txerr/s    coll/s  rxdrop/s  txdrop/s  txcarr/s  rxfram/s  rxfifo/s  txfifo/s<br>12:15:07 AM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br>12:15:07 AM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br>12:15:07 AM      eth1      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00<br>rxerr/s：每秒钟接收到的损坏的包的数目</p>
+<p>txerr/s：当发送包时，每秒钟发生的错误数</p>
+<p>coll/s：当发送包时，每秒钟发生的冲撞(collisions)数（这个是在半双工模式下才有）</p>
+<p>rxdrop/s：由于缓冲区满，网络设备接收端，每秒钟丢掉的网络包的数目</p>
+<p>txdrop/s：由于缓冲区满，网络设备发送端，每秒钟丢掉的网络包的数目</p>
+<p>txcarr/s：当发送数据包时，每秒钟载波错误发生的次数</p>
+<p>rxfram/s：在接收数据包时，每秒钟发生的帧对齐错误的次数</p>
+<p>rxfifo/s：在接收数据包时，每秒钟缓冲区溢出错误发生的次数</p>
+<p>txfifo/s：在发送数据包时，每秒钟缓冲区溢出错误发生的次数</p>
+<p>如果你使用SOCK关键字，则会针对socket连接进行汇报，例如：</p>
+<p>$ sar -n SOCK 1 3<br>Linux 2.6.9       10/17/2009</p>
+<p>12:27:29 AM    totsck    tcpsck    udpsck    rawsck   ip-frag<br>12:27:30 AM        90        41         4         0         0<br>12:27:31 AM        90        41         4         0         0<br>12:27:32 AM        90        41         4         0         0<br>Average:           90        41         4         0         0<br>totsck：被使用的socket的总数目</p>
+<p>tcpsck：当前正在被使用于TCP的socket数目</p>
+<p>udpsck：当前正在被使用于UDP的socket数目</p>
+<p>rawsck：当前正在被使用于RAW的socket数目</p>
+<p>ip-frag：当前的IP分片的数目</p>
+<p>如果你使用FULL关键字，相当于上述DEV、EDEV和SOCK三者的综合。</p>
+<p><strong>案例1：每两秒钟动态生成5次CPU的使用情况</strong><br>sar 2 5<br>如果 %I/Owait 这一项是一个超过0的长时间值，那么我们就要考虑是否在输入输出系统方面存在瓶颈(比如硬盘或者网络)。<br><strong>案例2：使用-o选项保存sar命令的输出结果</strong><br># sar 2 5 -o /tmp/data  /dev/null 2&amp;1<br>使用“sar -f ”输出结果：<br>sar -f <a href="file:///home/user/%E6%A1%8C%E9%9D%A2/Dropbox/zimwiki/tmp/data">/tmp/data</a><br><strong>案例3：使用-r选项生成内存的使用情况报告</strong><br>-r选项在sar命令中被用以生成内存的使用报告。<br><strong>sar -r 2 5</strong><br>kbcommit和%commit列的数据包括了内存和交换区使用量的总和。<br><strong>案例4：用-B选项生成分页统计报告</strong><br>sar -B 2 5</p>
+<p>报告里，majflts/s主要显示从硬盘交换区载入物理内存时的异常，如果这个值变高，那么我们可以说系统目前仅仅使用了内存(RAM)。<br>%vmeff 表示每秒扫描的页面数，如果说当它的值是100%时是正常情况，它是30%以下的时候就可以认为虚拟内存存在一些问题。0值表示在那个时候没有任何一个页面被扫描。</p>
+<p><strong>案例:5 使用-d选项生成块设备使用情况报告</strong></p>
+<p>-d 选项在sar命令中被用以显示块设备的状态报告。在 -d 后面加上 -p  (pretty-print)选项可以增强 dev 列的可读性，如下图所示：<br>sar -d -p 2 4</p>
+<p><strong>案例6：用-n生成网络使用情况报告</strong></p>
+<p>-n选项在sar命令中被用来生成网络使用情况的统计报告。下面是语法规则：<br># sar -n {keyword} or {ALL}<br>sar -n ALL<br><strong>案例7：用-f读sar日志文件</strong></p>
+<p>我们前面已经讨论了sar的日志文件是保存在“/var/log/sa/saDD”里的。使用-f选项可以查看日志文件。<br>sar -r -f /var/log/sa/sa26</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sar/" rel="tag"># sar</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/elasticsearch-install/" rel="next" title="elasticsearch install">
+                <i class="fa fa-chevron-left"></i> elasticsearch install
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/zabbix_dingding/" rel="prev" title="zabbix 钉钉报警脚本">
+                zabbix 钉钉报警脚本 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpeg"
+                alt="Becivells" />
+            
+              <p class="site-author-name" itemprop="name">Becivells</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/becivells" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-命令sar的用法"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令sar的用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-2-5"><span class="nav-number">1.1.</span> <span class="nav-text">sar 2 5</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-P-ALL-1-2"><span class="nav-number">1.2.</span> <span class="nav-text">sar -P ALL 1 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-v-10-3"><span class="nav-number">1.3.</span> <span class="nav-text">sar -v 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-r-10-3"><span class="nav-number">1.4.</span> <span class="nav-text">sar -r 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-B-10-3"><span class="nav-number">1.5.</span> <span class="nav-text">sar -B 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-b-10-3"><span class="nav-number">1.6.</span> <span class="nav-text">sar -b 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-q-10-3"><span class="nav-number">1.7.</span> <span class="nav-text">sar -q 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统交换活动信息监控"><span class="nav-number">1.8.</span> <span class="nav-text">系统交换活动信息监控</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-W-10-3"><span class="nav-number">1.9.</span> <span class="nav-text">sar -W 10 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设备使用情况监控"><span class="nav-number">1.10.</span> <span class="nav-text">设备使用情况监控+</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sar-d-10-3-–p"><span class="nav-number">1.11.</span> <span class="nav-text">sar -d 10 3 –p</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Becivells</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">20.7k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

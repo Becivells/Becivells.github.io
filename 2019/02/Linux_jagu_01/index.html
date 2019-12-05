@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Becivells 的 Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="摘自2017 年部分文档 运维习惯1.1 不使用root账户登录 1.2 不用rm –rf 可以用mv代替,把删除文件移动到 &#x2F;tmp 目录下 写个定时计划清理缓存。或者用脚本替换到rm 为mv 增加回收站的功能 1alias rm&amp;#x3D;&amp;#39;trash&amp;#39;2alias rl&amp;#x3D;&amp;#39;trashlist&amp;#39;3alias ur&amp;#x3D;&amp;#39;undelfile">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 加固">
+<meta property="og:url" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;index.html">
+<meta property="og:site_name" content="Becivells 的 Blog">
+<meta property="og:description" content="摘自2017 年部分文档 运维习惯1.1 不使用root账户登录 1.2 不用rm –rf 可以用mv代替,把删除文件移动到 &#x2F;tmp 目录下 写个定时计划清理缓存。或者用脚本替换到rm 为mv 增加回收站的功能 1alias rm&amp;#x3D;&amp;#39;trash&amp;#39;2alias rl&amp;#x3D;&amp;#39;trashlist&amp;#39;3alias ur&amp;#x3D;&amp;#39;undelfile">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;fstab.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;dumpe2fs.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;checkpasswd.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;grpck.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;chage.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;chage-1.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;chage-02.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;nullpasswduser.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;sys-auth.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;sys-auth-01.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;stopsu.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;denysu.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;changeport.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;denyroot.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;dontallownullpass.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;trymax.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;nulltime.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;stopfive.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;pamsshd.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;identified.png">
+<meta property="og:updated_time" content="2019-12-05T05:11:18.636Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;02&#x2F;Linux_jagu_01&#x2F;fstab.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://blog.seevul.com/2019/02/Linux_jagu_01/"/>
+
+
+
+
+
+  <title>Linux 加固 | Becivells 的 Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a657ed7d283067e9c461994ed9d2a6e9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Becivells 的 Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">李大壮</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/%20" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" target="_blank" rel="noopener" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.seevul.com/2019/02/Linux_jagu_01/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Becivells">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Becivells 的 Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Linux 加固</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-29T14:10:28+08:00">
+                2017-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  9
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>摘自2017 年部分文档</p>
+<h2 id="运维习惯"><a href="#运维习惯" class="headerlink" title="运维习惯"></a>运维习惯</h2><p>1.1 不使用root账户登录</p>
+<p>1.2 不用rm –rf 可以用mv代替,把删除文件移动到 /tmp 目录下 写个定时计划清理缓存。或者用脚本替换到rm 为mv 增加回收站的功能</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">alias rm&#x3D;&#39;trash&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">alias rl&#x3D;&#39;trashlist&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">alias ur&#x3D;&#39;undelfile&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">#替换rm指令移动文件到~&#x2F;.trash&#x2F;中</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">trash()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">mv $@ ~&#x2F;.trash&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">#显示回收站中垃圾清单</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">trashlist()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">echo -e &quot;33[32m&#x3D;&#x3D;&#x3D;&#x3D; Garbage Lists in ~&#x2F;.trash&#x2F; &#x3D;&#x3D;&#x3D;&#x3D;33[0m&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">echo -e &quot;\a33[33m----Usage------33[0m&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">echo -e &quot;\a33[33m-1- Use &#39;cleartrash&#39; to clear all garbages in ~&#x2F;.trash!!!33[0m&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">echo -e &quot;\a33[33m-2- Use &#39;ur&#39; to mv the file in garbages to current dir!!!33[0m&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">ls -al ~&#x2F;.trash</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">#找回回收站相应文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">undelfile()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">mv -i ~&#x2F;.trash&#x2F;$@ .&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">#清空回收站</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">cleartrash()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">echo -ne &quot;\a33[33m!!!Clear all garbages in ~&#x2F;.trash, Sure?[y&#x2F;n]33[0m&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">read confirm</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">if [ $confirm &#x3D;&#x3D; &#39;y&#39; -o $confirm &#x3D;&#x3D; &#39;Y&#39; ] ;then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;*</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">&#x2F;bin&#x2F;rm -rf ~&#x2F;.trash&#x2F;.* 2&gt;&#x2F;dev&#x2F;null</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>1.3  生产环境中所有操作都要求记录，并且已经实践过</p>
+<p>1.4  密码定期更改（90天）建议使用证书登录并且有密码验证</p>
+<p>1.5 账号密码需要纸质材料保管</p>
+<p>1.6 设置定期更新系统，关注漏洞信息</p>
+<p>1.7  遵循最小化原则，系统最小化，应用最小化，操作最小化，能不开的端口绝对不开</p>
+<p>1.8  定期对系统和应用进行检查和扫描</p>
+<p>1.9  经常关注新技术，并且不断学习</p>
+<p>1.10 时刻保证充沛的精力，利用小时间休息</p>
+<p>1.11 运维安全不分家，时刻关注最新漏洞情况</p>
+<p>1.12 一定要有开发能力，运维不是为了逃避开发，是因为喜欢这份工作</p>
+<h2 id="系统"><a href="#系统" class="headerlink" title="系统"></a>系统</h2><h3 id="打开aclfile支持"><a href="#打开aclfile支持" class="headerlink" title="打开aclfile支持"></a>打开aclfile支持</h3><p>安装acl 支持 yum -y install libacl acl</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;fstab</span></pre></td></tr></table></figure>
+<h3 id=""><a href="#" class="headerlink" title=""></a><img src="/2019/02/Linux_jagu_01/fstab.png" alt="fstab"></h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">dumpe2fs &#x2F;dev&#x2F;sda1 |grep acl</span></pre></td></tr></table></figure>
+<p><img src="/2019/02/Linux_jagu_01/dumpe2fs.png" alt="dumpe2fs"></p>
+<h3 id="不推荐使用lvm分区格式（建议测试环境使用）"><a href="#不推荐使用lvm分区格式（建议测试环境使用）" class="headerlink" title="不推荐使用lvm分区格式（建议测试环境使用）"></a>不推荐使用lvm分区格式（建议测试环境使用）</h3><h3 id="设置系统自动注销"><a href="#设置系统自动注销" class="headerlink" title="设置系统自动注销"></a>设置系统自动注销</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">export TMOUT&#x3D;600</span></pre></td></tr></table></figure>
+<h3 id="精简开机（-按需定制）"><a href="#精简开机（-按需定制）" class="headerlink" title="精简开机（*按需定制）"></a>精简开机（*按需定制）</h3><p>acpid</p>
+<p>apmd</p>
+<p>kudzu</p>
+<p>sshd</p>
+<p>rsyslog</p>
+<p>network</p>
+<p>crond</p>
+<p>sysstat</p>
+<p>iostat</p>
+<p>mpstat</p>
+<p>sar</p>
+<h3 id="开启iptables"><a href="#开启iptables" class="headerlink" title="开启iptables"></a>开启iptables</h3><h3 id="启用tcp-wrappers防火墙"><a href="#启用tcp-wrappers防火墙" class="headerlink" title="启用tcp_wrappers防火墙"></a>启用tcp_wrappers防火墙</h3><h3 id="减少不必要的用户"><a href="#减少不必要的用户" class="headerlink" title="减少不必要的用户"></a>减少不必要的用户</h3><p>可以删除的用户 adm lp sync shutdown halt news uucp operator games gopher</p>
+<p>可以删除的用户组 adm lp news uucp games dip pppusers popusers slipusers</p>
+<h3 id="为grub加密"><a href="#为grub加密" class="headerlink" title="为grub加密"></a>为grub加密</h3><h3 id="隐藏linux-版本信息"><a href="#隐藏linux-版本信息" class="headerlink" title="隐藏linux 版本信息"></a>隐藏linux 版本信息</h3><h3 id="锁定关键文件"><a href="#锁定关键文件" class="headerlink" title="锁定关键文件"></a>锁定关键文件</h3><h3 id="选择合适的yum源"><a href="#选择合适的yum源" class="headerlink" title="选择合适的yum源"></a>选择合适的yum源</h3><h3 id="调整linux-系统文件描述符数量"><a href="#调整linux-系统文件描述符数量" class="headerlink" title="调整linux 系统文件描述符数量"></a>调整linux 系统文件描述符数量</h3><p><strong>临时修改</strong></p>
+<p><strong>ulimit -n 4096</strong></p>
+<p>vim /etc/security/limits.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">在这个文件的最后增加：</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">*  - nofile  4096</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">* - nofile  4096</span></pre></td></tr></table></figure>
+<h3 id="Linux操作日志记录"><a href="#Linux操作日志记录" class="headerlink" title="Linux操作日志记录"></a>Linux操作日志记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">USER_IP&#x3D;&#96;who -u am i 2&gt; &#x2F;dev&#x2F;null | awk &#39;&#123; print $NF &#125;&#39; |sed -e &#39;s&#x2F;[()]&#x2F;&#x2F;g&#39;&#96;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">HISTDIR&#x3D;&#x2F;usr&#x2F;share&#x2F;.history</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">if [ -z $USER_IP ]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    USER_IP&#x3D;&#96;hostname&#96;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">if [ ! -d $HISTDIR ]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">    then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">    mkdir -p $HISTDIR</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">    chmod 777 $HISTDIR</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">if [ ! -d $HISTDIR&#x2F;$&#123;LOGNAME&#125; ]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">    then</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    mkdir -p $HISTDIR&#x2F;$&#123;LOGNAME&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">    chmod 700 $HISTDIR&#x2F;$&#123;LOGNAME&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">fi</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">export HISTFILE&#x3D;400000</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">DT&#x3D;&#96;date +%Y%m%d&#96;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">export HISTFILE&#x3D;&quot;$HISTDIR&#x2F;$&#123;LOGNAME&#125;&#x2F;$&#123;USER_IP&#125;.history.$DT&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">export HISTTIMEFORMAT&#x3D;&quot;[%Y.%m.%d %H:%M:%S]&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">chmod 777 $HISTDIR&#x2F;$&#123;LOGNAME&#125;&#x2F;*.history* 2&gt; &#x2F;dev&#x2F;null</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">chattr +a  $HISTDIR&#x2F;$&#123;LOGNAME&#125;&#x2F;*.history* 2&gt; &#x2F;dev&#x2F;null</span></pre></td></tr></table></figure>
+<p>更改权限chmod 1777 /usr/share/.history</p>
+<h3 id="禁止root远程登录更改常用端口"><a href="#禁止root远程登录更改常用端口" class="headerlink" title="禁止root远程登录更改常用端口"></a>禁止root远程登录更改常用端口</h3><h3 id="Selinux-调整"><a href="#Selinux-调整" class="headerlink" title="Selinux 调整"></a>Selinux 调整</h3><h3 id="内核参数优化"><a href="#内核参数优化" class="headerlink" title="内核参数优化"></a>内核参数优化</h3><h3 id="tmp-var-tmp-dev-shm目录没有执行权限"><a href="#tmp-var-tmp-dev-shm目录没有执行权限" class="headerlink" title="/tmp /var/tmp /dev/shm目录没有执行权限"></a>/tmp /var/tmp /dev/shm目录没有执行权限</h3><h1 id="用户管理"><a href="#用户管理" class="headerlink" title="用户管理"></a>用户管理</h1><h3 id="用户账户"><a href="#用户账户" class="headerlink" title="用户账户"></a>用户账户</h3><h4 id="pwck-passwd-check"><a href="#pwck-passwd-check" class="headerlink" title="pwck   (passwd check)"></a>pwck   (passwd check)</h4><p>1.功能</p>
+<p>检测/etc/passwd   的语法与文件及存在的用户</p>
+<p><img src="/2019/02/Linux_jagu_01/checkpasswd.png" alt="checkpasswd"></p>
+<h4 id="grpck-group-check"><a href="#grpck-group-check" class="headerlink" title="grpck   (group check)"></a>grpck   (group check)</h4><p>功能</p>
+<p>检测/etc/group   的语法与文件形式及存在的用户组。<img src="/2019/02/Linux_jagu_01/grpck.png" alt="grpck"></p>
+<h4 id="chage"><a href="#chage" class="headerlink" title="chage"></a>chage</h4><p>功能查看密码用户过期时间</p>
+<p>​       chage   -l   user</p>
+<p><img src="/2019/02/Linux_jagu_01/chage.png" alt="chage"></p>
+<p>修改<br>user用户的密码期限：</p>
+<p><img src="/2019/02/Linux_jagu_01/chage-1.png" alt="chage-1"></p>
+<p><img src="/2019/02/Linux_jagu_01/chage-02.png" alt="chage-02"></p>
+<p>上面的命令将密码期限设为2016年10月30日。另外，修改密码的最短周期为5天，最长周期为90天。密码过期前14天会发送消息提醒用户，过期后帐号会被锁住30天。</p>
+<h4 id="2-1-4查看空密码用户"><a href="#2-1-4查看空密码用户" class="headerlink" title="2.1.4查看空密码用户"></a>2.1.4查看空密码用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">awk -F : &#39;$2&#x3D;&#x3D;&quot;&quot; &#123;print $1&#125;&#39; &#x2F;etc&#x2F;shadow</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">awk -F: &#39;length($2)&#x3D;&#x3D;2 &#123;print $1&#125;&#39; &#x2F;etc&#x2F;shadow</span></pre></td></tr></table></figure>
+<p>在centos等系统下，密码如果为空，会用两个！！表示，因此其长度为2，而正常的用户且密码不为空的，是采用加密存储的，其长度远大于2。</p>
+<p><img src="/2019/02/Linux_jagu_01/nullpasswduser.png" alt="nullpasswduser"></p>
+<p>空密码用户建立过程</p>
+<p>首先创建两个用户,   目的是为了比对</p>
+<p>useradd   user</p>
+<p>useradd   user1</p>
+<p>然后root用户用passwd   –d   user   (清除use1的密码)</p>
+<h4 id="查找uid为0的用户"><a href="#查找uid为0的用户" class="headerlink" title="查找uid为0的用户"></a>查找uid为0的用户</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">awk -F: &#39;$3&#x3D;&#x3D;0 &#123;print $1&#125;&#39; &#x2F;etc&#x2F;passwd</span></pre></td></tr></table></figure>
+<h3 id="用户账户策略"><a href="#用户账户策略" class="headerlink" title="用户账户策略"></a>用户账户策略</h3><h4 id="2-2-1-设置账户过期时间"><a href="#2-2-1-设置账户过期时间" class="headerlink" title="2.2.1   设置账户过期时间"></a>2.2.1   设置账户过期时间</h4><p>usermod   -e   MM/DD/YY   username</p>
+<p>usermod   -e   12/31/01   floatboat</p>
+<h4 id="2-2-2-密码安全策略"><a href="#2-2-2-密码安全策略" class="headerlink" title="2.2.2   密码安全策略"></a>2.2.2   密码安全策略</h4><p>需要安装(yum   install   cracklib-devel)(   sudo   apt-get   install   libpam-cracklib)</p>
+<p><a href="https://linux.cn/article-2518-1.html" target="_blank" rel="noopener">https://linux.cn/article-2518-1.html</a></p>
+<h4 id="⑴-禁止使用旧密码"><a href="#⑴-禁止使用旧密码" class="headerlink" title="⑴   禁止使用旧密码"></a>⑴   禁止使用旧密码</h4><p><img src="/2019/02/Linux_jagu_01/sys-auth.png" alt="sys-auth"></p>
+<p><img src="/2019/02/Linux_jagu_01/sys-auth-01.png" alt="sys-auth-01"></p>
+<p>已经使用过的密码保存到/etc/security/opasswd下</p>
+<h4 id="⑵设置密码的最小长度"><a href="#⑵设置密码的最小长度" class="headerlink" title="⑵设置密码的最小长度"></a>⑵设置密码的最小长度</h4><p>sudo   vi   /etc/pam.d/system-auth  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">password   sufficient   pamunix.so   sha512   shadow   nullok   tryfirstpass   useauthtok   remember&#x3D;   5   minlen&#x3D;最小长度</span></pre></td></tr></table></figure>
+<p>第二种方法</p>
+<p>vi   /etc/login.defs</p>
+<p>vi   /etc/login.defs   把   PASS_MIN_LNE   5</p>
+<p>改为：   PASS_MIN_LEN   想要的位数   [3]密码生存周期限制   vi   /etc/login.defs   PASS_MAX_DAYS=想要的天数   [4]口令过期提醒：   vi   /etc/login.defs   加入：   PASS_WARN_AGE=天数</p>
+<p>登录超时</p>
+<p>编辑   /etc/profile   指令：sudo   vi   /etc/profile   在histsize=1000   下面加一行   TMOUT=100（单位为秒）</p>
+<h4 id="㈢使用pam禁止用户su为root"><a href="#㈢使用pam禁止用户su为root" class="headerlink" title="㈢使用pam禁止用户su为root"></a>㈢使用pam禁止用户su为root</h4><p>vi   /etc/pam.d/su   打开这个配置文件   #auth   required   /lib/security/$ISA/pam_wheel.so   use_uid   ←找到此行，去掉行首的“#”   然后普通用户就无法通过su   得到root权限了</p>
+<p><img src="/2019/02/Linux_jagu_01/stopsu.png" alt="stopsu"></p>
+<p>将在root用户下用指令   usermod<br>-G   wheel   user普通用户加入到wheel之后才能用su   -提升到   root</p>
+<p><img src="/2019/02/Linux_jagu_01/denysu.png" alt="denysu"></p>
+<h4 id="sudo-限制权限"><a href="#sudo-限制权限" class="headerlink" title="sudo   限制权限"></a>sudo   限制权限</h4><p><strong>禁止某些用户使用**</strong>ssh<strong>**远程登录</strong>：<br> <a href="http://www.myhack58.com/Article/48/66/2011/30887.htm" target="_blank" rel="noopener">http://www.myhack58.com/Article/48/66/2011/30887.htm</a><br> vim /etc/pam.d/sshd</p>
+<p>  在第一行加入 auth       required     pam_listfile.so item=user sense=deny file=/etc/sshdusers onerr=succeed，注意一定要在第一行，因为pam中执行顺序是上面优先</p>
+<p>vim /etc/sshdusers</p>
+<p>在文件中加入root    wp ，root 和wp是两个本地用户</p>
+<p>service sshd restart</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">cat &#x2F;etc&#x2F;passwd | awk -F &#39;:&#39; &#39;&#123;print $1&#125;&#39; &gt; &#x2F;etc&#x2F;sshdusers</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">去掉你想要的</span></pre></td></tr></table></figure>
+<p>如果只允许登录</p>
+<p>auth required pam_listfile.so item=user sense=allow file=/etc/sshdusers onerr=fail</p>
+<p>这个只允许某个登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">echo &#39;user-admin&#39; &gt; &#x2F;etc&#x2F;sshdusers</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">chattr +i &#x2F;etc&#x2F;sshdusers</span></pre></td></tr></table></figure>
+<h4 id="限制root用户-ssh远程更改ssh端口"><a href="#限制root用户-ssh远程更改ssh端口" class="headerlink" title="限制root用户,ssh远程更改ssh端口"></a>限制root用户,ssh远程更改ssh端口</h4><p>vi /etc/ssh/sshd_config</p>
+<p><img src="/2019/02/Linux_jagu_01/changeport.png" alt="changeport"></p>
+<p><img src="/2019/02/Linux_jagu_01/denyroot.png" alt="denyroot"></p>
+<p>StrictModes yes #修改为yes,默认为yes.如果不修改用key登陆是出现server refused our key(如果StrictModes为yes必需保证存放公钥的文件夹的拥有与登陆用户名是相同的.“StrictModes”设置ssh在接收登录请求之前是否检查用户家目录和rhosts文件的权限和所有权。这通常是必要的，因为新手经常会把自己的目录和文件设成任何人都有写权限。) </p>
+<p><img src="/2019/02/Linux_jagu_01/dontallownullpass.png" alt="dontallownullpass"></p>
+<p>修改登录失败策略</p>
+<p><img src="/2019/02/Linux_jagu_01/trymax.png" alt="trymax"></p>
+<p><img src="/2019/02/Linux_jagu_01/nulltime.png" alt="nulltime"></p>
+<p>以上表示10分钟闲置后，自动注销并结束会话。</p>
+<p>检测方法    1、判定条件<br>查看帐号超时是否自动注销；</p>
+<p>登录尝试5次失败锁定半小时</p>
+<p>vim /etc/pam.d/login #本地锁定</p>
+<p>auth   required pam_tally2.so    deny=3 unlock_time=300 even_deny_root root_unlock_time=30</p>
+<p><img src="/2019/02/Linux_jagu_01/stopfive.png" alt="stopfive"></p>
+<p>Vim /etc/pam.d/sshd  #远程登录锁定</p>
+<p>auth   required pam_tally2.so    deny=3 unlock_time=300 even_deny_root root_unlock_time=30</p>
+<p><img src="/2019/02/Linux_jagu_01/pamsshd.png" alt="pamsshd"></p>
+<p>查看用户登录失败次数：</p>
+<p>pam_tally2 –user root</p>
+<p>解除锁定：</p>
+<p>pam_tally2 -r -u root</p>
+<h4 id="RSA认证"><a href="#RSA认证" class="headerlink" title="RSA认证"></a>RSA认证</h4><p>RSAAuthentication yes        # 启用 RSA 认证（默认是注释掉的，将注释去掉，如果不是yes，改为yes）<br> PubkeyAuthentication yes     # 启用公钥认证（默认是注释掉的，将注释去掉，如果不是yes，改为yes）<br> PasswordAuthentication yes # 密码认证(改为yes默认为yes是用密码认证)</p>
+<p>生成认证证书</p>
+<p><img src="/2019/02/Linux_jagu_01/identified.png" alt="identified"></p>
+<p>将生成的公钥匙id_rsa.pub传到要登陆的服务器上并追加到authorized_keys文件中，放到用户目录的.ssh中 cat id_rsa.pub &gt;&gt; .ssh/authorized_keys (如果没有authorized_keys，可直接将id_rsa.pub重命名为authorized_keys</p>
+<p>保证.ssh 权限是600</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/Linux-localmirrors/" rel="next" title="Linux localmirrors">
+                <i class="fa fa-chevron-left"></i> Linux localmirrors
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/zabbix-install/" rel="prev" title="zabbix install">
+                zabbix install <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpeg"
+                alt="Becivells" />
+            
+              <p class="site-author-name" itemprop="name">Becivells</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%20%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/becivells" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#运维习惯"><span class="nav-number">1.</span> <span class="nav-text">运维习惯</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统"><span class="nav-number">2.</span> <span class="nav-text">系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打开aclfile支持"><span class="nav-number">2.1.</span> <span class="nav-text">打开aclfile支持</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#null"><span class="nav-number">2.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#不推荐使用lvm分区格式（建议测试环境使用）"><span class="nav-number">2.3.</span> <span class="nav-text">不推荐使用lvm分区格式（建议测试环境使用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置系统自动注销"><span class="nav-number">2.4.</span> <span class="nav-text">设置系统自动注销</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#精简开机（-按需定制）"><span class="nav-number">2.5.</span> <span class="nav-text">精简开机（*按需定制）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启iptables"><span class="nav-number">2.6.</span> <span class="nav-text">开启iptables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启用tcp-wrappers防火墙"><span class="nav-number">2.7.</span> <span class="nav-text">启用tcp_wrappers防火墙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#减少不必要的用户"><span class="nav-number">2.8.</span> <span class="nav-text">减少不必要的用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为grub加密"><span class="nav-number">2.9.</span> <span class="nav-text">为grub加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#隐藏linux-版本信息"><span class="nav-number">2.10.</span> <span class="nav-text">隐藏linux 版本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#锁定关键文件"><span class="nav-number">2.11.</span> <span class="nav-text">锁定关键文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择合适的yum源"><span class="nav-number">2.12.</span> <span class="nav-text">选择合适的yum源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整linux-系统文件描述符数量"><span class="nav-number">2.13.</span> <span class="nav-text">调整linux 系统文件描述符数量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux操作日志记录"><span class="nav-number">2.14.</span> <span class="nav-text">Linux操作日志记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁止root远程登录更改常用端口"><span class="nav-number">2.15.</span> <span class="nav-text">禁止root远程登录更改常用端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Selinux-调整"><span class="nav-number">2.16.</span> <span class="nav-text">Selinux 调整</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内核参数优化"><span class="nav-number">2.17.</span> <span class="nav-text">内核参数优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tmp-var-tmp-dev-shm目录没有执行权限"><span class="nav-number">2.18.</span> <span class="nav-text">/tmp /var/tmp /dev/shm目录没有执行权限</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用户管理"><span class="nav-number"></span> <span class="nav-text">用户管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户账户"><span class="nav-number">0.1.</span> <span class="nav-text">用户账户</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pwck-passwd-check"><span class="nav-number">0.1.1.</span> <span class="nav-text">pwck   (passwd check)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#grpck-group-check"><span class="nav-number">0.1.2.</span> <span class="nav-text">grpck   (group check)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#chage"><span class="nav-number">0.1.3.</span> <span class="nav-text">chage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4查看空密码用户"><span class="nav-number">0.1.4.</span> <span class="nav-text">2.1.4查看空密码用户</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找uid为0的用户"><span class="nav-number">0.1.5.</span> <span class="nav-text">查找uid为0的用户</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户账户策略"><span class="nav-number">0.2.</span> <span class="nav-text">用户账户策略</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-1-设置账户过期时间"><span class="nav-number">0.2.1.</span> <span class="nav-text">2.2.1   设置账户过期时间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-2-2-密码安全策略"><span class="nav-number">0.2.2.</span> <span class="nav-text">2.2.2   密码安全策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#⑴-禁止使用旧密码"><span class="nav-number">0.2.3.</span> <span class="nav-text">⑴   禁止使用旧密码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#⑵设置密码的最小长度"><span class="nav-number">0.2.4.</span> <span class="nav-text">⑵设置密码的最小长度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#㈢使用pam禁止用户su为root"><span class="nav-number">0.2.5.</span> <span class="nav-text">㈢使用pam禁止用户su为root</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sudo-限制权限"><span class="nav-number">0.2.6.</span> <span class="nav-text">sudo   限制权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#限制root用户-ssh远程更改ssh端口"><span class="nav-number">0.2.7.</span> <span class="nav-text">限制root用户,ssh远程更改ssh端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#RSA认证"><span class="nav-number">0.2.8.</span> <span class="nav-text">RSA认证</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Becivells</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">20.7k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
