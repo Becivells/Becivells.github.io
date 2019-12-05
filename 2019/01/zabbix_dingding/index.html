@@ -85,25 +85,25 @@
 <meta name="keywords" content="Linux,zabbix,钉钉">
 <meta property="og:type" content="article">
 <meta property="og:title" content="zabbix 钉钉报警脚本">
-<meta property="og:url" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
 <meta property="og:description" content="添加告警媒介脚本配置打开钉钉机器人 添加机器人 自定义机器人  登录zabbix服务器查看zabbix 报警脚本的位置 1cat &#x2F;etc&#x2F;zabbix&#x2F;zabbix_server.conf |grep AlertScriptsPath2### Option: AlertScriptsPath3# AlertScriptsPath&#x3D;$&amp;#123;datadir&amp;#125;&#x2F;zabbix&#x2F;alert">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;dingding_robot.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;zabbix报警.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建报警.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建动作.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建报警动作.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;添加触发条件.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;报警动作操作.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;操作新的.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;告警操作.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;恢复操作.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;用户报警媒介添加.png">
-<meta property="og:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;微信图片_20180928094226.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;dingding_robot.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;zabbix报警.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建报警.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建动作.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;创建报警动作.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;添加触发条件.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;报警动作操作.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;操作新的.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;告警操作.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;恢复操作.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;用户报警媒介添加.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;微信图片_20180928094226.jpg">
 <meta property="og:updated_time" content="2019-12-05T05:11:18.628Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;dingding_robot.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;zabbix_dingding&#x2F;dingding_robot.png">
 
 
 
@@ -133,7 +133,7 @@
 
 
 
-  <link rel="canonical" href="http://blog.seevul.com/2019/01/zabbix_dingding/"/>
+  <link rel="canonical" href="https://becivells.github.io/2019/01/zabbix_dingding/"/>
 
 
 
@@ -320,7 +320,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.seevul.com/2019/01/zabbix_dingding/">
+    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2019/01/zabbix_dingding/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Becivells">
@@ -594,7 +594,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -605,7 +605,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -616,7 +616,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -705,7 +705,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">20.7k</span>
+    <span title="Site words total count">21.1k</span>
   
 </div>
 

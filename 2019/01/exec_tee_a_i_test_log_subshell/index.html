@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,bash,shell,exec,subshell," />
+  <meta name="keywords" content="bash,shell,Linux,exec,subshell," />
 
 
 
@@ -82,10 +82,10 @@
 
 
 <meta name="description" content="理解 exec &amp;amp;&amp;gt; &amp;gt;(tee -a -i test.log) 之 subshell子进程，是从父子进程的概念出发的，unix操作系统的进程从init（有些系统如CentOS 7.x 是从systemd开始的）进程开始均有其对应的子进程，就算是由于父进程先行结束导致的孤儿进程，也会被init领养，使其父进程ID为1。我们这里只讨论bash下什么时候创建子进程。先实验再总结。">
-<meta name="keywords" content="Linux,bash,shell,exec,subshell">
+<meta name="keywords" content="bash,shell,Linux,exec,subshell">
 <meta property="og:type" content="article">
 <meta property="og:title" content="理解 exec &amp;&gt; &gt;(tee -a -i test.log) 之 subshell">
-<meta property="og:url" content="http:&#x2F;&#x2F;blog.seevul.com&#x2F;2019&#x2F;01&#x2F;exec_tee_a_i_test_log_subshell&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;exec_tee_a_i_test_log_subshell&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
 <meta property="og:description" content="理解 exec &amp;amp;&amp;gt; &amp;gt;(tee -a -i test.log) 之 subshell子进程，是从父子进程的概念出发的，unix操作系统的进程从init（有些系统如CentOS 7.x 是从systemd开始的）进程开始均有其对应的子进程，就算是由于父进程先行结束导致的孤儿进程，也会被init领养，使其父进程ID为1。我们这里只讨论bash下什么时候创建子进程。先实验再总结。">
 <meta property="og:locale" content="zh-Hans">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://blog.seevul.com/2019/01/exec_tee_a_i_test_log_subshell/"/>
+  <link rel="canonical" href="https://becivells.github.io/2019/01/exec_tee_a_i_test_log_subshell/"/>
 
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://blog.seevul.com/2019/01/exec_tee_a_i_test_log_subshell/">
+    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2019/01/exec_tee_a_i_test_log_subshell/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Becivells">
@@ -503,11 +503,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
             <a href="/tags/bash/" rel="tag"># bash</a>
           
             <a href="/tags/shell/" rel="tag"># shell</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
             <a href="/tags/exec/" rel="tag"># exec</a>
           
@@ -617,7 +617,7 @@
               
                 <a href="/archives/%20%7C%7C%20archive">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -628,7 +628,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -639,7 +639,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -728,7 +728,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">20.7k</span>
+    <span title="Site words total count">21.1k</span>
   
 </div>
 
