@@ -1,6 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Packstack - OpenStack 一键安装包</title>
+    <url>/2020/03/openstack_Packstack/</url>
+    <content><![CDATA[<h1 id="Packstack-OpenStack-一键安装包"><a href="#Packstack-OpenStack-一键安装包" class="headerlink" title="Packstack - OpenStack 一键安装包"></a>Packstack - OpenStack 一键安装包</h1><h2 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h2><p>目前不支持CentOS8 支持CentOS7.x使用的镜像<code>centos7.7-mini</code></p>
+<p>安装完成可以关闭selinux 也可以不关闭</p>
+<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo useradd -s &#x2F;bin&#x2F;bash  -m stack</span></pre></td></tr><tr><td class="code"><pre><span class="line">echo &quot;stack ALL&#x3D;(ALL) NOPASSWD: ALL&quot; | sudo tee &#x2F;etc&#x2F;sudoers.d&#x2F;stack</span></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>如果您使用的是非英语语言环境，请确保您/etc/environment已填充：</p>
+   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LANG&#x3D;en_US.utf-8</span></pre></td></tr><tr><td class="code"><pre><span class="line">LC_ALL&#x3D;en_US.utf-8</span></pre></td></tr></table></figure>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum update -y</span></pre></td></tr></table></figure>
+<h3 id="查看最新版本号"><a href="#查看最新版本号" class="headerlink" title="查看最新版本号"></a>查看最新版本号</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;releases.openstack.org&#x2F;</span></pre></td></tr></table></figure>
+<p>   稳定版本为<strong>train</strong> yum 源搜索稳定版本为<br>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">centos-release-openstack-train</span></pre></td></tr></table></figure></p>
+<h3 id="安装openstack"><a href="#安装openstack" class="headerlink" title="安装openstack"></a>安装openstack</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum install centos-release-openstack-train</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum update -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum install -y openstack-packstack</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo packstack --allinone</span></pre></td></tr></table></figure>
+<h2 id="设置启动"><a href="#设置启动" class="headerlink" title="设置启动"></a>设置启动</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install openstack-utils -y</span></pre></td></tr></table></figure>
+<h3 id="第一种操作方式"><a href="#第一种操作方式" class="headerlink" title="第一种操作方式"></a>第一种操作方式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openstack-service --help</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service list</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>openstack-service 实际是一个shell脚本，底层实际调用的是centos的systemctl工具，因此我们也可以使用systemctl工具来重启服务</p>
+<h3 id="自启动"><a href="#自启动" class="headerlink" title="自启动"></a>自启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>使用systemctl列出所有openstack服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service --ful --no-legend --no-pager | egrep <span class="string">"^(openstack|neutron|quantum)"</span> | grep -v <span class="string">'neutron-.*-cleanup'</span> | grep <span class="built_in">enable</span></span></pre></td></tr></table></figure>
+<p>查看指定服务当前的运行状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>重启指定服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>停止指定服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Install</category>
+      </categories>
+      <tags>
+        <tag>Install</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>xray 设置钉钉告警</title>
     <url>/2019/12/xray_gaojing/</url>
     <content><![CDATA[<h1 id="xray-扫描"><a href="#xray-扫描" class="headerlink" title="xray 扫描"></a>xray 扫描</h1><p>xray目录为<code>/tools/scanner/xray</code></p>
@@ -318,6 +350,27 @@
       </tags>
   </entry>
   <entry>
+    <title>Prometheus 安装</title>
+    <url>/2019/01/prometheus_install/</url>
+    <content><![CDATA[<h2 id="1-下载-Prometheus"><a href="#1-下载-Prometheus" class="headerlink" title="1. 下载 Prometheus"></a>1. 下载 Prometheus</h2><p><a href="https://prometheus.io/download/" target="_blank" rel="noopener">https://prometheus.io/download/</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install net-tools vim superviosr wget  -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd /opt/</span></pre></td></tr><tr><td class="code"><pre><span class="line">useradd -s /usr/sbin/nologin prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https://github.com/prometheus/prometheus/releases/download/v2.4.3/prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s prometheus-2.4.3.linux-amd64  prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/prometheus/prometheus  --storage.tsdb.retention=90d  --config.file=/opt/prometheus/prometheus.yml</span></pre></td></tr><tr><td class="code"><pre><span class="line">user=prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">directory=/opt/prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/opt/prometheus/sprometheus.log</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=20MB</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr></table></figure>
+<h2 id="2-node"><a href="#2-node" class="headerlink" title="2. node"></a>2. node</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v0.16.0&#x2F;node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s node_exporter-0.16.0.linux-amd64 node_exporter</span></pre></td></tr></table></figure>
+<p><a href="https://github.com/percona/grafana-dashboards" target="_blank" rel="noopener">https://github.com/percona/grafana-dashboards</a></p>
+<h2 id="3-监控-MySQL"><a href="#3-监控-MySQL" class="headerlink" title="3. 监控 MySQL"></a>3. 监控 MySQL</h2><p><a href="https://prometheus.io/docs/visualization/grafana/" target="_blank" rel="noopener">https://prometheus.io/docs/visualization/grafana/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;mysqld_exporter&#x2F;releases&#x2F;download&#x2F;v0.11.0&#x2F;mysqld_exporter-0.11.0.linux-amd64.tar.gz</span></pre></td></tr></table></figure>
+<p>授权</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER &#39;exporter&#39;@&#39;127.0.0.1&#39; IDENTIFIED BY &#39;3Xporter&#39; WITH MAX_USER_CONNECTIONS 3;</span></pre></td></tr><tr><td class="code"><pre><span class="line">GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;exporter&#39;@&#39;127.0.0.1&#39;;</span></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus_export.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_mysql]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/mysqld_exporter/mysqld_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">environment=DATA_SOURCE_NAME='exporter:3Xporter@(localhost:3306)/'</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_os]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/node_exporter/node_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl reload</span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl status</span></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Prometheus</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Prometheus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>MySQL 备份脚本</title>
     <url>/2019/01/mysqlbak/</url>
     <content><![CDATA[<h2 id="1-MySQL-备份脚本"><a href="#1-MySQL-备份脚本" class="headerlink" title="1. MySQL 备份脚本"></a>1. MySQL 备份脚本</h2><p>最初脚本为在某个 QQ 群里看到然后又改的。</p>
@@ -338,27 +391,6 @@
       <tags>
         <tag>Linux</tag>
         <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Prometheus 安装</title>
-    <url>/2019/01/prometheus_install/</url>
-    <content><![CDATA[<h2 id="1-下载-Prometheus"><a href="#1-下载-Prometheus" class="headerlink" title="1. 下载 Prometheus"></a>1. 下载 Prometheus</h2><p><a href="https://prometheus.io/download/" target="_blank" rel="noopener">https://prometheus.io/download/</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install net-tools vim superviosr wget  -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd /opt/</span></pre></td></tr><tr><td class="code"><pre><span class="line">useradd -s /usr/sbin/nologin prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https://github.com/prometheus/prometheus/releases/download/v2.4.3/prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s prometheus-2.4.3.linux-amd64  prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/prometheus/prometheus  --storage.tsdb.retention=90d  --config.file=/opt/prometheus/prometheus.yml</span></pre></td></tr><tr><td class="code"><pre><span class="line">user=prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">directory=/opt/prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/opt/prometheus/sprometheus.log</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=20MB</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr></table></figure>
-<h2 id="2-node"><a href="#2-node" class="headerlink" title="2. node"></a>2. node</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v0.16.0&#x2F;node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s node_exporter-0.16.0.linux-amd64 node_exporter</span></pre></td></tr></table></figure>
-<p><a href="https://github.com/percona/grafana-dashboards" target="_blank" rel="noopener">https://github.com/percona/grafana-dashboards</a></p>
-<h2 id="3-监控-MySQL"><a href="#3-监控-MySQL" class="headerlink" title="3. 监控 MySQL"></a>3. 监控 MySQL</h2><p><a href="https://prometheus.io/docs/visualization/grafana/" target="_blank" rel="noopener">https://prometheus.io/docs/visualization/grafana/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;mysqld_exporter&#x2F;releases&#x2F;download&#x2F;v0.11.0&#x2F;mysqld_exporter-0.11.0.linux-amd64.tar.gz</span></pre></td></tr></table></figure>
-<p>授权</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER &#39;exporter&#39;@&#39;127.0.0.1&#39; IDENTIFIED BY &#39;3Xporter&#39; WITH MAX_USER_CONNECTIONS 3;</span></pre></td></tr><tr><td class="code"><pre><span class="line">GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;exporter&#39;@&#39;127.0.0.1&#39;;</span></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus_export.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_mysql]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/mysqld_exporter/mysqld_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">environment=DATA_SOURCE_NAME='exporter:3Xporter@(localhost:3306)/'</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_os]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/node_exporter/node_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl reload</span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl status</span></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Prometheus</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -396,8 +428,8 @@
         <category>zabbix</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>Linux</tag>
+        <tag>zabbix</tag>
         <tag>钉钉</tag>
       </tags>
   </entry>
@@ -712,8 +744,8 @@
         <category>zabbix</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>Linux</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -983,8 +1015,8 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>MySQL</tag>
         <tag>sysbench</tag>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -1007,7 +1039,7 @@
         <category>Linux</category>
       </categories>
       <tags>
-        <tag>Liunx</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
 </search>

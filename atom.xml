@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2019-12-05T06:03:43.614Z</updated>
+  <updated>2020-03-11T06:38:52.290Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Packstack - OpenStack 一键安装包</title>
+    <link href="https://becivells.github.io/2020/03/openstack_Packstack/"/>
+    <id>https://becivells.github.io/2020/03/openstack_Packstack/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-03-11T06:38:52.290Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Packstack-OpenStack-一键安装包&quot;&gt;&lt;a href=&quot;#Packstack-OpenStack-一键安装包&quot; class=&quot;headerlink&quot; title=&quot;Packstack - OpenStack
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="Install" scheme="https://becivells.github.io/tags/Install/"/>
+    
+  </entry>
   
   <entry>
     <title>xray 设置钉钉告警</title>
@@ -192,34 +218,6 @@
   </entry>
   
   <entry>
-    <title>MySQL 备份脚本</title>
-    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
-    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
-    <published>2019-01-03T07:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.628Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
-        
-      
-    
-    </summary>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Prometheus 安装</title>
     <link href="https://becivells.github.io/2019/01/prometheus_install/"/>
     <id>https://becivells.github.io/2019/01/prometheus_install/</id>
@@ -248,6 +246,34 @@
   </entry>
   
   <entry>
+    <title>MySQL 备份脚本</title>
+    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
+    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
+    <published>2019-01-03T07:10:28.000Z</published>
+    <updated>2019-12-05T05:11:18.628Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
+        
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
     <title>zabbix 钉钉报警脚本</title>
     <link href="https://becivells.github.io/2019/01/zabbix_dingding/"/>
     <id>https://becivells.github.io/2019/01/zabbix_dingding/</id>
@@ -269,9 +295,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
-    
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
     
       <category term="钉钉" scheme="https://becivells.github.io/tags/%E9%92%89%E9%92%89/"/>
     
@@ -368,9 +394,9 @@
       <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
     
     
-      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
-    
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
     
   </entry>
   
@@ -497,9 +523,9 @@
     
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
-      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
       <category term="sysbench" scheme="https://becivells.github.io/tags/sysbench/"/>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
     
   </entry>
   
@@ -508,7 +534,7 @@
     <link href="https://becivells.github.io/2019/01/Linux%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A81024%E4%BB%A5%E4%B8%8B%E7%9A%84%E7%AB%AF%E5%8F%A3/"/>
     <id>https://becivells.github.io/2019/01/Linux普通用户使用1024以下的端口/</id>
     <published>2016-10-26T07:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.627Z</updated>
+    <updated>2019-12-05T07:17:44.848Z</updated>
     
     <summary type="html">
     
@@ -525,7 +551,7 @@
       <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
     
     
-      <category term="Liunx" scheme="https://becivells.github.io/tags/Liunx/"/>
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   
