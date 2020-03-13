@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-03-11T06:38:52.290Z</updated>
+  <updated>2020-03-13T02:21:48.367Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://becivells.github.io/2020/03/openstack_Packstack/"/>
     <id>https://becivells.github.io/2020/03/openstack_Packstack/</id>
     <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-11T06:38:52.290Z</updated>
+    <updated>2020-03-13T02:21:48.367Z</updated>
     
     <summary type="html">
     
@@ -30,6 +30,32 @@
         
         
           &lt;h1 id=&quot;Packstack-OpenStack-一键安装包&quot;&gt;&lt;a href=&quot;#Packstack-OpenStack-一键安装包&quot; class=&quot;headerlink&quot; title=&quot;Packstack - OpenStack
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="Install" scheme="https://becivells.github.io/tags/Install/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Confluence 安装</title>
+    <link href="https://becivells.github.io/2020/03/confluence_install/"/>
+    <id>https://becivells.github.io/2020/03/confluence_install/</id>
+    <published>2020-03-10T04:37:04.000Z</published>
+    <updated>2020-03-11T07:04:32.425Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;下载安装程序&quot;&gt;&lt;a href=&quot;#下载安装程序&quot; class=&quot;headerlink&quot; title=&quot;下载安装程序&quot;&gt;&lt;/a&gt;下载安装程序&lt;/h2&gt;&lt;p&gt;wget &lt;a
         
       
     
@@ -526,32 +552,6 @@
       <category term="sysbench" scheme="https://becivells.github.io/tags/sysbench/"/>
     
       <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 普通用户使用 1024 以下的端口</title>
-    <link href="https://becivells.github.io/2019/01/Linux%E6%99%AE%E9%80%9A%E7%94%A8%E6%88%B7%E4%BD%BF%E7%94%A81024%E4%BB%A5%E4%B8%8B%E7%9A%84%E7%AB%AF%E5%8F%A3/"/>
-    <id>https://becivells.github.io/2019/01/Linux普通用户使用1024以下的端口/</id>
-    <published>2016-10-26T07:10:28.000Z</published>
-    <updated>2019-12-05T07:17:44.848Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;linux对于非root权限用户不能使用1024以下的端口，对于一些服务，过高的权限，会带来一定的风险。那么对于低权限的用户如何对外开放1024以下的端口。我这里找到几种办法并且亲测可行&lt;br&gt;首先搭建环境centos7  账户tengine没有sudo
-        
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   
