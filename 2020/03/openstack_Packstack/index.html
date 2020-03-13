@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="Packstack - OpenStack 一键安装包预备环境目前不支持CentOS8 支持CentOS7.x使用的镜像centos7.7-mini 安装完成可以关闭selinux 也可以不关闭 创建用户   1sudo useradd -s &amp;#x2F;bin&amp;#x2F;bash  -m stack2echo &amp;quot;stack ALL&amp;#x3D;(ALL) NOPASSWD: ALL&amp;qu">
+<meta name="description" content="预备环境目前不支持CentOS8 支持CentOS7.x使用的镜像centos7.7-mini 安装完成可以关闭selinux 也可以不关闭 创建用户   1sudo useradd -s &amp;#x2F;bin&amp;#x2F;bash  -m stack2echo &amp;quot;stack ALL&amp;#x3D;(ALL) NOPASSWD: ALL&amp;quot; | sudo tee &amp;#x2F;etc&amp;#x">
 <meta name="keywords" content="Install">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Packstack - OpenStack 一键安装包">
 <meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2020&#x2F;03&#x2F;openstack_Packstack&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
-<meta property="og:description" content="Packstack - OpenStack 一键安装包预备环境目前不支持CentOS8 支持CentOS7.x使用的镜像centos7.7-mini 安装完成可以关闭selinux 也可以不关闭 创建用户   1sudo useradd -s &amp;#x2F;bin&amp;#x2F;bash  -m stack2echo &amp;quot;stack ALL&amp;#x3D;(ALL) NOPASSWD: ALL&amp;qu">
+<meta property="og:description" content="预备环境目前不支持CentOS8 支持CentOS7.x使用的镜像centos7.7-mini 安装完成可以关闭selinux 也可以不关闭 创建用户   1sudo useradd -s &amp;#x2F;bin&amp;#x2F;bash  -m stack2echo &amp;quot;stack ALL&amp;#x3D;(ALL) NOPASSWD: ALL&amp;quot; | sudo tee &amp;#x2F;etc&amp;#x">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-03-13T02:21:48.367Z">
+<meta property="og:updated_time" content="2020-03-13T04:58:54.045Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  719
+                  990
                 </span>
               
 
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  5
                 </span>
               
             </div>
@@ -427,7 +427,7 @@
       
 
       
-        <h1 id="Packstack-OpenStack-一键安装包"><a href="#Packstack-OpenStack-一键安装包" class="headerlink" title="Packstack - OpenStack 一键安装包"></a>Packstack - OpenStack 一键安装包</h1><h2 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h2><p>目前不支持CentOS8 支持CentOS7.x使用的镜像<code>centos7.7-mini</code></p>
+        <h2 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h2><p>目前不支持CentOS8 支持CentOS7.x使用的镜像<code>centos7.7-mini</code></p>
 <p>安装完成可以关闭selinux 也可以不关闭</p>
 <h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3>   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sudo useradd -s &#x2F;bin&#x2F;bash  -m stack</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">echo &quot;stack ALL&#x3D;(ALL) NOPASSWD: ALL&quot; | sudo tee &#x2F;etc&#x2F;sudoers.d&#x2F;stack</span></pre></td></tr></table></figure>
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>如果您使用的是非英语语言环境，请确保您/etc/environment已填充：</p>
@@ -452,6 +452,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">systemctl restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
 <p>停止指定服务</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">systemctl stop openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<h2 id="卸载脚本"><a href="#卸载脚本" class="headerlink" title="卸载脚本"></a>卸载脚本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;bash</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"># Warning! Dangerous step! Destroys VMs</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">for x in $(virsh list --all | grep instance- | awk &#39;&#123;print $2&#125;&#39;) ; do</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    virsh destroy $x ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    virsh undefine $x ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">done ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"># Warning! Dangerous step! Removes lots of packages, including many</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"># which may be unrelated to RDO.</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">yum remove -y nrpe &quot;*nagios*&quot; puppet ntp ntp-perl ntpdate &quot;*openstack*&quot; \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&quot;*nova*&quot; &quot;*keystone*&quot; &quot;*glance*&quot; &quot;*cinder*&quot; &quot;*swift*&quot; \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">mysql mysql-server httpd &quot;*memcache*&quot; scsi-target-utils \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">iscsi-initiator-utils perl-DBI perl-DBD-MySQL ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">ps -ef | grep -i repli | grep swift | awk &#39;&#123;print $2&#125;&#39; | xargs kill ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"># Warning! Dangerous step! Deletes local application data</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">rm -rf &#x2F;etc&#x2F;nagios &#x2F;etc&#x2F;yum.repos.d&#x2F;packstack_* &#x2F;root&#x2F;.my.cnf \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">&#x2F;var&#x2F;lib&#x2F;mysql&#x2F; &#x2F;var&#x2F;lib&#x2F;glance &#x2F;var&#x2F;lib&#x2F;nova &#x2F;etc&#x2F;nova &#x2F;etc&#x2F;swift \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">&#x2F;srv&#x2F;node&#x2F;device*&#x2F;* &#x2F;var&#x2F;lib&#x2F;cinder&#x2F; &#x2F;etc&#x2F;rsync.d&#x2F;frag* \</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">&#x2F;var&#x2F;cache&#x2F;swift &#x2F;var&#x2F;log&#x2F;keystone ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">umount &#x2F;srv&#x2F;node&#x2F;device* ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">killall -9 dnsmasq tgtd httpd ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">setenforce 1 ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">vgremove -f cinder-volumes ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">losetup -a | sed -e &#39;s&#x2F;:.*&#x2F;&#x2F;g&#39; | xargs losetup -d ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">find &#x2F;etc&#x2F;pki&#x2F;tls -name &quot;ssl_ps*&quot; | xargs rm -rf ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">for x in $(df | grep &quot;&#x2F;lib&#x2F;&quot; | sed -e &#39;s&#x2F;.* &#x2F;&#x2F;g&#39;) ; do</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">    umount $x ;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">done</span></pre></td></tr></table></figure>
 
       
     </div>
@@ -643,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Packstack-OpenStack-一键安装包"><span class="nav-number">1.</span> <span class="nav-text">Packstack - OpenStack 一键安装包</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备环境"><span class="nav-number">1.1.</span> <span class="nav-text">预备环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户"><span class="nav-number">1.1.1.</span> <span class="nav-text">创建用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置环境变量"><span class="nav-number">1.2.1.</span> <span class="nav-text">设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">1.2.2.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看最新版本号"><span class="nav-number">1.2.3.</span> <span class="nav-text">查看最新版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装openstack"><span class="nav-number">1.2.4.</span> <span class="nav-text">安装openstack</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置启动"><span class="nav-number">1.3.</span> <span class="nav-text">设置启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种操作方式"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一种操作方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自启动"><span class="nav-number">1.3.2.</span> <span class="nav-text">自启动</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#预备环境"><span class="nav-number">1.</span> <span class="nav-text">预备环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户"><span class="nav-number">1.1.</span> <span class="nav-text">创建用户</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置环境变量"><span class="nav-number">2.1.</span> <span class="nav-text">设置环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">2.2.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看最新版本号"><span class="nav-number">2.3.</span> <span class="nav-text">查看最新版本号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装openstack"><span class="nav-number">2.4.</span> <span class="nav-text">安装openstack</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置启动"><span class="nav-number">3.</span> <span class="nav-text">设置启动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一种操作方式"><span class="nav-number">3.1.</span> <span class="nav-text">第一种操作方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自启动"><span class="nav-number">3.2.</span> <span class="nav-text">自启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载脚本"><span class="nav-number">4.</span> <span class="nav-text">卸载脚本</span></a></li></ol></div>
             
 
           </div>
@@ -682,7 +683,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">22.8k</span>
+    <span title="Site words total count">23k</span>
   
 </div>
 

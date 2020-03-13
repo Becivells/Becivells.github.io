@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-03-13T02:21:48.367Z</updated>
+  <updated>2020-03-13T04:58:54.045Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://becivells.github.io/2020/03/openstack_Packstack/"/>
     <id>https://becivells.github.io/2020/03/openstack_Packstack/</id>
     <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-13T02:21:48.367Z</updated>
+    <updated>2020-03-13T04:58:54.045Z</updated>
     
     <summary type="html">
     
@@ -29,7 +29,7 @@
       
         
         
-          &lt;h1 id=&quot;Packstack-OpenStack-一键安装包&quot;&gt;&lt;a href=&quot;#Packstack-OpenStack-一键安装包&quot; class=&quot;headerlink&quot; title=&quot;Packstack - OpenStack
+          &lt;h2 id=&quot;预备环境&quot;&gt;&lt;a href=&quot;#预备环境&quot; class=&quot;headerlink&quot; title=&quot;预备环境&quot;&gt;&lt;/a&gt;预备环境&lt;/h2&gt;&lt;p&gt;目前不支持CentOS8
         
       
     
@@ -244,34 +244,6 @@
   </entry>
   
   <entry>
-    <title>Prometheus 安装</title>
-    <link href="https://becivells.github.io/2019/01/prometheus_install/"/>
-    <id>https://becivells.github.io/2019/01/prometheus_install/</id>
-    <published>2019-01-03T07:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.628Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;1-下载-Prometheus&quot;&gt;&lt;a href=&quot;#1-下载-Prometheus&quot; class=&quot;headerlink&quot; title=&quot;1. 下载 Prometheus&quot;&gt;&lt;/a&gt;1. 下载 Prometheus&lt;/h2&gt;&lt;p&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Prometheus" scheme="https://becivells.github.io/categories/Prometheus/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="Prometheus" scheme="https://becivells.github.io/tags/Prometheus/"/>
-    
-  </entry>
-  
-  <entry>
     <title>MySQL 备份脚本</title>
     <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
     <id>https://becivells.github.io/2019/01/mysqlbak/</id>
@@ -296,6 +268,34 @@
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
       <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Prometheus 安装</title>
+    <link href="https://becivells.github.io/2019/01/prometheus_install/"/>
+    <id>https://becivells.github.io/2019/01/prometheus_install/</id>
+    <published>2019-01-03T07:10:28.000Z</published>
+    <updated>2019-12-05T05:11:18.628Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-下载-Prometheus&quot;&gt;&lt;a href=&quot;#1-下载-Prometheus&quot; class=&quot;headerlink&quot; title=&quot;1. 下载 Prometheus&quot;&gt;&lt;/a&gt;1. 下载 Prometheus&lt;/h2&gt;&lt;p&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Prometheus" scheme="https://becivells.github.io/categories/Prometheus/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="Prometheus" scheme="https://becivells.github.io/tags/Prometheus/"/>
     
   </entry>
   
@@ -549,9 +549,9 @@
     
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
-      <category term="sysbench" scheme="https://becivells.github.io/tags/sysbench/"/>
-    
       <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
+    
+      <category term="sysbench" scheme="https://becivells.github.io/tags/sysbench/"/>
     
   </entry>
   
