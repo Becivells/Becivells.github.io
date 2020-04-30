@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-03-24T01:51:56.437Z</updated>
+  <updated>2020-04-30T06:13:43.984Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>vulfocus install</title>
+    <link href="https://becivells.github.io/2020/04/vulfocus_install/"/>
+    <id>https://becivells.github.io/2020/04/vulfocus_install/</id>
+    <published>2020-04-30T02:37:04.000Z</published>
+    <updated>2020-04-30T06:13:43.984Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;生产环境下的-Vulfocus-安装&quot;&gt;&lt;a href=&quot;#生产环境下的-Vulfocus-安装&quot; class=&quot;headerlink&quot; title=&quot;生产环境下的 Vulfocus 安装&quot;&gt;&lt;/a&gt;生产环境下的 Vulfocus 安装&lt;/h1&gt;&lt;h2
+        
+      
+    
+    </summary>
+    
+      <category term="install" scheme="https://becivells.github.io/categories/install/"/>
+    
+    
+      <category term="install" scheme="https://becivells.github.io/tags/install/"/>
+    
+  </entry>
   
   <entry>
     <title>https 自签发证书问题</title>
@@ -69,6 +95,32 @@
   </entry>
   
   <entry>
+    <title>Guacame 安装</title>
+    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
+    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-03-24T02:03:47.384Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Packstack - OpenStack 一键安装包</title>
     <link href="https://becivells.github.io/2020/03/openstack_Packstack/"/>
     <id>https://becivells.github.io/2020/03/openstack_Packstack/</id>
@@ -118,32 +170,6 @@
     
     
       <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Guacame 安装</title>
-    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
-    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
-    <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-24T02:03:47.384Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
-        
-      
-    
-    </summary>
-    
-      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
-    
-    
-      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
     
   </entry>
   
@@ -323,34 +349,6 @@
   </entry>
   
   <entry>
-    <title>MySQL 备份脚本</title>
-    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
-    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
-    <published>2019-01-03T07:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.628Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
-        
-      
-    
-    </summary>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Prometheus 安装</title>
     <link href="https://becivells.github.io/2019/01/prometheus_install/"/>
     <id>https://becivells.github.io/2019/01/prometheus_install/</id>
@@ -375,6 +373,34 @@
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
       <category term="Prometheus" scheme="https://becivells.github.io/tags/Prometheus/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>MySQL 备份脚本</title>
+    <link href="https://becivells.github.io/2019/01/mysqlbak/"/>
+    <id>https://becivells.github.io/2019/01/mysqlbak/</id>
+    <published>2019-01-03T07:10:28.000Z</published>
+    <updated>2019-12-05T05:11:18.628Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;1-MySQL-备份脚本&quot;&gt;&lt;a href=&quot;#1-MySQL-备份脚本&quot; class=&quot;headerlink&quot; title=&quot;1. MySQL 备份脚本&quot;&gt;&lt;/a&gt;1. MySQL 备份脚本&lt;/h2&gt;&lt;p&gt;最初脚本为在某个 QQ
+        
+      
+    
+    </summary>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/categories/MySQL/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+      <category term="MySQL" scheme="https://becivells.github.io/tags/MySQL/"/>
     
   </entry>
   
@@ -530,28 +556,6 @@
     
     
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux localmirrors</title>
-    <link href="https://becivells.github.io/2017/07/Linux-localmirrors/"/>
-    <id>https://becivells.github.io/2017/07/Linux-localmirrors/</id>
-    <published>2017-07-29T05:46:18.000Z</published>
-    <updated>2019-12-05T05:11:18.616Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Centos基于ISO镜像搭建本地源-HTTP源&quot;&gt;&lt;a href=&quot;#Centos基于ISO镜像搭建本地源-HTTP源&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
     
   </entry>
   
