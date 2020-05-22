@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Becivells 的 Blog" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="CentOS下 rpm 包制作RPM（Red Hat Package Manager）是用于 Linux 分发版（distribution）的最常见的软件包管理器。因为它允许分发已编译的软件，所以用户只用一个命令就可以安装软件。RPM 是 Linux“标准基本库”版本 1.0.0 指定的安装工具。在 Linux 分发版前 10 名中，有 8 个是基于 RPM（请参阅“Comparison of L">
+<meta name="keywords" content="Linux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何写好注释-转">
+<meta property="og:url" content="https:&#x2F;&#x2F;becivells.github.io&#x2F;2020&#x2F;05&#x2F;rpm&#x2F;index.html">
+<meta property="og:site_name" content="Becivells 的 Blog">
+<meta property="og:description" content="CentOS下 rpm 包制作RPM（Red Hat Package Manager）是用于 Linux 分发版（distribution）的最常见的软件包管理器。因为它允许分发已编译的软件，所以用户只用一个命令就可以安装软件。RPM 是 Linux“标准基本库”版本 1.0.0 指定的安装工具。在 Linux 分发版前 10 名中，有 8 个是基于 RPM（请参阅“Comparison of L">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2020-05-22T03:21:04.806Z">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":true,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://becivells.github.io/2020/05/rpm/"/>
+
+
+
+
+
+  <title>如何写好注释-转 | Becivells 的 Blog</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?a657ed7d283067e9c461994ed9d2a6e9";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Becivells 的 Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">李大壮</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" target="_blank" rel="noopener" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://becivells.github.io/2020/05/rpm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Becivells">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/header.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Becivells 的 Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何写好注释-转</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-05-20T20:37:04+08:00">
+                2020-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="CentOS下-rpm-包制作"><a href="#CentOS下-rpm-包制作" class="headerlink" title="CentOS下 rpm 包制作"></a>CentOS下 rpm 包制作</h1><p>RPM（Red Hat Package Manager）是用于 Linux 分发版（distribution）的最常见的软件包管理器。因为它允许分发已编译的软件，所以用户只用一个命令就可以安装软件。RPM 是 Linux“标准基本库”版本 1.0.0 指定的安装工具。在 Linux 分发版前 10 名中，有 8 个是基于 RPM（请参阅“Comparison of Linux Distributions”）。即使某些通常不使用 RPM 的分发版，如 Debian，也有可用工具将 RPM 转换成它们自己的格式。在 Linux 上，对于除开发人员以外的任何人，RPM 也是用来打包软件的最佳选择。本文通过一个<a href="">webhook</a>，介绍rpm软件包的制作</p>
+<p>使用centos7</p>
+<p>准备环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;XiaoMi&#x2F;soar.git</span></pre></td></tr></table></figure>
+<h4 id="从spec文档建立有以下选项："><a href="#从spec文档建立有以下选项：" class="headerlink" title="从spec文档建立有以下选项："></a>从spec文档建立有以下选项：</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">-bp                     #只执行spec的%pre 段(解开源码包并打补丁，即只做准备)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">-bc                              #执行spec的%pre和%build 段(准备并编译)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">-bi                               #执行spec中%pre，%build与%install(准备，编译并安装)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">-bl                               #检查spec中的%file段(查看文件是否齐全)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">-ba                              #建立源码与二进制包(常用)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">-bb                              #只建立二进制包(常用)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">-bs                              #只建立源码包</span></pre></td></tr></table></figure>
+<h2 id="1-配置工作目录"><a href="#1-配置工作目录" class="headerlink" title="1. 配置工作目录"></a>1. 配置工作目录</h2><p>安装构建工具</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">yum install rpmdevtools wget tree</span></pre></td></tr></table></figure>
+<p>使用命令生成工作目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">rpmdev-setuptree</span></pre></td></tr></table></figure>
+<p><code>rpmdev-setuptree</code> 命令默认将再当前用户主目录下创建一个RPM构建根目录结构，<br>如果需要改变次默认位置，可以修改配置文件:~/.rpmmacros中变量 _topdir 对应<br>的值即可。 </p>
+<p>生成的目录如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">rpmbuild&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">├── BUILD     # BUILD 打包过程中的工作目录</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">├── RPMS      # 存放生成的二进制包</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">├── SOURCES   # 放置打包资源，包括源码打包文件和补丁文件</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">├── SPECS     # SPECS 目录放置 SPEC 文档</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">└── SRPMS     # 目录存放生成的源码包</span></pre></td></tr></table></figure>
+<p><code>BUILDROOT</code> 是制作过程中临时安装程序的地方</p>
+<h2 id="2-制作过程概览"><a href="#2-制作过程概览" class="headerlink" title="2. 制作过程概览"></a>2. 制作过程概览</h2><p>为了构建 RPM 软件包，您需要写一个名为 <em>spec</em> 文件的 RPM 输入文件，该文件告诉 RPM 如何构建和打包您的软件。编写 spec 文件您需要：</p>
+<p>如果您首次创建 .spec 文件，vim 或 emacs 会自动生成模板：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">Name:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Version:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Release:	1%&#123;?dist&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Summary:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">Group:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">License:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">URL:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">Source0:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">BuildRoot:	%&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-root-%(%&#123;__id_u&#125; -n)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">BuildRequires:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">Requires:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">%description</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">%prep</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">%setup -q</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">%build</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">%configure</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">make %&#123;?_smp_mflags&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">%install</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">rm -rf %&#123;buildroot&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">make install DESTDIR&#x3D;%&#123;buildroot&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">%clean</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">rm -rf %&#123;buildroot&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">%defattr(-,root,root,-)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">%doc</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">%changelog</span></pre></td></tr></table></figure>
+<p>您可以使用 <code>$RPM_BUILD_ROOT</code> 代替 <code>%{buildroot}</code>，两者都可以使用。</p>
+<p>spec文档的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">Name: 软件包的名称，后面可使用%&#123;name&#125;的方式引用，具体命令需跟源包一致</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Summary:                    软件包的内容概要</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Version:                        软件的实际版本号，具体命令需跟源包一致</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Release:                        发布序列号，具体命令需跟源包一致</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">Group:                          软件分组，建议使用标准分组</span></pre></td></tr></table></figure>
+<h3 id="软件包所属类别，具体类别有："><a href="#软件包所属类别，具体类别有：" class="headerlink" title="软件包所属类别，具体类别有："></a>软件包所属类别，具体类别有：</h3><p>Amusements/Games                                （娱乐/游戏）<br>Amusements/Graphics                              （娱乐/图形）<br>Applications/Archiving                               （应用/文档）<br>Applications/Communications                 （应用/通讯）<br>Applications/Databases                              （应用/数据库）<br>Applications/Editors                                   （应用/编辑器）<br>Applications/Emulators                             （应用/仿真器）<br>Applications/Engineering                         （应用/工程）<br>Applications/File                                         （应用/文件）<br>Applications/Internet                                （应用/因特网）<br>Applications/Multimedia                          （应用/多媒体）<br>Applications/Productivity                        （应用/产品）<br>Applications/Publishing                           （应用/印刷）<br>Applications/System                                 （应用/系统）<br>Applications/Text                                      （应用/文本）<br>Development/Debuggers                         （开发/调试器）<br>Development/Languages                          （开发/语言）<br>Development/Libraries                             （开发/函数库）<br>Development/System                                 （开发/系统）<br>Development/Tools                                     （开发/工具）<br>Documentation                                           （文档）<br>System Environment/Base                        （系统环境/基础）<br>System Environment/Daemons                （系统环境/守护）<br>System Environment/Kernel                     （系统环境/内核）<br>System Environment/Libraries                （系统环境/函数库）<br>System Environment/Shells                      （系统环境/接口）<br>User Interface/Desktops                             （用户界面/桌面）<br>User Interface/X                                          （用户界面/X窗口）<br>User Interface/X Hardware Support        （用户界面/X硬件支持）</p>
+<h4 id="License-软件授权方式，通常就是GPL"><a href="#License-软件授权方式，通常就是GPL" class="headerlink" title="License: 软件授权方式，通常就是GPL"></a>License: 软件授权方式，通常就是GPL</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">Source: 源代码包，可以带多个用Source1、Source2等源，后面也可以用%&#123;source1&#125;、%&#123;source2&#125;引用</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">BuildRoot: 这个是安装或编译时使用的“虚拟目录”，考虑到多用户的环境，一般定义为：</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">%&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-root 或 %&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-buildroot-%(%&#123;__id_u&#125; -n&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">该参数非常重要，因为在生成[rpm](https:&#x2F;&#x2F;www.fooher.com&#x2F;tag&#x2F;rpm)的过程中，执行make install时就会把软件安装到上述的路径中，在打包的时候，同样依赖“虚拟目录”为“根目录”进行操作。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">后面可使用$RPM_BUILD_ROOT 方式引用。</span></pre></td></tr></table></figure>
+<h4 id="URL-软件的主页"><a href="#URL-软件的主页" class="headerlink" title="URL: 软件的主页"></a>URL: 软件的主页</h4><p>Vendor: 发行商或打包组织的信息，例如RedFlag Co,Ltd<br>Disstribution: 发行版标识<br>Patch: 补丁源码，可使用Patch1、Patch2等标识多个补丁，使用%patch0或%{patch0}引用<br>Prefix: %{_prefix} 这个主要是为了解决今后安装<a href="https://www.fooher.com/tag/rpm" target="_blank" rel="noopener">rpm</a>包时，并不一定把软件安装到rpm中打包的目录的情况。这样，必须在这里定义该标识，并在编写%install脚本的时候引用，才能实现rpm安装时重新指定位置的功能<br>Prefix: %{_sysconfdir} 这个原因和上面的一样，但由于%{_prefix}指/usr，而对于其他的文件，例如/etc下的配置文件，则需要用%{_sysconfdir}标识<br>Build Arch: 指编译的目标处理器架构，noarch标识不指定，但通常都是以/usr/lib/rpm/marcros中的内容为默认值<br>Requires: 该rpm包所依赖的软件包名称，可以用&gt;=或&lt;=表示大于或小于某一特定版本，</p>
+<h4 id="spec脚本主体"><a href="#spec脚本主体" class="headerlink" title="spec脚本主体"></a>spec脚本主体</h4><p>spec脚本的主体中也包括了很多关键字和描述，下面会一一列举。我会把一些特别需要留意的地方标注出来。</p>
+<h5 id="prep-预处理脚本"><a href="#prep-预处理脚本" class="headerlink" title="%prep 预处理脚本"></a>%prep 预处理脚本</h5><p>%setup -n %{name}-%{version} 把源码包解压并放好<br>注：可根据你的源码的名字格式，来确认解压后名字的格式，否则可能导致install的时候找不到对应的目录<br>通常是从/usr/src/redhat/SOURCES里的包解压到/usr/src/redhat/BUILD/%{name}-%{version}中。<br>一般用%setup -c就可以了，但有两种情况：一就是同时编译多个源码包，二就是源码的tar包的名称与解压出来的目录不一致，此时，就需要使用-n参数指定一下了。</p>
+<h5 id="patch-打补丁"><a href="#patch-打补丁" class="headerlink" title="%patch 打补丁"></a>%patch 打补丁</h5><p>通常补丁都会一起在源码tar.gz包中，或放到SOURCES目录下。一般参数为：<br>%patch -p1 使用前面定义的Patch补丁进行，-p1是忽略patch的第一层目录<br>%Patch2 -p1 -b xxx.patch 打上指定的补丁，-b是指生成备份文件</p>
+<h5 id="◎补充一下"><a href="#◎补充一下" class="headerlink" title="◎补充一下"></a>◎补充一下</h5><p>%setup 不加任何选项，仅将软件包打开。<br>%setup -n newdir 将软件包解压在newdir目录。<br>%setup -c 解压缩之前先产生目录。<br>%setup -b num 将第num个source文件解压缩。<br>%setup -T 不使用default的解压缩操作。<br>%setup -T -b 0 将第0个源代码文件解压缩。<br>%setup -c -n newdir 指定目录名称newdir，并在此目录产生rpm套件。</p>
+<p>%patch 最简单的补丁方式，自动指定patch level。<br>%patch 0 使用第0个补丁文件，相当于%patch ?p 0。<br>%patch -s 不显示打补丁时的信息。<br>%patch -T 将所有打补丁时产生的输出文件删除。</p>
+<p> 预处理 %prep:</p>
+<p>预处理通常用来执行一些解开源程序包的命令，为下一步的编译安装做准备。<br>%prep 和下面的 %build，%install 段一样，除了可以执行 RPM 所定义的<br>宏命令（以 % 开头）以外，还可以执行 SHELL 命令，功能类似 ./configure<br>作用：<br>用来准备要编译的软件。通常，这一段落将归档中的源代码解压，并应用补丁。<br>这些可以用标准的 Shell 命令完成，但是更多地使用预定义的宏.<br>检查标签语法是否正确，删除旧的软件源程序，对包含源程序的 tar 文件进行解码。<br>如果包含补丁(patch)文件，将补丁文件应用到解开的源码中。它一般包含 %setup<br>与 %patch 两个命令。%setup 用于将软件包打开，执行 %patch 可将补丁文件加入<br>解开的源程序中.</p>
+<p>%prep<br>宏 %setup<br>该宏解开源代码，将当前目录改为源代码解压之后产生的目录。这个宏还有一些选项<br>可以使用，如，在解压后， %setup 宏假设产生的目录是 %{name}-%{version}<br>如果 tar 打包中的目录不是这样命名的，可以用 -n 选项来指定要切换到的目录。<br>如：%setup -n%{name}-April2003Rel<br>还有如下其他参数：<br>%setup -q   — 将 tar 命令的繁复输出关闭<br>%setup -nnewdir  — 将压缩的软件源程序在 newdir 目录下解开<br>%setup -c  — 在解开源程序之前先创建目录<br>%setup -bnum  — 在包含多个源程序时，将第 num 个源程序解压缩<br>%setup -T   — 不使用缺省的解压缩操作</p>
+<h5 id="files-基础"><a href="#files-基础" class="headerlink" title="%files 基础"></a>%files 基础</h5><p><code>%defattr</code> 用于设置默认文件权限，通常可以在 <code>%files</code> 的开头看到它。注意，如果不需要修改权限，则不需要使用它。其格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%defattr(&lt;文件权限&gt;, &lt;用户&gt;, &lt;用户组&gt;, &lt;目录权限&gt;)</span></pre></td></tr></table></figure>
+<p>第 4 个参数通常会省略。常规用法为 <code>%defattr(-,root,root,-)</code>，其中 “<code>-</code>“ 表示默认权限。</p>
+<p>您应该列出该软件包拥有的所有文件和目录。尽量使用宏代替目录名，查看宏列表 <a href="https://fedoraproject.org/wiki/Packaging:RPMMacros" target="_blank" rel="noopener">Packaging:RPMMacros</a>（例如：使用 <code>%{_bindir}/mycommand</code> 代替 <code>/usr/bin/mycommand</code>）。如果路径以 “<code>/</code>“ 开头（或从宏扩展），则从 <code>%{buildroot}</code> 目录取用。否则，假设文件在当前目录中（例如：在 <code>%{_builddir}</code> 中，包含需要的文档）。如果您的包仅安装一个文件，如 <code>/usr/sbin/mycommand</code>，则 <code>%files</code> 部分如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">%&#123;_sbindir&#125;&#x2F;mycommand</span></pre></td></tr></table></figure>
+<p>若要使软件包不受上游改动的影响，可使用通配符匹配所有文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%&#123;_bindir&#125;&#x2F;*</span></pre></td></tr></table></figure>
+<p>包含一个目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%&#123;_datadir&#125;&#x2F;%&#123;name&#125;&#x2F;</span></pre></td></tr></table></figure>
+<p>注意，<code>%{_bindir}/*</code> 不会声明此软件包拥有 <code>/usr/bin</code> 目录，而只包含其中的文件。如果您列出一个目录，则该软件包拥有这个目录，及该目录内的所有文件和子目录。因此，<strong>不要</strong>列出 <code>%{_bindir}</code>，并且要小心的处理那些可能和其他软件包共享的目录。</p>
+<p>如果存在以下情况，可能引发错误：</p>
+<ul>
+<li>通配符未匹配到任何文件或目录</li>
+<li>文件或目录被多次列出</li>
+<li>未列出 <code>%{buildroot}</code> 下的某个文件或目录</li>
+<li>您也可以使用 <code>%exclude</code> 来排除文件。这对于使用通配符来列出全部文件时会很有用，注意如果未匹配到任何文件也会造成失败。</li>
+</ul>
+<p>您可能需要在 <code>%files</code> 部分添加一个或多个前缀；请用空格分隔。详情请查看 <a href="http://www.rpm.org/max-rpm/s1-rpm-inside-files-list-directives.html" target="_blank" rel="noopener">Max RPM section on %files directives</a>。</p>
+<p>通常，”<code>%doc</code>“ 用于列出 <code>%{_builddir}</code> 内，但未复制到 <code>%{buildroot}</code> 中的文档。通常包括 <code>README</code> 和 <code>INSTALL</code>。它们会保存至 <code>/usr/share/doc</code> 下适当的目录中，不需要声明 <code>/usr/share/doc</code> 的所有权。</p>
+<p><strong>注意：</strong> 如果指定 <code>%doc</code> 条目，rpmbuild &lt; 4.9.1 在安装前会将 %doc 目录删除。这表明已保存至其中的文档，例如，在 <code>%install</code> 中安装的文档会被删除，因此最终不会出现在软件包中。如果您想要在 <code>%install</code> 中安装一些文档，请将它们临时安装到 build 目录（不是 build root 目录）中，例如 <code>_docs_staging</code>，接着在 <code>%files</code> 中列出，如 <code>%doc _docs_staging/*</code> 这样。</p>
+<p>配置文件保存在 <code>/etc</code> 中，一般会这样指定（确保用户的修改不会在更新时被覆盖）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%config(noreplace) %&#123;_sysconfdir&#125;&#x2F;foo.conf</span></pre></td></tr></table></figure>
+<p>如果更新的配置文件无法与之前的配置兼容，则应这样指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%config %&#123;_sysconfdir&#125;&#x2F;foo.conf</span></pre></td></tr></table></figure>
+<p>“<code>%attr(mode, user, group)</code>“ 用于对文件进行更精细的权限控制，”<code>-</code>“ 表示使用默认值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%attr(0644, root, root) FOO.BAR</span></pre></td></tr></table></figure>
+<p>“<code>%caps(capabilities)</code>“ 用于为文件分配 POSIX <a href="http://linux.die.net/man/7/capabilities" target="_blank" rel="noopener">capabilities</a>。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%caps(cap_net_admin&#x3D;pe) FOO.BAR</span></pre></td></tr></table></figure>
+<p>如果包含特定语言编写的文件，请使用 <code>%lang</code> 来标注：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%lang(de) %&#123;_datadir&#125;&#x2F;locale&#x2F;de&#x2F;LC_MESSAGES&#x2F;tcsh*</span></pre></td></tr></table></figure>
+<p>使用区域语言（Locale）文件的程序应遵循 <a href="https://fedoraproject.org/wiki/Packaging:Guidelines#Handling_Locale_Files" target="_blank" rel="noopener">处理 i18n 文件的建议方法</a>：</p>
+<ul>
+<li>在 <code>%install</code> 步骤中找出文件名： <code>%find_lang ${name}</code></li>
+<li>添加必要的编译依赖： <code>BuildRequires: gettext</code></li>
+<li>使用找到的文件名： <code>%files -f ${name}.lang</code></li>
+</ul>
+<p>以下前缀在 Fedora 中<strong>无效</strong>：<code>%license</code> 和 <code>%readme</code>。</p>
+<h1 id="常用的宏"><a href="#常用的宏" class="headerlink" title="常用的宏"></a>常用的宏</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">RPM_BUILD_DIR:          &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;BUILD</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">RPM_BUILD_ROOT:         &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;BUILDROOT</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">%&#123;_sysconfdir&#125;:         &#x2F;etc</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">%&#123;_sbindir&#125;：           &#x2F;usr&#x2F;sbin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">%&#123;_bindir&#125;:             &#x2F;usr&#x2F;bin</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">%&#123;_datadir&#125;:            &#x2F;usr&#x2F;share</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">%&#123;_mandir&#125;:             &#x2F;usr&#x2F;share&#x2F;man</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">%&#123;_libdir&#125;:             &#x2F;usr&#x2F;lib64</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">%&#123;_prefix&#125;:             &#x2F;usr</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">%&#123;_localstatedir&#125;:      &#x2F;usr&#x2F;var</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">%&#123;_unitdir&#125;             &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th><code>%{_bindir}</code></th>
+<th><code>/usr/bin</code></th>
+<th>二进制目录：保存可执行文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%{_builddir}</code></td>
+<td><code>~/rpmbuild/BUILD</code></td>
+<td>构建目录：软件在 build 的子目录被编译。参考 <code>%buildsubdir</code></td>
+</tr>
+<tr>
+<td><code>%{buildroot}</code></td>
+<td><code>~/rpmbuild/BUILDROOT</code></td>
+<td>Build root：<code>%install</code> 阶段中，将 <code>%{_builddir}</code> 子目录下的文件复制到 <code>%{buildroot}</code> 的子目录（之前，<code>%{buildroot}</code>使用的位置为 “/var/tmp/“）</td>
+</tr>
+<tr>
+<td><code>%{buildsubdir}</code></td>
+<td><code>%{_builddir}/%{name}</code></td>
+<td>构建子目录：<code>%build</code> 阶段中，文件会在 <code>%{_builddir}</code> 的子目录中编译。此宏在 <code>%autosetup</code> 之后设置</td>
+</tr>
+<tr>
+<td><code>%{_datadir}</code></td>
+<td><code>/usr/share</code></td>
+<td>共享数据目录</td>
+</tr>
+<tr>
+<td><code>%{_defaultdocdir}</code></td>
+<td><code>/usr/share/doc</code></td>
+<td>默认文档目录</td>
+</tr>
+<tr>
+<td><code>%{dist}</code></td>
+<td><code>.fc*NUMBER*</code></td>
+<td>发行版名称+版本号（例如 “<code>.fc30</code>“）</td>
+</tr>
+<tr>
+<td><code>%{fedora}</code></td>
+<td><code>*NUMBER*</code></td>
+<td>Fedora 发行版本号（例如 “<code>30</code>“）</td>
+</tr>
+<tr>
+<td><code>%{_includedir}</code></td>
+<td><code>/usr/include</code></td>
+<td>程序头文件目录</td>
+</tr>
+<tr>
+<td><code>%{_infodir}</code></td>
+<td><code>/usr/share/info</code></td>
+<td>info 手册目录</td>
+</tr>
+<tr>
+<td><code>%{_initrddir}</code></td>
+<td><code>/etc/rc.d/init.d</code></td>
+<td>init 脚本目录</td>
+</tr>
+<tr>
+<td><code>%{_libdir}</code></td>
+<td><code>/usr/lib</code></td>
+<td>共享库目录</td>
+</tr>
+<tr>
+<td><code>%{_libexecdir}</code></td>
+<td><code>/usr/libexec</code></td>
+<td>仅由系统调用执行该目录中的命令</td>
+</tr>
+<tr>
+<td><code>%{_localstatedir}</code></td>
+<td><code>/var</code></td>
+<td>保存缓存/日志/lock等信息的目录</td>
+</tr>
+<tr>
+<td><code>%{_mandir}</code></td>
+<td><code>/usr/share/man</code></td>
+<td>man 手册目录</td>
+</tr>
+<tr>
+<td><code>%{name}</code></td>
+<td></td>
+<td>软件包名称，通过 Name: tag 设置</td>
+</tr>
+<tr>
+<td><code>%{_sbindir}</code></td>
+<td><code>/usr/sbin</code></td>
+<td>保存管理员可执行命令</td>
+</tr>
+<tr>
+<td><code>%{_sharedstatedir}</code></td>
+<td><code>/var/lib</code></td>
+<td>保存程序运行所处理的文件</td>
+</tr>
+<tr>
+<td><code>%{_sysconfdir}</code></td>
+<td><code>/etc</code></td>
+<td>配置文件目录</td>
+</tr>
+<tr>
+<td><code>%{version}</code></td>
+<td></td>
+<td>软件包版本，通过 Version: tag 设置</td>
+</tr>
+</tbody>
+</table>
+<p>您可以查看 <code>/etc/rpm/*</code> 和 <code>/usr/lib/rpm</code>，以及 <code>/usr/lib/rpm/macros</code> 以进一步了解宏。或使用 <code>rpm --showrc</code> 显示当前 RPM 所使用的宏变量和值（根据 <code>rpmrc</code> 和宏)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">%define debug_package %&#123;nil&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">Name: webhooks</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">Version: 0.1.1</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">Release:	1%&#123;?dist&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">Summary: a git sync tools</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">Group:  Development&#x2F;Tools</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">License: GPL</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">URL: http:&#x2F;&#x2F;www.github.com&#x2F;becivells&#x2F;go-webhook</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">Source0: %&#123;name&#125;-%&#123;version&#125;.tar.gz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">Source1: webhooks.service</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">BuildRoot: %&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;main_version&#125;-%&#123;main_release&#125;-root</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">%description</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">a git tool for repo to webroot</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">%prep</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">%setup -q</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">%build</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">go build -o webhooks</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">%install</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">%&#123;__rm&#125; -rf $RPM_BUILD_ROOT</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">%&#123;__mkdir&#125; -p $RPM_BUILD_ROOT&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">%&#123;__mkdir&#125; -p $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">%&#123;__install&#125; -m755  webhooks $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks&#x2F;webhooks</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">%&#123;__install&#125;  webhooks.yaml $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks&#x2F;webhooks.yaml</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">%&#123;__install&#125; -m644  %SOURCE1  $RPM_BUILD_ROOT&#x2F;%&#123;_unitdir&#125;&#x2F;webhooks.service</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">%defattr(-,root,root,-)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">&#x2F;opt&#x2F;webhooks&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">%clean</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">%&#123;__rm&#125; -rf $RPM_BUILD_ROOT</span></pre></td></tr></table></figure>
+<p><a href="https://github.com/Becivells/linux-package" target="_blank" rel="noopener">https://github.com/Becivells/linux-package</a></p>
+<p><a href="https://www.cnblogs.com/jimodetiantang/p/9573098.html" target="_blank" rel="noopener">https://www.cnblogs.com/jimodetiantang/p/9573098.html</a></p>
+<p><a href="https://www.fooher.com/20180112_155.html" target="_blank" rel="noopener">https://www.fooher.com/20180112_155.html</a></p>
+<p><a href="https://fedoraproject.org/wiki/How_to_create_an_RPM_package/zh-cn" target="_blank" rel="noopener">https://fedoraproject.org/wiki/How_to_create_an_RPM_package/zh-cn</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/" rel="next" title="如何写好注释-转">
+                <i class="fa fa-chevron-left"></i> 如何写好注释-转
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/header.jpeg"
+                alt="Becivells" />
+            
+              <p class="site-author-name" itemprop="name">Becivells</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/becivells" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS下-rpm-包制作"><span class="nav-number">1.</span> <span class="nav-text">CentOS下 rpm 包制作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#从spec文档建立有以下选项："><span class="nav-number">1.0.0.1.</span> <span class="nav-text">从spec文档建立有以下选项：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-配置工作目录"><span class="nav-number">1.1.</span> <span class="nav-text">1. 配置工作目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-制作过程概览"><span class="nav-number">1.2.</span> <span class="nav-text">2. 制作过程概览</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件包所属类别，具体类别有："><span class="nav-number">1.2.1.</span> <span class="nav-text">软件包所属类别，具体类别有：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#License-软件授权方式，通常就是GPL"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">License: 软件授权方式，通常就是GPL</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#URL-软件的主页"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">URL: 软件的主页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#spec脚本主体"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">spec脚本主体</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#prep-预处理脚本"><span class="nav-number">1.2.1.3.1.</span> <span class="nav-text">%prep 预处理脚本</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#patch-打补丁"><span class="nav-number">1.2.1.3.2.</span> <span class="nav-text">%patch 打补丁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#◎补充一下"><span class="nav-number">1.2.1.3.3.</span> <span class="nav-text">◎补充一下</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#files-基础"><span class="nav-number">1.2.1.3.4.</span> <span class="nav-text">%files 基础</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的宏"><span class="nav-number">2.</span> <span class="nav-text">常用的宏</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Becivells</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">36.5k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

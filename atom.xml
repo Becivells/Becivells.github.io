@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-04-30T06:13:43.984Z</updated>
+  <updated>2020-05-22T03:21:04.806Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -17,11 +17,89 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>如何写好注释-转</title>
+    <link href="https://becivells.github.io/2020/05/rpm/"/>
+    <id>https://becivells.github.io/2020/05/rpm/</id>
+    <published>2020-05-20T12:37:04.000Z</published>
+    <updated>2020-05-22T03:21:04.806Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;CentOS下-rpm-包制作&quot;&gt;&lt;a href=&quot;#CentOS下-rpm-包制作&quot; class=&quot;headerlink&quot; title=&quot;CentOS下 rpm 包制作&quot;&gt;&lt;/a&gt;CentOS下 rpm 包制作&lt;/h1&gt;&lt;p&gt;RPM（Red Hat
+        
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何写好注释-转</title>
+    <link href="https://becivells.github.io/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/"/>
+    <id>https://becivells.github.io/2020/05/如何写好注释-转/</id>
+    <published>2020-05-10T12:37:04.000Z</published>
+    <updated>2020-05-22T03:18:17.046Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;如何写好注释-转&quot;&gt;&lt;a href=&quot;#如何写好注释-转&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="language" scheme="https://becivells.github.io/categories/language/"/>
+    
+    
+      <category term="language" scheme="https://becivells.github.io/tags/language/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 编译软件常见问题解析</title>
+    <link href="https://becivells.github.io/2020/05/Linux_gcc_configure/"/>
+    <id>https://becivells.github.io/2020/05/Linux_gcc_configure/</id>
+    <published>2020-05-10T12:37:04.000Z</published>
+    <updated>2020-05-22T03:12:40.685Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Linux-编译软件常见问题解析&quot;&gt;&lt;a href=&quot;#Linux-编译软件常见问题解析&quot; class=&quot;headerlink&quot; title=&quot;Linux 编译软件常见问题解析&quot;&gt;&lt;/a&gt;Linux
+        
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
     <title>vulfocus install</title>
     <link href="https://becivells.github.io/2020/04/vulfocus_install/"/>
     <id>https://becivells.github.io/2020/04/vulfocus_install/</id>
     <published>2020-04-30T02:37:04.000Z</published>
-    <updated>2020-04-30T06:13:43.984Z</updated>
+    <updated>2020-04-30T07:05:53.245Z</updated>
     
     <summary type="html">
     
@@ -39,32 +117,6 @@
     
     
       <category term="install" scheme="https://becivells.github.io/tags/install/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>https 自签发证书问题</title>
-    <link href="https://becivells.github.io/2020/03/http-ssl/"/>
-    <id>https://becivells.github.io/2020/03/http-ssl/</id>
-    <published>2020-03-24T12:37:04.000Z</published>
-    <updated>2020-03-24T01:51:56.437Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;自签发SSL证书问题&quot;&gt;&lt;a href=&quot;#自签发SSL证书问题&quot; class=&quot;headerlink&quot; title=&quot;自签发SSL证书问题&quot;&gt;&lt;/a&gt;自签发SSL证书问题&lt;/h1&gt;&lt;h2 id=&quot;1-导入申请的证书（最终解决方法）&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="问题" scheme="https://becivells.github.io/categories/%E9%97%AE%E9%A2%98/"/>
-    
-    
-      <category term="https" scheme="https://becivells.github.io/tags/https/"/>
     
   </entry>
   
@@ -95,11 +147,11 @@
   </entry>
   
   <entry>
-    <title>Guacame 安装</title>
-    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
-    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
-    <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-24T02:03:47.384Z</updated>
+    <title>https 自签发证书问题</title>
+    <link href="https://becivells.github.io/2020/03/http-ssl/"/>
+    <id>https://becivells.github.io/2020/03/http-ssl/</id>
+    <published>2020-03-24T12:37:04.000Z</published>
+    <updated>2020-03-24T01:51:56.437Z</updated>
     
     <summary type="html">
     
@@ -107,16 +159,16 @@
       
         
         
-          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
+          &lt;h1 id=&quot;自签发SSL证书问题&quot;&gt;&lt;a href=&quot;#自签发SSL证书问题&quot; class=&quot;headerlink&quot; title=&quot;自签发SSL证书问题&quot;&gt;&lt;/a&gt;自签发SSL证书问题&lt;/h1&gt;&lt;h2 id=&quot;1-导入申请的证书（最终解决方法）&quot;&gt;&lt;a
         
       
     
     </summary>
     
-      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+      <category term="问题" scheme="https://becivells.github.io/categories/%E9%97%AE%E9%A2%98/"/>
     
     
-      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
+      <category term="https" scheme="https://becivells.github.io/tags/https/"/>
     
   </entry>
   
@@ -170,6 +222,32 @@
     
     
       <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Guacame 安装</title>
+    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
+    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-03-24T02:03:47.384Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
     
   </entry>
   
@@ -477,85 +555,6 @@
     
     </summary>
     
-    
-  </entry>
-  
-  <entry>
-    <title>snmp config</title>
-    <link href="https://becivells.github.io/2017/07/snmp-config/"/>
-    <id>https://becivells.github.io/2017/07/snmp-config/</id>
-    <published>2017-07-29T06:13:24.000Z</published>
-    <updated>2019-12-05T05:11:18.627Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;SNMP配置&quot;&gt;&lt;a href=&quot;#SNMP配置&quot; class=&quot;headerlink&quot; title=&quot;SNMP配置&quot;&gt;&lt;/a&gt;SNMP配置&lt;/h1&gt;&lt;p&gt;1.安装&lt;/p&gt;
-&lt;figure class=&quot;highlight
-        
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>zabbix install</title>
-    <link href="https://becivells.github.io/2017/07/zabbix-install/"/>
-    <id>https://becivells.github.io/2017/07/zabbix-install/</id>
-    <published>2017-07-29T06:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.627Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;zabbix-安装和使用&quot;&gt;&lt;a href=&quot;#zabbix-安装和使用&quot; class=&quot;headerlink&quot; title=&quot;zabbix 安装和使用&quot;&gt;&lt;/a&gt;zabbix 安装和使用&lt;/h1&gt;&lt;p&gt;1.利用zabbix
-        
-      
-    
-    </summary>
-    
-      <category term="zabbix" scheme="https://becivells.github.io/categories/zabbix/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-      <category term="zabbix" scheme="https://becivells.github.io/tags/zabbix/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Linux 加固</title>
-    <link href="https://becivells.github.io/2019/02/Linux_jagu_01/"/>
-    <id>https://becivells.github.io/2019/02/Linux_jagu_01/</id>
-    <published>2017-07-29T06:10:28.000Z</published>
-    <updated>2019-12-05T05:11:18.636Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;摘自2017 年部分文档&lt;/p&gt;
-&lt;h2 id=&quot;运维习惯&quot;&gt;&lt;a href=&quot;#运维习惯&quot; class=&quot;headerlink&quot; title=&quot;运维习惯&quot;&gt;&lt;/a&gt;运维习惯&lt;/h2&gt;&lt;p&gt;1.1 不使用root账户登录&lt;/p&gt;
-&lt;p&gt;1.2 不用rm –rf
-        
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
     
   </entry>
   

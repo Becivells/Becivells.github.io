@@ -1,6 +1,388 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>如何写好注释-转</title>
+    <url>/2020/05/rpm/</url>
+    <content><![CDATA[<h1 id="CentOS下-rpm-包制作"><a href="#CentOS下-rpm-包制作" class="headerlink" title="CentOS下 rpm 包制作"></a>CentOS下 rpm 包制作</h1><p>RPM（Red Hat Package Manager）是用于 Linux 分发版（distribution）的最常见的软件包管理器。因为它允许分发已编译的软件，所以用户只用一个命令就可以安装软件。RPM 是 Linux“标准基本库”版本 1.0.0 指定的安装工具。在 Linux 分发版前 10 名中，有 8 个是基于 RPM（请参阅“Comparison of Linux Distributions”）。即使某些通常不使用 RPM 的分发版，如 Debian，也有可用工具将 RPM 转换成它们自己的格式。在 Linux 上，对于除开发人员以外的任何人，RPM 也是用来打包软件的最佳选择。本文通过一个<a href="">webhook</a>，介绍rpm软件包的制作</p>
+<p>使用centos7</p>
+<p>准备环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;XiaoMi&#x2F;soar.git</span></pre></td></tr></table></figure>
+<h4 id="从spec文档建立有以下选项："><a href="#从spec文档建立有以下选项：" class="headerlink" title="从spec文档建立有以下选项："></a>从spec文档建立有以下选项：</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-bp                     #只执行spec的%pre 段(解开源码包并打补丁，即只做准备)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-bc                              #执行spec的%pre和%build 段(准备并编译)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-bi                               #执行spec中%pre，%build与%install(准备，编译并安装)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-bl                               #检查spec中的%file段(查看文件是否齐全)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-ba                              #建立源码与二进制包(常用)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-bb                              #只建立二进制包(常用)</span></pre></td></tr><tr><td class="code"><pre><span class="line">-bs                              #只建立源码包</span></pre></td></tr></table></figure>
+<h2 id="1-配置工作目录"><a href="#1-配置工作目录" class="headerlink" title="1. 配置工作目录"></a>1. 配置工作目录</h2><p>安装构建工具</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install rpmdevtools wget tree</span></pre></td></tr></table></figure>
+<p>使用命令生成工作目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpmdev-setuptree</span></pre></td></tr></table></figure>
+<p><code>rpmdev-setuptree</code> 命令默认将再当前用户主目录下创建一个RPM构建根目录结构，<br>如果需要改变次默认位置，可以修改配置文件:~/.rpmmacros中变量 _topdir 对应<br>的值即可。 </p>
+<p>生成的目录如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpmbuild&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── BUILD     # BUILD 打包过程中的工作目录</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── RPMS      # 存放生成的二进制包</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── SOURCES   # 放置打包资源，包括源码打包文件和补丁文件</span></pre></td></tr><tr><td class="code"><pre><span class="line">├── SPECS     # SPECS 目录放置 SPEC 文档</span></pre></td></tr><tr><td class="code"><pre><span class="line">└── SRPMS     # 目录存放生成的源码包</span></pre></td></tr></table></figure>
+<p><code>BUILDROOT</code> 是制作过程中临时安装程序的地方</p>
+<h2 id="2-制作过程概览"><a href="#2-制作过程概览" class="headerlink" title="2. 制作过程概览"></a>2. 制作过程概览</h2><p>为了构建 RPM 软件包，您需要写一个名为 <em>spec</em> 文件的 RPM 输入文件，该文件告诉 RPM 如何构建和打包您的软件。编写 spec 文件您需要：</p>
+<p>如果您首次创建 .spec 文件，vim 或 emacs 会自动生成模板：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Name:</span></pre></td></tr><tr><td class="code"><pre><span class="line">Version:</span></pre></td></tr><tr><td class="code"><pre><span class="line">Release:	1%&#123;?dist&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">Summary:</span></pre></td></tr><tr><td class="code"><pre><span class="line">Group:</span></pre></td></tr><tr><td class="code"><pre><span class="line">License:</span></pre></td></tr><tr><td class="code"><pre><span class="line">URL:</span></pre></td></tr><tr><td class="code"><pre><span class="line">Source0:</span></pre></td></tr><tr><td class="code"><pre><span class="line">BuildRoot:	%&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-root-%(%&#123;__id_u&#125; -n)</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">BuildRequires:</span></pre></td></tr><tr><td class="code"><pre><span class="line">Requires:</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%description</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%prep</span></pre></td></tr><tr><td class="code"><pre><span class="line">%setup -q</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%build</span></pre></td></tr><tr><td class="code"><pre><span class="line">%configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make %&#123;?_smp_mflags&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%install</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -rf %&#123;buildroot&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install DESTDIR&#x3D;%&#123;buildroot&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%clean</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -rf %&#123;buildroot&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="code"><pre><span class="line">%defattr(-,root,root,-)</span></pre></td></tr><tr><td class="code"><pre><span class="line">%doc</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%changelog</span></pre></td></tr></table></figure>
+<p>您可以使用 <code>$RPM_BUILD_ROOT</code> 代替 <code>%{buildroot}</code>，两者都可以使用。</p>
+<p>spec文档的内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Name: 软件包的名称，后面可使用%&#123;name&#125;的方式引用，具体命令需跟源包一致</span></pre></td></tr><tr><td class="code"><pre><span class="line">Summary:                    软件包的内容概要</span></pre></td></tr><tr><td class="code"><pre><span class="line">Version:                        软件的实际版本号，具体命令需跟源包一致</span></pre></td></tr><tr><td class="code"><pre><span class="line">Release:                        发布序列号，具体命令需跟源包一致</span></pre></td></tr><tr><td class="code"><pre><span class="line">Group:                          软件分组，建议使用标准分组</span></pre></td></tr></table></figure>
+<h3 id="软件包所属类别，具体类别有："><a href="#软件包所属类别，具体类别有：" class="headerlink" title="软件包所属类别，具体类别有："></a>软件包所属类别，具体类别有：</h3><p>Amusements/Games                                （娱乐/游戏）<br>Amusements/Graphics                              （娱乐/图形）<br>Applications/Archiving                               （应用/文档）<br>Applications/Communications                 （应用/通讯）<br>Applications/Databases                              （应用/数据库）<br>Applications/Editors                                   （应用/编辑器）<br>Applications/Emulators                             （应用/仿真器）<br>Applications/Engineering                         （应用/工程）<br>Applications/File                                         （应用/文件）<br>Applications/Internet                                （应用/因特网）<br>Applications/Multimedia                          （应用/多媒体）<br>Applications/Productivity                        （应用/产品）<br>Applications/Publishing                           （应用/印刷）<br>Applications/System                                 （应用/系统）<br>Applications/Text                                      （应用/文本）<br>Development/Debuggers                         （开发/调试器）<br>Development/Languages                          （开发/语言）<br>Development/Libraries                             （开发/函数库）<br>Development/System                                 （开发/系统）<br>Development/Tools                                     （开发/工具）<br>Documentation                                           （文档）<br>System Environment/Base                        （系统环境/基础）<br>System Environment/Daemons                （系统环境/守护）<br>System Environment/Kernel                     （系统环境/内核）<br>System Environment/Libraries                （系统环境/函数库）<br>System Environment/Shells                      （系统环境/接口）<br>User Interface/Desktops                             （用户界面/桌面）<br>User Interface/X                                          （用户界面/X窗口）<br>User Interface/X Hardware Support        （用户界面/X硬件支持）</p>
+<h4 id="License-软件授权方式，通常就是GPL"><a href="#License-软件授权方式，通常就是GPL" class="headerlink" title="License: 软件授权方式，通常就是GPL"></a>License: 软件授权方式，通常就是GPL</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Source: 源代码包，可以带多个用Source1、Source2等源，后面也可以用%&#123;source1&#125;、%&#123;source2&#125;引用</span></pre></td></tr><tr><td class="code"><pre><span class="line">BuildRoot: 这个是安装或编译时使用的“虚拟目录”，考虑到多用户的环境，一般定义为：</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-root 或 %&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;version&#125;-%&#123;release&#125;-buildroot-%(%&#123;__id_u&#125; -n&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">该参数非常重要，因为在生成[rpm](https:&#x2F;&#x2F;www.fooher.com&#x2F;tag&#x2F;rpm)的过程中，执行make install时就会把软件安装到上述的路径中，在打包的时候，同样依赖“虚拟目录”为“根目录”进行操作。</span></pre></td></tr><tr><td class="code"><pre><span class="line">后面可使用$RPM_BUILD_ROOT 方式引用。</span></pre></td></tr></table></figure>
+<h4 id="URL-软件的主页"><a href="#URL-软件的主页" class="headerlink" title="URL: 软件的主页"></a>URL: 软件的主页</h4><p>Vendor: 发行商或打包组织的信息，例如RedFlag Co,Ltd<br>Disstribution: 发行版标识<br>Patch: 补丁源码，可使用Patch1、Patch2等标识多个补丁，使用%patch0或%{patch0}引用<br>Prefix: %{_prefix} 这个主要是为了解决今后安装<a href="https://www.fooher.com/tag/rpm" target="_blank" rel="noopener">rpm</a>包时，并不一定把软件安装到rpm中打包的目录的情况。这样，必须在这里定义该标识，并在编写%install脚本的时候引用，才能实现rpm安装时重新指定位置的功能<br>Prefix: %{_sysconfdir} 这个原因和上面的一样，但由于%{_prefix}指/usr，而对于其他的文件，例如/etc下的配置文件，则需要用%{_sysconfdir}标识<br>Build Arch: 指编译的目标处理器架构，noarch标识不指定，但通常都是以/usr/lib/rpm/marcros中的内容为默认值<br>Requires: 该rpm包所依赖的软件包名称，可以用&gt;=或&lt;=表示大于或小于某一特定版本，</p>
+<h4 id="spec脚本主体"><a href="#spec脚本主体" class="headerlink" title="spec脚本主体"></a>spec脚本主体</h4><p>spec脚本的主体中也包括了很多关键字和描述，下面会一一列举。我会把一些特别需要留意的地方标注出来。</p>
+<h5 id="prep-预处理脚本"><a href="#prep-预处理脚本" class="headerlink" title="%prep 预处理脚本"></a>%prep 预处理脚本</h5><p>%setup -n %{name}-%{version} 把源码包解压并放好<br>注：可根据你的源码的名字格式，来确认解压后名字的格式，否则可能导致install的时候找不到对应的目录<br>通常是从/usr/src/redhat/SOURCES里的包解压到/usr/src/redhat/BUILD/%{name}-%{version}中。<br>一般用%setup -c就可以了，但有两种情况：一就是同时编译多个源码包，二就是源码的tar包的名称与解压出来的目录不一致，此时，就需要使用-n参数指定一下了。</p>
+<h5 id="patch-打补丁"><a href="#patch-打补丁" class="headerlink" title="%patch 打补丁"></a>%patch 打补丁</h5><p>通常补丁都会一起在源码tar.gz包中，或放到SOURCES目录下。一般参数为：<br>%patch -p1 使用前面定义的Patch补丁进行，-p1是忽略patch的第一层目录<br>%Patch2 -p1 -b xxx.patch 打上指定的补丁，-b是指生成备份文件</p>
+<h5 id="◎补充一下"><a href="#◎补充一下" class="headerlink" title="◎补充一下"></a>◎补充一下</h5><p>%setup 不加任何选项，仅将软件包打开。<br>%setup -n newdir 将软件包解压在newdir目录。<br>%setup -c 解压缩之前先产生目录。<br>%setup -b num 将第num个source文件解压缩。<br>%setup -T 不使用default的解压缩操作。<br>%setup -T -b 0 将第0个源代码文件解压缩。<br>%setup -c -n newdir 指定目录名称newdir，并在此目录产生rpm套件。</p>
+<p>%patch 最简单的补丁方式，自动指定patch level。<br>%patch 0 使用第0个补丁文件，相当于%patch ?p 0。<br>%patch -s 不显示打补丁时的信息。<br>%patch -T 将所有打补丁时产生的输出文件删除。</p>
+<p> 预处理 %prep:</p>
+<p>预处理通常用来执行一些解开源程序包的命令，为下一步的编译安装做准备。<br>%prep 和下面的 %build，%install 段一样，除了可以执行 RPM 所定义的<br>宏命令（以 % 开头）以外，还可以执行 SHELL 命令，功能类似 ./configure<br>作用：<br>用来准备要编译的软件。通常，这一段落将归档中的源代码解压，并应用补丁。<br>这些可以用标准的 Shell 命令完成，但是更多地使用预定义的宏.<br>检查标签语法是否正确，删除旧的软件源程序，对包含源程序的 tar 文件进行解码。<br>如果包含补丁(patch)文件，将补丁文件应用到解开的源码中。它一般包含 %setup<br>与 %patch 两个命令。%setup 用于将软件包打开，执行 %patch 可将补丁文件加入<br>解开的源程序中.</p>
+<p>%prep<br>宏 %setup<br>该宏解开源代码，将当前目录改为源代码解压之后产生的目录。这个宏还有一些选项<br>可以使用，如，在解压后， %setup 宏假设产生的目录是 %{name}-%{version}<br>如果 tar 打包中的目录不是这样命名的，可以用 -n 选项来指定要切换到的目录。<br>如：%setup -n%{name}-April2003Rel<br>还有如下其他参数：<br>%setup -q   — 将 tar 命令的繁复输出关闭<br>%setup -nnewdir  — 将压缩的软件源程序在 newdir 目录下解开<br>%setup -c  — 在解开源程序之前先创建目录<br>%setup -bnum  — 在包含多个源程序时，将第 num 个源程序解压缩<br>%setup -T   — 不使用缺省的解压缩操作</p>
+<h5 id="files-基础"><a href="#files-基础" class="headerlink" title="%files 基础"></a>%files 基础</h5><p><code>%defattr</code> 用于设置默认文件权限，通常可以在 <code>%files</code> 的开头看到它。注意，如果不需要修改权限，则不需要使用它。其格式为：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%defattr(&lt;文件权限&gt;, &lt;用户&gt;, &lt;用户组&gt;, &lt;目录权限&gt;)</span></pre></td></tr></table></figure>
+<p>第 4 个参数通常会省略。常规用法为 <code>%defattr(-,root,root,-)</code>，其中 “<code>-</code>“ 表示默认权限。</p>
+<p>您应该列出该软件包拥有的所有文件和目录。尽量使用宏代替目录名，查看宏列表 <a href="https://fedoraproject.org/wiki/Packaging:RPMMacros" target="_blank" rel="noopener">Packaging:RPMMacros</a>（例如：使用 <code>%{_bindir}/mycommand</code> 代替 <code>/usr/bin/mycommand</code>）。如果路径以 “<code>/</code>“ 开头（或从宏扩展），则从 <code>%{buildroot}</code> 目录取用。否则，假设文件在当前目录中（例如：在 <code>%{_builddir}</code> 中，包含需要的文档）。如果您的包仅安装一个文件，如 <code>/usr/sbin/mycommand</code>，则 <code>%files</code> 部分如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_sbindir&#125;&#x2F;mycommand</span></pre></td></tr></table></figure>
+<p>若要使软件包不受上游改动的影响，可使用通配符匹配所有文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%&#123;_bindir&#125;&#x2F;*</span></pre></td></tr></table></figure>
+<p>包含一个目录：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%&#123;_datadir&#125;&#x2F;%&#123;name&#125;&#x2F;</span></pre></td></tr></table></figure>
+<p>注意，<code>%{_bindir}/*</code> 不会声明此软件包拥有 <code>/usr/bin</code> 目录，而只包含其中的文件。如果您列出一个目录，则该软件包拥有这个目录，及该目录内的所有文件和子目录。因此，<strong>不要</strong>列出 <code>%{_bindir}</code>，并且要小心的处理那些可能和其他软件包共享的目录。</p>
+<p>如果存在以下情况，可能引发错误：</p>
+<ul>
+<li>通配符未匹配到任何文件或目录</li>
+<li>文件或目录被多次列出</li>
+<li>未列出 <code>%{buildroot}</code> 下的某个文件或目录</li>
+<li>您也可以使用 <code>%exclude</code> 来排除文件。这对于使用通配符来列出全部文件时会很有用，注意如果未匹配到任何文件也会造成失败。</li>
+</ul>
+<p>您可能需要在 <code>%files</code> 部分添加一个或多个前缀；请用空格分隔。详情请查看 <a href="http://www.rpm.org/max-rpm/s1-rpm-inside-files-list-directives.html" target="_blank" rel="noopener">Max RPM section on %files directives</a>。</p>
+<p>通常，”<code>%doc</code>“ 用于列出 <code>%{_builddir}</code> 内，但未复制到 <code>%{buildroot}</code> 中的文档。通常包括 <code>README</code> 和 <code>INSTALL</code>。它们会保存至 <code>/usr/share/doc</code> 下适当的目录中，不需要声明 <code>/usr/share/doc</code> 的所有权。</p>
+<p><strong>注意：</strong> 如果指定 <code>%doc</code> 条目，rpmbuild &lt; 4.9.1 在安装前会将 %doc 目录删除。这表明已保存至其中的文档，例如，在 <code>%install</code> 中安装的文档会被删除，因此最终不会出现在软件包中。如果您想要在 <code>%install</code> 中安装一些文档，请将它们临时安装到 build 目录（不是 build root 目录）中，例如 <code>_docs_staging</code>，接着在 <code>%files</code> 中列出，如 <code>%doc _docs_staging/*</code> 这样。</p>
+<p>配置文件保存在 <code>/etc</code> 中，一般会这样指定（确保用户的修改不会在更新时被覆盖）：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%config(noreplace) %&#123;_sysconfdir&#125;&#x2F;foo.conf</span></pre></td></tr></table></figure>
+<p>如果更新的配置文件无法与之前的配置兼容，则应这样指定：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%config %&#123;_sysconfdir&#125;&#x2F;foo.conf</span></pre></td></tr></table></figure>
+<p>“<code>%attr(mode, user, group)</code>“ 用于对文件进行更精细的权限控制，”<code>-</code>“ 表示使用默认值：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%attr(0644, root, root) FOO.BAR</span></pre></td></tr></table></figure>
+<p>“<code>%caps(capabilities)</code>“ 用于为文件分配 POSIX <a href="http://linux.die.net/man/7/capabilities" target="_blank" rel="noopener">capabilities</a>。例如：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%caps(cap_net_admin&#x3D;pe) FOO.BAR</span></pre></td></tr></table></figure>
+<p>如果包含特定语言编写的文件，请使用 <code>%lang</code> 来标注：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%lang(de) %&#123;_datadir&#125;&#x2F;locale&#x2F;de&#x2F;LC_MESSAGES&#x2F;tcsh*</span></pre></td></tr></table></figure>
+<p>使用区域语言（Locale）文件的程序应遵循 <a href="https://fedoraproject.org/wiki/Packaging:Guidelines#Handling_Locale_Files" target="_blank" rel="noopener">处理 i18n 文件的建议方法</a>：</p>
+<ul>
+<li>在 <code>%install</code> 步骤中找出文件名： <code>%find_lang ${name}</code></li>
+<li>添加必要的编译依赖： <code>BuildRequires: gettext</code></li>
+<li>使用找到的文件名： <code>%files -f ${name}.lang</code></li>
+</ul>
+<p>以下前缀在 Fedora 中<strong>无效</strong>：<code>%license</code> 和 <code>%readme</code>。</p>
+<h1 id="常用的宏"><a href="#常用的宏" class="headerlink" title="常用的宏"></a>常用的宏</h1><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">RPM_BUILD_DIR:          &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;BUILD</span></pre></td></tr><tr><td class="code"><pre><span class="line">RPM_BUILD_ROOT:         &#x2F;usr&#x2F;src&#x2F;redhat&#x2F;BUILDROOT</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_sysconfdir&#125;:         &#x2F;etc</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_sbindir&#125;：           &#x2F;usr&#x2F;sbin</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_bindir&#125;:             &#x2F;usr&#x2F;bin</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_datadir&#125;:            &#x2F;usr&#x2F;share</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_mandir&#125;:             &#x2F;usr&#x2F;share&#x2F;man</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_libdir&#125;:             &#x2F;usr&#x2F;lib64</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_prefix&#125;:             &#x2F;usr</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_localstatedir&#125;:      &#x2F;usr&#x2F;var</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;_unitdir&#125;             &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th><code>%{_bindir}</code></th>
+<th><code>/usr/bin</code></th>
+<th>二进制目录：保存可执行文件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%{_builddir}</code></td>
+<td><code>~/rpmbuild/BUILD</code></td>
+<td>构建目录：软件在 build 的子目录被编译。参考 <code>%buildsubdir</code></td>
+</tr>
+<tr>
+<td><code>%{buildroot}</code></td>
+<td><code>~/rpmbuild/BUILDROOT</code></td>
+<td>Build root：<code>%install</code> 阶段中，将 <code>%{_builddir}</code> 子目录下的文件复制到 <code>%{buildroot}</code> 的子目录（之前，<code>%{buildroot}</code>使用的位置为 “/var/tmp/“）</td>
+</tr>
+<tr>
+<td><code>%{buildsubdir}</code></td>
+<td><code>%{_builddir}/%{name}</code></td>
+<td>构建子目录：<code>%build</code> 阶段中，文件会在 <code>%{_builddir}</code> 的子目录中编译。此宏在 <code>%autosetup</code> 之后设置</td>
+</tr>
+<tr>
+<td><code>%{_datadir}</code></td>
+<td><code>/usr/share</code></td>
+<td>共享数据目录</td>
+</tr>
+<tr>
+<td><code>%{_defaultdocdir}</code></td>
+<td><code>/usr/share/doc</code></td>
+<td>默认文档目录</td>
+</tr>
+<tr>
+<td><code>%{dist}</code></td>
+<td><code>.fc*NUMBER*</code></td>
+<td>发行版名称+版本号（例如 “<code>.fc30</code>“）</td>
+</tr>
+<tr>
+<td><code>%{fedora}</code></td>
+<td><code>*NUMBER*</code></td>
+<td>Fedora 发行版本号（例如 “<code>30</code>“）</td>
+</tr>
+<tr>
+<td><code>%{_includedir}</code></td>
+<td><code>/usr/include</code></td>
+<td>程序头文件目录</td>
+</tr>
+<tr>
+<td><code>%{_infodir}</code></td>
+<td><code>/usr/share/info</code></td>
+<td>info 手册目录</td>
+</tr>
+<tr>
+<td><code>%{_initrddir}</code></td>
+<td><code>/etc/rc.d/init.d</code></td>
+<td>init 脚本目录</td>
+</tr>
+<tr>
+<td><code>%{_libdir}</code></td>
+<td><code>/usr/lib</code></td>
+<td>共享库目录</td>
+</tr>
+<tr>
+<td><code>%{_libexecdir}</code></td>
+<td><code>/usr/libexec</code></td>
+<td>仅由系统调用执行该目录中的命令</td>
+</tr>
+<tr>
+<td><code>%{_localstatedir}</code></td>
+<td><code>/var</code></td>
+<td>保存缓存/日志/lock等信息的目录</td>
+</tr>
+<tr>
+<td><code>%{_mandir}</code></td>
+<td><code>/usr/share/man</code></td>
+<td>man 手册目录</td>
+</tr>
+<tr>
+<td><code>%{name}</code></td>
+<td></td>
+<td>软件包名称，通过 Name: tag 设置</td>
+</tr>
+<tr>
+<td><code>%{_sbindir}</code></td>
+<td><code>/usr/sbin</code></td>
+<td>保存管理员可执行命令</td>
+</tr>
+<tr>
+<td><code>%{_sharedstatedir}</code></td>
+<td><code>/var/lib</code></td>
+<td>保存程序运行所处理的文件</td>
+</tr>
+<tr>
+<td><code>%{_sysconfdir}</code></td>
+<td><code>/etc</code></td>
+<td>配置文件目录</td>
+</tr>
+<tr>
+<td><code>%{version}</code></td>
+<td></td>
+<td>软件包版本，通过 Version: tag 设置</td>
+</tr>
+</tbody>
+</table>
+<p>您可以查看 <code>/etc/rpm/*</code> 和 <code>/usr/lib/rpm</code>，以及 <code>/usr/lib/rpm/macros</code> 以进一步了解宏。或使用 <code>rpm --showrc</code> 显示当前 RPM 所使用的宏变量和值（根据 <code>rpmrc</code> 和宏)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">%define debug_package %&#123;nil&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">Name: webhooks</span></pre></td></tr><tr><td class="code"><pre><span class="line">Version: 0.1.1</span></pre></td></tr><tr><td class="code"><pre><span class="line">Release:	1%&#123;?dist&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">Summary: a git sync tools</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">Group:  Development&#x2F;Tools</span></pre></td></tr><tr><td class="code"><pre><span class="line">License: GPL</span></pre></td></tr><tr><td class="code"><pre><span class="line">URL: http:&#x2F;&#x2F;www.github.com&#x2F;becivells&#x2F;go-webhook</span></pre></td></tr><tr><td class="code"><pre><span class="line">Source0: %&#123;name&#125;-%&#123;version&#125;.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">Source1: webhooks.service</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">BuildRoot: %&#123;_tmppath&#125;&#x2F;%&#123;name&#125;-%&#123;main_version&#125;-%&#123;main_release&#125;-root</span></pre></td></tr><tr><td class="code"><pre><span class="line">%description</span></pre></td></tr><tr><td class="code"><pre><span class="line">a git tool for repo to webroot</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%prep</span></pre></td></tr><tr><td class="code"><pre><span class="line">%setup -q</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%build</span></pre></td></tr><tr><td class="code"><pre><span class="line">go build -o webhooks</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%install</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__rm&#125; -rf $RPM_BUILD_ROOT</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__mkdir&#125; -p $RPM_BUILD_ROOT&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__mkdir&#125; -p $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__install&#125; -m755  webhooks $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks&#x2F;webhooks</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__install&#125;  webhooks.yaml $RPM_BUILD_ROOT&#x2F;opt&#x2F;webhooks&#x2F;webhooks.yaml</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__install&#125; -m644  %SOURCE1  $RPM_BUILD_ROOT&#x2F;%&#123;_unitdir&#125;&#x2F;webhooks.service</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">%files</span></pre></td></tr><tr><td class="code"><pre><span class="line">%defattr(-,root,root,-)</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;opt&#x2F;webhooks&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">%clean</span></pre></td></tr><tr><td class="code"><pre><span class="line">%&#123;__rm&#125; -rf $RPM_BUILD_ROOT</span></pre></td></tr></table></figure>
+<p><a href="https://github.com/Becivells/linux-package" target="_blank" rel="noopener">https://github.com/Becivells/linux-package</a></p>
+<p><a href="https://www.cnblogs.com/jimodetiantang/p/9573098.html" target="_blank" rel="noopener">https://www.cnblogs.com/jimodetiantang/p/9573098.html</a></p>
+<p><a href="https://www.fooher.com/20180112_155.html" target="_blank" rel="noopener">https://www.fooher.com/20180112_155.html</a></p>
+<p><a href="https://fedoraproject.org/wiki/How_to_create_an_RPM_package/zh-cn" target="_blank" rel="noopener">https://fedoraproject.org/wiki/How_to_create_an_RPM_package/zh-cn</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>如何写好注释-转</title>
+    <url>/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/</url>
+    <content><![CDATA[<h1 id="如何写好注释-转"><a href="#如何写好注释-转" class="headerlink" title="如何写好注释-转"></a>如何写好注释-转</h1><p>许多人认为，如果代码写得足够扎实，注释就没什么用了。在他们看来，当一切都设计妥当时，代码本身会记录其作用，因此代码注释是多余的。我对此持不同意见，主要出于两个原因：</p>
+<ol>
+<li>许多注释并未起到解释代码的作用。 </li>
+</ol>
+<ol start="2">
+<li>注释使读者不必凭空想象太多细枝末节，帮助读者降低认知负担。</li>
+</ol>
+<h2 id="注释的分类"><a href="#注释的分类" class="headerlink" title="注释的分类"></a>注释的分类</h2><p>我的工作始于随机地阅读Redis源代码，以检查注释是否以及为什么在不同的上下文中起作用。我很快发现，注释的作用来源于多方面：它们在功能，编程风格，长度和更新频率方面往往非常不同。我最终转向了注释分类。</p>
+<p>在研究期间，我确定了九种注释类别：</p>
+<ul>
+<li><p><strong>函数注释</strong> Function comments</p>
+</li>
+<li><p><strong>设计注释</strong> Design comments </p>
+</li>
+<li><p><strong>原因注释</strong> Why comments </p>
+</li>
+<li><p><strong>教学注释</strong> Teacher comments </p>
+</li>
+<li><p><strong>清单注释</strong> Checklist comments </p>
+</li>
+<li><p><strong>引导注释</strong>  Guide comments</p>
+</li>
+<li><p><strong>琐碎注释</strong> Trivial comments</p>
+</li>
+<li><p><strong>（代码）负债注释</strong> Debt comments</p>
+</li>
+<li><p><strong>备份注释</strong> Backup comments</p>
+</li>
+</ul>
+<p>在我看来，前六个主要是非常积极的注释形式，而最后三个有点值得怀疑。在接下来的部分中，我将使用Redis源代码中的示例分析每种注释类型。</p>
+<h3 id="函数注释"><a href="#函数注释" class="headerlink" title="函数注释"></a>函数注释</h3><p>函数注释的目标是防止读者直接阅读代码。</p>
+<p>在阅读注释之后，读者应该可以将一些代码视为应遵守某些规则的黑箱子。通常情况下，函数注释位于函数定义的顶部。</p>
+<p><code>rax.c</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F; * 在当前节点的子树中寻找最大的key。</span></pre></td></tr><tr><td class="code"><pre><span class="line">    如果内存不足返回0，否则 返回1. * &#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">int raxSeekGreatest（raxIterator * it）&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ...</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>函数注释实际上是一种内联API文档。如果函数注释编写得好，那么用户在大多数时候能跳回到她正在阅读的内容（如阅读调用此类API的代码），而无需阅读函数（function），类（class），宏（macro）等的实现过程。</p>
+<p>在所有注释类型中，函数注释被整个编程界广泛接受和需要。要分析的唯一一点是：在代码内部放置以API参考文档为主的注释是否是件好事。</p>
+<p>对我来说答案很简单：我希望API文档与代码完全匹配。随着代码的更改，文档也得到更改。出于这个原因，我们将函数注释用作函数或其他元素的序言，使API文档接近代码，完成三个任务：</p>
+<ul>
+<li><p>随着代码的更改，我们可以轻松更改文档，API参考也不会有过时的风险。</p>
+</li>
+<li><p>这种方法使得更改者（理应是最清楚更改目的的人）在最大限度上成为API文档的更改者。</p>
+</li>
+<li><p>读者能通过阅读代码直接找到函数或方法（method）的文档，以便阅读代码的读者只关注代码，而不是代码和文档之间的上下文切换。</p>
+</li>
+</ul>
+<h3 id="设计注释"><a href="#设计注释" class="headerlink" title="设计注释"></a>设计注释</h3><p>“函数注释”通常位于函数的开头，而设计注释通常位于文件的开头。</p>
+<p>设计注释一般说明了给定代码片段使用某些算法、技术、技巧和具体实现的方式和原因，对代码中实现的内容进行了更高级别的概述。在这样的背景下，阅读代码会更简单一些。</p>
+<p><code>bio.c</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">*设计</span></pre></td></tr><tr><td class="code"><pre><span class="line">* ------</span></pre></td></tr><tr><td class="code"><pre><span class="line">*</span></pre></td></tr><tr><td class="code"><pre><span class="line">*设计很简单，我们用一个结构代表要执行的一项 Job</span></pre></td></tr><tr><td class="code"><pre><span class="line">*每种Job类型有不同的线程和Job队列。</span></pre></td></tr><tr><td class="code"><pre><span class="line">*每个线程都在等待队列中的新Job，并按照顺序处理</span></pre></td></tr><tr><td class="code"><pre><span class="line">*每个Job。</span></pre></td></tr><tr><td class="code"><pre><span class="line"> ...</span></pre></td></tr></table></figure>
+<h3 id="原因注释"><a href="#原因注释" class="headerlink" title="原因注释"></a>原因注释</h3><p>原因注释解释了代码执行某些操作的原因——即使代码执行的操作非常明确。请看以下来自Redis replication的代码 的示例。</p>
+<p><code>replication.c</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if（idle&gt; server.repl_backlog_time_limit）&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;* 当我们释放 backlog时，我们总是使用新的</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * replication ID并清除ID2。这是</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 因为在没有backlog时，master_repl_offset</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 未更新，但我们仍会保留我们的</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * replication ID，由此导致以下问题：</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 1.我们是一个主实例（master instance）。</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 2.我们的副本成为主服务器（Master）。repl-id-2将会</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *   与我们的repl-id相同。</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 3.我们作为主服务器，收到了一些更新命令，但不会</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *   增加master_repl_offset。</span></pre></td></tr><tr><td class="code"><pre><span class="line"> * 4.稍后我们将变成副本，连接到新的</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *   主服务器，它将接受我们第二个副本ID的</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *   PSYNC请求，但会有数据不一致的情况</span></pre></td></tr><tr><td class="code"><pre><span class="line"> *   因为我们接受了写命令。* &#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">changeReplicationId（）;</span></pre></td></tr><tr><td class="code"><pre><span class="line">clearReplicationId2（）;</span></pre></td></tr><tr><td class="code"><pre><span class="line">freeReplicationBacklog（）;</span></pre></td></tr><tr><td class="code"><pre><span class="line">serverLog(LL_NOTICE,</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &quot;Replication backlog freed after %d seconds &quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    &quot;without connected replicas.&quot;,</span></pre></td></tr><tr><td class="code"><pre><span class="line">    (int) server.repl_backlog_time_limit);</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>如果我只检查函数调用，就没什么需要纠结的：如果超时了就更改主replication ID，清除辅助ID，最后释放replication backlog。</p>
+<h3 id="教学注释"><a href="#教学注释" class="headerlink" title="教学注释"></a>教学注释</h3><p>教学注释不会试图解释代码本身或我们应该注意的某些副作用。教学注释教授的是代码运行的“领域”（例如数学，计算机图形学，网络系统，统计，复杂的数据结构等），这些信息可能超出了读者的认知范围，或者细节多到难以回忆。</p>
+<p>版本5中的LOLWUT命令需要在屏幕上显示旋转的方块。为了做到这一点，它使用了一些基本的三角函数：尽管涉及的数学内容很简单，但许多阅读Redis源代码的程序员可能没有任何数学背景知识，因此函数顶部的注释解释了该函数的原理。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 绘制一个以指定的x，y坐标为中心的正方形</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 旋转角度和大小已定。为了写出旋转方块的代码，我们使用了</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 参数方程：</span></pre></td></tr><tr><td class="code"><pre><span class="line">*</span></pre></td></tr><tr><td class="code"><pre><span class="line">* x &#x3D; sin（k）</span></pre></td></tr><tr><td class="code"><pre><span class="line">* y &#x3D; cos（k）</span></pre></td></tr><tr><td class="code"><pre><span class="line">*</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 绘制一个圆（0-2*PI）。然后，如果我们从45度</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 开始，即k &#x3D; PI &#x2F; 4，以此作为第一个点，然后我们发现</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 其他三个点的K值以PI &#x2F; 2（90度）递增，于是我们得到</span></pre></td></tr><tr><td class="code"><pre><span class="line">* 了构成一个圆的点。为了旋转方块，我们从</span></pre></td></tr><tr><td class="code"><pre><span class="line">* k &#x3D; PI &#x2F; 4 + rotation_angle开始，然后我们就完事儿了。</span></pre></td></tr><tr><td class="code"><pre><span class="line">* ......</span></pre></td></tr><tr><td class="code"><pre><span class="line">* &#x2F;</span></pre></td></tr></table></figure>
+<p>注释不包含任何与函数本身的代码，或其副作用，或与函数相关的技术细节等内容。注释描述的部分仅限于函数内部使用以达到给定目标的数学概念。</p>
+<h3 id="清单注释"><a href="#清单注释" class="headerlink" title="清单注释"></a>清单注释</h3><p>这是一个非常常见且奇怪的问题：有时由于语言限制，设计问题，或者仅仅因为系统内部固有的复杂性，我们无法将某个概念或界面集中在一个代码片段中，因此代码中有一些部分能提醒你在代码的某个部分做某件事。一般概念是：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F; * 警告：如果你在此处添加类型ID，请务必修改</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">   \* getTypeNameByID（）函数。* &#x2F;</span></pre></td></tr></table></figure>
+<p>在一个完美世界中，我们永远不需要添加这类注释；但在实践中有时没法省略这一步。</p>
+<p>在这种情况下，防御性注释有时能起作用：如果你修改了某节代码，它会提醒你修改代码的其他相关部分。具体而言，清单注释会发挥以下一种作用（或者两种兼而有之）：</p>
+<ul>
+<li><p>告诉你在修改某些内容时要执行的一系列操作。</p>
+</li>
+<li><p>警告你应该如何进行某些更改。</p>
+</li>
+</ul>
+<h3 id="引导注释"><a href="#引导注释" class="headerlink" title="引导注释"></a>引导注释</h3><p>我滥用引导注释到这种程度：Redis中的大多数注释都是引导注释。然而，引导注释正是大多数人认知中那类完全无用的注释：</p>
+<ul>
+<li>他们没有说明代码中不甚明了的内容。</li>
+</ul>
+<ul>
+<li>指导注释不提供有关设计方面的提示。</li>
+</ul>
+<p>引导注释只做了一件事：他们照顾了读者的需求，在读者处理源代码中的内容时提供明确的划分（division）和节奏（rhythm），并介绍接下来需要阅读的内容。</p>
+<p>rax.c</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F; *调用节点回调（如果有的话），如果回调返回true</span></pre></td></tr><tr><td class="code"><pre><span class="line">  *则替换节点指标* &#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">if (it-&gt;node_cb &amp;&amp; it-&gt;node_cb(&amp;it-&gt;node))</span></pre></td></tr><tr><td class="code"><pre><span class="line">    memcpy(cp,&amp;it-&gt;node,sizeof(it-&gt;node));</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;*对于“下一步”，每次找到一个键就停止</span></pre></td></tr><tr><td class="code"><pre><span class="line">*一次，因为相比较后面子节点分支中的内容</span></pre></td></tr><tr><td class="code"><pre><span class="line">*键本身字典序较小。* &#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">if (it-&gt;node-&gt;iskey) &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    it-&gt;data &#x3D; raxGetData(it-&gt;node);</span></pre></td></tr><tr><td class="code"><pre><span class="line">    return 1;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>Redis内“实际上”充满了引导注释，所以基本上你打开的每个文件都会包含很多引导注释。为什么要费这个力气呢？在这篇博客文章中所分析的所有注释类型中，这绝对是最主观的一种。我并不觉得没有引导注释的代码就不是好代码。但我坚信，如果人们认为Redis代码是可读的，部分原因就在于其中的引导注释。</p>
+<p>引导注释还有一些别的用处。因为它们明确地将代码划分为独立的部分，所以我们能在合适的位置插入新代码，而不是随便加在其他代码后面。在代码附近设置相关语句能大大提高可读性。</p>
+<p>引导注释能简要地告诉读者函数将要执行什么操作，所以如果你只对大框架感兴趣，则无需回过头去阅读函数。</p>
+<h3 id="琐碎注释"><a href="#琐碎注释" class="headerlink" title="琐碎注释"></a>琐碎注释</h3><p>引导注释是非常主观的工具。不管你喜不喜欢，我反正超爱引导注释。</p>
+<p>然而，引导注释可能会退化为极其糟糕的注释：它很容易变成“琐碎注释”（trivial comment）。</p>
+<p>琐碎注释这种引导注释所带来的认知负荷和仅阅读相关代码比起来相差无几，甚至可能更高。以下这种琐碎注释正是许多书籍规劝你避免的。</p>
+<p>array_len ++; / <em>增加数组的长度。</em> /</p>
+<p>因此，如果你写引导注释的话，请避免写琐碎注释。</p>
+<p>###（代码）负债注释</p>
+<p>负债注释是源代码内部硬编码的技术债务语句：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">entries -&#x3D; to_delete;</span></pre></td></tr><tr><td class="code"><pre><span class="line">marked_deleted +&#x3D; to_delete;</span></pre></td></tr><tr><td class="code"><pre><span class="line">if (entries + marked_deleted &gt; 10 &amp;&amp; marked_deleted &gt; entries&#x2F;2) &#123;    </span></pre></td></tr><tr><td class="code"><pre><span class="line">  &#x2F; * TODO：执行垃圾收集操作。* &#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>FIXME，TODO，XXX，“这是一个黑客”，这些都是负债注释。总的来说这些注释不算好，我试图避免使用它们，但看起来不太可能。有时候，比起永远忘记一个问题，我更喜欢在源代码中放置一个节点。程序员至少应该定期查看这些注释，看看是否可以能改进一下表述，或者这些问题是否已不再相关或可以立即解决。</p>
+<h3 id="备份注释"><a href="#备份注释" class="headerlink" title="备份注释"></a>备份注释</h3><p>备份注释是开发人员对某些代码块的旧版本甚至是整个函数做出的注释，因为他/她对新版本中运行的更改放不下心。令人费解的是，现在有了Git，人们却还在使用这类注释。我想人们对于丢失代码片段有一种不安全感，过去提交代码时，使用备份注释会显得更加理智可靠。</p>
+<p>但源代码并不是用来备份的。如果你需要保存旧版本的函数或代码，说明你的工作尚未完成，也无法提交。要么确保新函数比过去的更好，要么只在开发树（development tree）中使用它，直到你确定为止。</p>
+<p>备份注释是我分类中的最后一项。我们来做个总结。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>注释是和未来的代码读者聊天，读者们还能在Twitter上评价你的注释。所以在这个过程中，你真心地在审视自己所注释的内容是否“能让人接受”，看自己写得是否足够体面、足够好。如果不是，你就勤勤恳恳地再做一遍，拿出更好的注释来。</p>
+<p>你可能认为编写注释不是个高端工作。毕竟你“会写代码”！但请考虑这一点：代码是一组语句和函数调用（或者你做的其他编程范例也一样）。如果代码写得不好，这些语句就没有多大意义。注释常常要求你进行一些设计过程，并从更深层次来理解你正在编写的代码。</p>
+<p>最重要的是，为了写出好的注释，你必须培养自己的写作能力。这种写作技巧能帮你更好地编写电子邮件、文案、设计文档、博客文章和提交文件。</p>
+<p>我写代码是因为我迫切想要与他人沟通交流、分享想法。注释能够为代码提供帮助，把作者的心血表现出来。说到底，我喜欢写注释，就像我喜欢写代码一样。</p>
+]]></content>
+      <categories>
+        <category>language</category>
+      </categories>
+      <tags>
+        <tag>language</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux 编译软件常见问题解析</title>
+    <url>/2020/05/Linux_gcc_configure/</url>
+    <content><![CDATA[<h1 id="Linux-编译软件常见问题解析"><a href="#Linux-编译软件常见问题解析" class="headerlink" title="Linux 编译软件常见问题解析"></a>Linux 编译软件常见问题解析</h1><p>在Linux下编译软件经常碰到各种问题。问题就那么集中。没有动态链接库或者头文件、找不到动态链接库或者头文件或者依赖冲突。下面我介绍一下如何解决此类问题</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><ol>
+<li><p><code>ldconfig</code></p>
+<p>​        主要是在默认搜寻目录/lib和/usr/lib以及动态库配置文件/etc/ld.so.conf内所列的目录下，搜索出可共享的动态链接库（格式如lib<em>.so</em>）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件，缓存文件默认为/etc/ld.so.cache，此文件保存已排好序的动态链接库名字列表。linux下的共享库机制采用了类似高速缓存机制，将库信息保存在/etc/ld.so.cache，程序连接的时候首先从这个文件里查找，然后再到ld.so.conf的路径中查找。为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在/sbin目录下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v或–verbose:ldconfig将显示正在扫描的目录及搜索到的动态链接库,还有它所创建的连接的名字</span></pre></td></tr><tr><td class="code"><pre><span class="line">-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为&#x2F;etc&#x2F;ld.so.conf</span></pre></td></tr><tr><td class="code"><pre><span class="line">-p或–print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。</span></pre></td></tr><tr><td class="code"><pre><span class="line">-V：此选项打印出ldconfig的版本信息，而后退出。</span></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>最常用的命令是 <code>ldconfig</code>  重建缓存文件</p>
+<p><code>ldconfig -p|grep xxx</code>  查找依赖库</p>
+<ol start="2">
+<li><p><code>ldd</code></p>
+<p>ldd是list, dynamic, dependencies的缩写， 意思是列出动态库依赖关系</p>
+</li>
+</ol>
+<h3 id="动态链接库的选择顺序"><a href="#动态链接库的选择顺序" class="headerlink" title="动态链接库的选择顺序"></a>动态链接库的选择顺序</h3><p>编译程序时用到动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时参数-L指定的路径</p>
+</li>
+<li><p>环境变量 LIBRARY_PATH</p>
+</li>
+<li><p>系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<p>运行程序时需要动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时指定的运行时库路径 -Wl,-rpath</p>
+</li>
+<li><p>环境变量 LD_LIBRARY_PATH</p>
+</li>
+<li><p>ldconfig 缓存 /etc/ld.so.cache</p>
+<p>4  系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<h3 id="LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别"><a href="#LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别" class="headerlink" title="LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别"></a>LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别</h3><p>LIBRARY_PATH和LD_LIBRARY_PATH是Linux下的两个环境变量，二者的含义和作用分别如下：</p>
+<p>LIBRARY_PATH环境变量用于在<strong><em>程序编译期间</em></strong>查找动态链接库时指定查找共享库的路径，例如，指定gcc编译需要用到的动态链接库的目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>LD_LIBRARY_PATH环境变量用于在<strong><em>程序加载运行期间</em></strong>查找动态链接库时指定除了系统默认路径之外的其他路径，注意，LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找。设置方法如下（其中，LIBDIR1和LIBDIR2为两个库目录）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>开发时，设置LIBRARY_PATH，以便gcc能够找到编译时需要的动态链接库。</p>
+<p>发布时，设置LD_LIBRARY_PATH，以便程序加载运行时能够自动找到需要的动态链接库。</p>
+<p>长期使用LD_LIBRARY_PATH</p>
+<ol>
+<li><p>在~/目录下打开.bash_profile文件，设置环境变量如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LD_LIBRARY_PATH&#x3D;dir：$LD_LIBRARY_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+</li>
+<li><p><code>/etc/ld.so.conf</code></p>
+</li>
+</ol>
+<h3 id="链接选项-I-l-L-Wl-rpath"><a href="#链接选项-I-l-L-Wl-rpath" class="headerlink" title="链接选项-I,-l,-L,-Wl:rpath"></a>链接选项-I,-l,-L,-Wl:rpath</h3><p>-I,添加包含路径</p>
+<p>-I 在编译时用，告诉编译器去哪个路径下找文件</p>
+<p>如：-I /home/hello/include</p>
+<p>表示将/home/hello/include目录作为第一个寻找头文件的目录。</p>
+<p>编译器的寻找顺序是：/home/hello/include–&gt;/usr/include–&gt;/usr/local/include。如果在/home/hello/include中有个文件hello.h，则在程序中用#include&lt;hello.h&gt;就能引用到这个文件。</p>
+<p>可以加多个包含路径，编译器的寻找顺序为添加的顺序。</p>
+<p>-l,添加引用链接库</p>
+<p>-l 在链接时用到，它的作用是告诉链接器，要用到哪个库。<br>如：-l pthread</p>
+<p>告诉链接器(linker)，程序需要链接pthread这个库,这里的pthread是库名不是文件名，具体来说文件句是libpthread.so。</p>
+<p>-L,添加链接库路径<br>-L 后跟路径，告诉链接器从哪找库(.so文件)，只有在链接时会用到。</p>
+<p>如：-L /home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为第一个寻找库文件的目录，寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<p>可以加多个包含路径，链接器的寻找顺序为添加的顺序。</p>
+<p>-Wl:rpath,添加运行时库路径</p>
+<p>-Wl:rpath 后面也是路径，运行的时候用。这条编译指令会在编译时记录到target文件中，所以编译之后的target文件在执行时会按这里给出的路径去找库文件。</p>
+<p>如：-Wl:rpath=/home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为程序运行时第一个寻找库文件的目录，程序寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<h1 id="链接选项和路径"><a href="#链接选项和路径" class="headerlink" title="链接选项和路径"></a>链接选项和路径</h1><p>现代连接器在处理动态库时将链接时路径（Link-time path）和运行时路径（Run-time path）分开,用户可以通过-L指定连接时库的路径，通过-R（或-rpath）指定程序运行时库的路径，大大提高了库应用的灵活性。比如我们做嵌入式移植时#arm-linux-gcc $(CFLAGS) –o target –L/work/lib/zlib/ -llibz-1.2.3 (work/lib/zlib下是交叉编译好的zlib库)，将target编译好后我们只要把zlib库拷贝到开发板的系统默认路径下即可。或者通过-rpath（或-R ）、LD_LIBRARY_PATH指定查找路径。</p>
+<p>链接器ld的选项有 -L，-rpath 和 -rpath-link，看了下 man ld，大致是这个意思：</p>
+<p>-L: “链接”的时候，去找的目录，也就是所有的 -lFOO 选项里的库，都会先从 -L 指定的目录去找，然后是默认的地方。编译时的-L选项并不影响环境变量LD_LIBRARY_PATH，-L只是指定了程序编译连接时库的路径，并不影响程序执行时库的路径，系统还是会到默认路径下查找该程序所需要的库，如果找不到，还是会报错，类似cannot open shared object file。</p>
+<p>-rpath-link：这个也是用于“链接”的时候的，例如你显示指定的需要 FOO.so，但是 FOO.so 本身是需要 BAR.so 的，后者你并没有指定，而是 FOO.so 引用到它，这个时候，会先从 -rpath-link 给的路径里找。</p>
+<p>-rpath: “运行”的时候，去找的目录。运行的时候，要找 .so 文件，会从这个选项里指定的地方去找。对于交叉编译，交叉编译链接器需已经配置 –with-sysroot 选项才能起作用。也就是说，-rpath指定的路径会被记录在生成的可执行程序中，用于运行时查找需要加载的动态库。-rpath-link 则只用于链接时查找。</p>
+<h1 id="gcc和链接选项的使用"><a href="#gcc和链接选项的使用" class="headerlink" title="gcc和链接选项的使用"></a>gcc和链接选项的使用</h1><p>-Wl选项告诉编译器将后面的参数传递给链接器</p>
+<p>在gcc中使用ld链接选项时，需要在选项前面加上前缀-Wl(是字母l，不是1），以区别不是编译器的选项。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://github.com/Becivells/linux-compile" target="_blank" rel="noopener">https://github.com/Becivells/linux-compile</a><br><a href="https://blog.csdn.net/byxdaz/article/details/89405588" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/89405588</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vulfocus install</title>
     <url>/2020/04/vulfocus_install/</url>
     <content><![CDATA[<h1 id="生产环境下的-Vulfocus-安装"><a href="#生产环境下的-Vulfocus-安装" class="headerlink" title="生产环境下的 Vulfocus 安装"></a>生产环境下的 Vulfocus 安装</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><h3 id="安装需要的软件和开发环境"><a href="#安装需要的软件和开发环境" class="headerlink" title="安装需要的软件和开发环境"></a>安装需要的软件和开发环境</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install epel-release</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum install gcc -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum install  nginx supervisor net-tools wget git -y</span></pre></td></tr></table></figure>
@@ -42,32 +424,13 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[program:vulfocus]</span></pre></td></tr><tr><td class="code"><pre><span class="line">directory&#x3D;&#x2F;data&#x2F;venv_py</span></pre></td></tr><tr><td class="code"><pre><span class="line">command&#x3D;&#x2F;data&#x2F;venv_py&#x2F;bin&#x2F;uwsgi --ini &#x2F;data&#x2F;etc&#x2F;vulfocus_uwsgi.ini</span></pre></td></tr><tr><td class="code"><pre><span class="line">numprocs&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">user&#x3D;nginx</span></pre></td></tr><tr><td class="code"><pre><span class="line">startretries&#x3D;3</span></pre></td></tr><tr><td class="code"><pre><span class="line">startsecs&#x3D;5</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart&#x3D;true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart&#x3D;true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stopsignal&#x3D;INT</span></pre></td></tr><tr><td class="code"><pre><span class="line">stopasgroup&#x3D;true</span></pre></td></tr><tr><td class="code"><pre><span class="line">killasgroup&#x3D;true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr&#x3D;true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile&#x3D;&#x2F;data&#x2F;log&#x2F;vulfoucs_uwsgi.log</span></pre></td></tr></table></figure>
 <h2 id="权限以及自启"><a href="#权限以及自启" class="headerlink" title="权限以及自启"></a>权限以及自启</h2><p><code>chown -R nginx. /data</code></p>
 <h3 id="开机自启动"><a href="#开机自启动" class="headerlink" title="开机自启动"></a>开机自启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable nginx</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl enable supervisord</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl enable docker</span></pre></td></tr></table></figure>
-<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start supervisord</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl start nginx</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl start docker</span></pre></td></tr></table></figure>]]></content>
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl start supervisord</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl start nginx</span></pre></td></tr><tr><td class="code"><pre><span class="line">systemctl start docker</span></pre></td></tr></table></figure>
+]]></content>
       <categories>
         <category>install</category>
       </categories>
       <tags>
         <tag>install</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>https 自签发证书问题</title>
-    <url>/2020/03/http-ssl/</url>
-    <content><![CDATA[<h1 id="自签发SSL证书问题"><a href="#自签发SSL证书问题" class="headerlink" title="自签发SSL证书问题"></a>自签发SSL证书问题</h1><h2 id="1-导入申请的证书（最终解决方法）"><a href="#1-导入申请的证书（最终解决方法）" class="headerlink" title="1. 导入申请的证书（最终解决方法）"></a>1. 导入申请的证书（最终解决方法）</h2><p>这种方式就如同我们访问百度一样不会出现<code>此服务器无法证明它是10.10.60.180；其安全证书来自www.xxx.net。出现此问题的原因可能是配置有误或您的连接被拦截了</code> 这种错误</p>
-<p>替换证书</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost 0.0.0.0:443&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">     DocumentRoot &quot;&#x2F;var&#x2F;www&#x2F;html&quot; </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #填写证书名称</span></pre></td></tr><tr><td class="code"><pre><span class="line">     ServerName www.xxx.net </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #启用 SSL 功能</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLEngine on </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;2_www.xxx.net.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #私钥文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateKeyFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;3_www.xxx.net.key </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书链文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateChainFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;1_root_bundle.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;VirtualHost&gt;</span></pre></td></tr></table></figure>
-<h2 id="2-safari访问"><a href="#2-safari访问" class="headerlink" title="2.safari访问"></a>2.safari访问</h2><p>证书错误。点击访问此网站输入密码即可，如果这样也报错请在钥匙串中删除登录证书重试</p>
-<h2 id="3-Chrome-浏览器访问"><a href="#3-Chrome-浏览器访问" class="headerlink" title="3. Chrome 浏览器访问"></a>3. Chrome 浏览器访问</h2><p>证书错误,这种问题只出现在chrome访问自签发证书以后再替换证书</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10.10.60.180 通常会使用加密技术来保护您的信息。Google Chrome 此次尝试连接到 10.10.60.180 时，此网站发回了异常的错误凭据。这可能是因为有攻击者在试图冒充 10.10.60.180，或 Wi-Fi 登录屏幕中断了此次连接。请放心，您的信息仍然是安全的，因为 Google Chrome 尚未进行任何数据交换便停止了连接。</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">您目前无法访问 10.10.60.180，因为此网站发送了 Google Chrome 无法处理的杂乱凭据。网络错误和攻击通常是暂时的，因此，此网页稍后可能会恢复正常。</span></pre></td></tr></table></figure>
-<p>原因：自签发证书替换以后浏览器认为这个网站不是以前的网站误认为是中间人攻击</p>
-<p>解决方法在报错页面输入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">thisisunsafe</span></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>问题</category>
-      </categories>
-      <tags>
-        <tag>https</tag>
       </tags>
   </entry>
   <entry>
@@ -121,64 +484,23 @@
       </tags>
   </entry>
   <entry>
-    <title>Guacame 安装</title>
-    <url>/2020/03/suse-guacame/</url>
-    <content><![CDATA[<h1 id="OpenSuse-安装-guacamole"><a href="#OpenSuse-安装-guacamole" class="headerlink" title="OpenSuse  安装 guacamole"></a>OpenSuse  安装 guacamole</h1><h2 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h2><h3 id="1-1-添加zypper源"><a href="#1-1-添加zypper源" class="headerlink" title="1.1 添加zypper源"></a>1.1 添加zypper源</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD1&#x2F; isoSDK</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar  http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD2&#x2F; iosSDKsrc</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD1&#x2F; iosDVD</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD2&#x2F; iosDVDsrc</span></pre></td></tr></table></figure>
-<h3 id="1-2-安装编译环境"><a href="#1-2-安装编译环境" class="headerlink" title="1.2 安装编译环境"></a>1.2 安装编译环境</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install cmake</span></pre></td></tr></table></figure>
-<h3 id="1-3-安装依赖"><a href="#1-3-安装依赖" class="headerlink" title="1.3 安装依赖"></a>1.3 安装依赖</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install cairo-devel libjpeg-devel libpng-devel uuid-devel pango-devel libssh2-devel  libvncserver-devel  libossp-uuid16  libpulse-devel  libvorbis-devel  libopenssl-devel xorg-x11-libSM-devel  pulseaudio-module-x11  pulseaudio-utils cups-devel libgsm-devel alsa-devel zlib-devel xmlto</span></pre></td></tr></table></figure>
-<h3 id="1-4-可选"><a href="#1-4-可选" class="headerlink" title="1.4 可选"></a>1.4 可选</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alias zp&#x3D;&quot;zypper&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">alias zpi&#x3D;&quot;zypper install&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">alias zpy&#x3D;&quot;zypper install -y&quot;</span></pre></td></tr></table></figure>
-<h2 id="2-安装-FFmpeg-n3-2-14"><a href="#2-安装-FFmpeg-n3-2-14" class="headerlink" title="2. 安装 FFmpeg-n3.2.14"></a>2. 安装 FFmpeg-n3.2.14</h2><h3 id="2-1-安装依赖git"><a href="#2-1-安装依赖git" class="headerlink" title="2.1 安装依赖git"></a>2.1 安装依赖<code>git</code></h3><p>####2.1.1 下载<code>git</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;git&#x2F;git-2.9.5.tar.gz</span></pre></td></tr></table></figure>
-<p>####2.1.2 编译安装<code>git</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<h3 id="2-2-安装yasm"><a href="#2-2-安装yasm" class="headerlink" title="2.2 安装yasm"></a>2.2 安装yasm</h3><h4 id="2-2-1-下载"><a href="#2-2-1-下载" class="headerlink" title="2.2.1 下载"></a>2.2.1 下载</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;asm&#x2F;yasm-1.3.0.tar.gz</span></pre></td></tr></table></figure>
-<h4 id="2-2-2-编译"><a href="#2-2-2-编译" class="headerlink" title="2.2.2 编译"></a>2.2.2 编译</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<h3 id="2-3-安装FFmpeg"><a href="#2-3-安装FFmpeg" class="headerlink" title="2.3 安装FFmpeg"></a>2.3 安装<code>FFmpeg</code></h3><p>####2.3.1 下载<code>FFmpeg</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;FFmpeg&#x2F;FFmpeg-n3.2.14.tar.gz</span></pre></td></tr></table></figure>
-<p>####2.3.2 编译安装<code>FFmpeg</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<p>##3 安装FreeRDP</p>
-<h3 id="3-1-下载FreeRDP"><a href="#3-1-下载FreeRDP" class="headerlink" title="3.1 下载FreeRDP"></a>3.1 下载FreeRDP</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;FreeRDP&#x2F;FreeRDP-1.0.2.tar.gz</span></pre></td></tr></table></figure>
-<h3 id="3-2-编译安装FreeRDP"><a href="#3-2-编译安装FreeRDP" class="headerlink" title="3.2 编译安装FreeRDP"></a>3.2 编译安装FreeRDP</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;pkg_check_modules(ALSA alsa)&quot; &gt; cmake&#x2F;FindALSA.cmake</span></pre></td></tr><tr><td class="code"><pre><span class="line">cmake -DCHANNEL_URBDRC&#x3D;ON -DWITH_FFMPEG&#x3D;OFF -DWITH_CUPS&#x3D;ON -DWITH_PULSE&#x3D;ON  -DWITH_GSM&#x3D;ON -DCMAKE_INSTALL_PREFIX&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F; .</span></pre></td></tr><tr><td class="code"><pre><span class="line">make</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<h3 id="3-3-FreeRDP-增加到ld"><a href="#3-3-FreeRDP-增加到ld" class="headerlink" title="3.3 FreeRDP 增加到ld"></a>3.3 FreeRDP 增加到ld</h3><p><code>vim /etc/ld.so.conf.d/FreeRDPx64.conf</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
-<h2 id="4-安装-guacamole"><a href="#4-安装-guacamole" class="headerlink" title="4   安装 guacamole"></a>4   安装 guacamole</h2><h3 id="4-1-安装-libwebp"><a href="#4-1-安装-libwebp" class="headerlink" title="4.1 安装 libwebp"></a>4.1 安装 libwebp</h3><h4 id="4-1-1-下载"><a href="#4-1-1-下载" class="headerlink" title="4.1.1 下载"></a>4.1.1 下载</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libwebp-1.0.3.tar.gz</span></pre></td></tr></table></figure>
-<h4 id="4-1-2-安装"><a href="#4-1-2-安装" class="headerlink" title="4.1.2 安装"></a>4.1.2 安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<h3 id="4-2-安装uuid-devel"><a href="#4-2-安装uuid-devel" class="headerlink" title="4.2 安装uuid-devel"></a>4.2 安装uuid-devel</h3><h4 id="4-2-1-下载依赖"><a href="#4-2-1-下载依赖" class="headerlink" title="4.2.1 下载依赖"></a>4.2.1 下载依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid%2B%2B16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libuuid-devel-2.19.1-6.29.3.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
-<h4 id="4-2-2-安装依赖"><a href="#4-2-2-安装依赖" class="headerlink" title="4.2.2 安装依赖"></a>4.2.2 安装依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install libossp-uuid++16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
-<h3 id="4-3-安装libtelnet"><a href="#4-3-安装libtelnet" class="headerlink" title="4.3 安装libtelnet"></a>4.3 安装libtelnet</h3><p>####4.3.1 下载libtelnet</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libtelnet-0.23.tar.gz</span></pre></td></tr></table></figure>
-<h4 id="4-3-2-编译安装libtelnet"><a href="#4-3-2-编译安装libtelnet" class="headerlink" title="4.3.2 编译安装libtelnet"></a>4.3.2 编译安装libtelnet</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
-<h3 id="4-4-安装libjpeg"><a href="#4-4-安装libjpeg" class="headerlink" title="4.4 安装libjpeg"></a>4.4 安装libjpeg</h3><h4 id="4-4-1-下载-libjpeg"><a href="#4-4-1-下载-libjpeg" class="headerlink" title="4.4.1 下载 libjpeg"></a>4.4.1 下载 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
-<h4 id="4-4-1-安装-libjpeg"><a href="#4-4-1-安装-libjpeg" class="headerlink" title="4.4.1 安装 libjpeg"></a>4.4.1 安装 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
-<h2 id="4-5-安装-guacamole"><a href="#4-5-安装-guacamole" class="headerlink" title="4.5 安装 guacamole"></a>4.5 安装 guacamole</h2><h4 id="2-5-5-1-下载guacamole"><a href="#2-5-5-1-下载guacamole" class="headerlink" title="2.5.5.1 下载guacamole"></a>2.5.5.1 下载guacamole</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-server-1.0.0.tar.gz</span></pre></td></tr></table></figure>
-<h4 id="2-5-5-2-安装-guacamole"><a href="#2-5-5-2-安装-guacamole" class="headerlink" title="2.5.5.2 安装 guacamole"></a>2.5.5.2 安装 guacamole</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export C_INCLUDE_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;include&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;-L&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr><tr><td class="code"><pre><span class="line"># 磁盘映射</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so</span></pre></td></tr></table></figure>
-<h2 id="5-安装-guacamole-client"><a href="#5-安装-guacamole-client" class="headerlink" title="5 安装 guacamole-client"></a>5 安装 guacamole-client</h2><h3 id="5-1-安装jdk"><a href="#5-1-安装jdk" class="headerlink" title="5.1 安装jdk"></a>5.1 安装jdk</h3><h4 id="5-1-1下载-jdk"><a href="#5-1-1下载-jdk" class="headerlink" title="5.1.1下载 jdk"></a>5.1.1下载 jdk</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;jdk-8u101-linux-x64.tar.gz</span></pre></td></tr></table></figure>
-<p>####5.1.2 安装jdk</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf jdk-8u101-linux-x64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s jdk1.8.0_101&#x2F; jdk</span></pre></td></tr></table></figure>
-<p>####5.1.3 添加环境变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk</span></pre></td></tr><tr><td class="code"><pre><span class="line">export JRE_HOME&#x3D;$&#123;JAVA_HOME&#125;&#x2F;jre</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CLASSPATH&#x3D;.:$&#123;JAVA_HOME&#125;&#x2F;lib:$&#123;JRE_HOME&#125;&#x2F;lib:$CLASSPATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export JAVA_PATH&#x3D;$&#123;JAVA_HOME&#125;&#x2F;bin:$&#123;JRE_HOME&#125;&#x2F;bin</span></pre></td></tr><tr><td class="code"><pre><span class="line">export PATH&#x3D;$PATH:$&#123;JAVA_PATH&#125;</span></pre></td></tr></table></figure>
-<h4 id="安装client"><a href="#安装client" class="headerlink" title="安装client"></a>安装client</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;java&#x2F;apache-tomcat-8.5.50&#x2F;webapps</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-1.0.0.war</span></pre></td></tr></table></figure>
-<h4 id="5-1-4-安装扩展"><a href="#5-1-4-安装扩展" class="headerlink" title="5.1.4 安装扩展"></a>5.1.4 安装扩展</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir  -p &#x2F;etc&#x2F;guacamole&#x2F;extensions</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;guacamole&#x2F;extensions&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-auth-quickconnect-1.0.0&#x2F;guacamole-auth-quickconnect-1.0.0.jar</span></pre></td></tr></table></figure>
-<h2 id="6-配置文件"><a href="#6-配置文件" class="headerlink" title="6 配置文件"></a>6 配置文件</h2><h3 id="6-1-添加guacamole-properties配置文件"><a href="#6-1-添加guacamole-properties配置文件" class="headerlink" title="6.1 添加guacamole.properties配置文件"></a>6.1 添加<code>guacamole.properties</code>配置文件</h3><p><code>vi /etc/guacamole/guacamole.properties</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">guacd-hostname: localhost</span></pre></td></tr><tr><td class="code"><pre><span class="line">guacd-port: 4822</span></pre></td></tr><tr><td class="code"><pre><span class="line">enable-clipboard-integration: true</span></pre></td></tr></table></figure>
-<h3 id="6-2-配置user-mapping-xml"><a href="#6-2-配置user-mapping-xml" class="headerlink" title="6.2 配置user-mapping.xml"></a>6.2 配置<code>user-mapping.xml</code></h3><p><code>vi /etc/guacamole/user-mapping.xml</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;user-mapping&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;authorize username&#x3D;&quot;admin&quot; password&#x3D;&quot;1&quot; &gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;connection name&#x3D;&quot;10.10.10.26&quot;&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;protocol&gt;rdp&lt;&#x2F;protocol&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;hostname&quot;&gt;10.10.10.26&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;port&quot;&gt;3389&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;username&quot;&gt;su&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;password&quot;&gt;su123456&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;resize-method&quot;&gt;display-update&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;enable-drive&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;drive-path&quot;&gt;&#x2F;tmp&#x2F;upload&#x2F;&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;ignore-cert&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;&#x2F;connection&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;connection name&#x3D;&quot;10.10.50.88&quot;&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;protocol&gt;ssh&lt;&#x2F;protocol&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;hostname&quot;&gt;10.10.50.88&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;port&quot;&gt;22&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;username&quot;&gt;su&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;password&quot;&gt;su123456&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;color-scheme&quot;&gt;white-black&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;enable-sftp&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;&#x2F;connection&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;authorize&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;user-mapping&gt;</span></pre></td></tr></table></figure>
-<p>###6.3 添加环境变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export GUACAMOLE_HOME&#x3D;&#x2F;etc&#x2F;guacamole</span></pre></td></tr><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span></pre></td></tr></table></figure>
-<h2 id="7-注意事项"><a href="#7-注意事项" class="headerlink" title="7. 注意事项"></a>7. 注意事项</h2><p>编译完成后执行<code>ldconfig</code></p>
-<p>win10以上使用需要关闭 NLA<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]</span></pre></td></tr><tr><td class="code"><pre><span class="line">Change “SecurityLayer” value to 1</span></pre></td></tr><tr><td class="code"><pre><span class="line">Verify “UserAuthentication” value is 0</span></pre></td></tr></table></figure></p>
-<h2 id="8-参考文档"><a href="#8-参考文档" class="headerlink" title="8.参考文档"></a>8.参考文档</h2><p>[1]. <a href="http://guacamole.apache.org/doc/gug/configuring-guacamole.html#rdp" target="_blank" rel="noopener">Configuring Guacamole</a></p>
-<p>[2]. <a href="https://guacamole.apache.org/doc/1.0.0/gug/installing-guacamole.html#idp123248" target="_blank" rel="noopener">Installing Guacamole natively</a></p>
-<p>[3]. <a href="https://blog.csdn.net/piaopiaopiaopiaopiao/article/details/81564029" target="_blank" rel="noopener">Linux头文件和库的搜索路径</a></p>
-<p>[4]. <a href="https://blog.csdn.net/hejinjing_tom_com/article/details/52454478" target="_blank" rel="noopener">linux动态链接库的加载顺序:</a></p>
-<p>[5]. <a href="https://www.cnblogs.com/flyinggod/p/8026567.html" target="_blank" rel="noopener">动态库的链接和链接选项-L，-rpath-link，-rpath</a></p>
+    <title>https 自签发证书问题</title>
+    <url>/2020/03/http-ssl/</url>
+    <content><![CDATA[<h1 id="自签发SSL证书问题"><a href="#自签发SSL证书问题" class="headerlink" title="自签发SSL证书问题"></a>自签发SSL证书问题</h1><h2 id="1-导入申请的证书（最终解决方法）"><a href="#1-导入申请的证书（最终解决方法）" class="headerlink" title="1. 导入申请的证书（最终解决方法）"></a>1. 导入申请的证书（最终解决方法）</h2><p>这种方式就如同我们访问百度一样不会出现<code>此服务器无法证明它是10.10.60.180；其安全证书来自www.xxx.net。出现此问题的原因可能是配置有误或您的连接被拦截了</code> 这种错误</p>
+<p>替换证书</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost 0.0.0.0:443&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">     DocumentRoot &quot;&#x2F;var&#x2F;www&#x2F;html&quot; </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #填写证书名称</span></pre></td></tr><tr><td class="code"><pre><span class="line">     ServerName www.xxx.net </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #启用 SSL 功能</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLEngine on </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;2_www.xxx.net.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #私钥文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateKeyFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;3_www.xxx.net.key </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书链文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateChainFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;1_root_bundle.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;VirtualHost&gt;</span></pre></td></tr></table></figure>
+<h2 id="2-safari访问"><a href="#2-safari访问" class="headerlink" title="2.safari访问"></a>2.safari访问</h2><p>证书错误。点击访问此网站输入密码即可，如果这样也报错请在钥匙串中删除登录证书重试</p>
+<h2 id="3-Chrome-浏览器访问"><a href="#3-Chrome-浏览器访问" class="headerlink" title="3. Chrome 浏览器访问"></a>3. Chrome 浏览器访问</h2><p>证书错误,这种问题只出现在chrome访问自签发证书以后再替换证书</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10.10.60.180 通常会使用加密技术来保护您的信息。Google Chrome 此次尝试连接到 10.10.60.180 时，此网站发回了异常的错误凭据。这可能是因为有攻击者在试图冒充 10.10.60.180，或 Wi-Fi 登录屏幕中断了此次连接。请放心，您的信息仍然是安全的，因为 Google Chrome 尚未进行任何数据交换便停止了连接。</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">您目前无法访问 10.10.60.180，因为此网站发送了 Google Chrome 无法处理的杂乱凭据。网络错误和攻击通常是暂时的，因此，此网页稍后可能会恢复正常。</span></pre></td></tr></table></figure>
+<p>原因：自签发证书替换以后浏览器认为这个网站不是以前的网站误认为是中间人攻击</p>
+<p>解决方法在报错页面输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">thisisunsafe</span></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Install</category>
+        <category>问题</category>
       </categories>
       <tags>
-        <tag>Guacame</tag>
+        <tag>https</tag>
       </tags>
   </entry>
   <entry>
@@ -254,6 +576,67 @@
       </categories>
       <tags>
         <tag>OpenSSH</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Guacame 安装</title>
+    <url>/2020/03/suse-guacame/</url>
+    <content><![CDATA[<h1 id="OpenSuse-安装-guacamole"><a href="#OpenSuse-安装-guacamole" class="headerlink" title="OpenSuse  安装 guacamole"></a>OpenSuse  安装 guacamole</h1><h2 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h2><h3 id="1-1-添加zypper源"><a href="#1-1-添加zypper源" class="headerlink" title="1.1 添加zypper源"></a>1.1 添加zypper源</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD1&#x2F; isoSDK</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar  http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD2&#x2F; iosSDKsrc</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD1&#x2F; iosDVD</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD2&#x2F; iosDVDsrc</span></pre></td></tr></table></figure>
+<h3 id="1-2-安装编译环境"><a href="#1-2-安装编译环境" class="headerlink" title="1.2 安装编译环境"></a>1.2 安装编译环境</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install cmake</span></pre></td></tr></table></figure>
+<h3 id="1-3-安装依赖"><a href="#1-3-安装依赖" class="headerlink" title="1.3 安装依赖"></a>1.3 安装依赖</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install cairo-devel libjpeg-devel libpng-devel uuid-devel pango-devel libssh2-devel  libvncserver-devel  libossp-uuid16  libpulse-devel  libvorbis-devel  libopenssl-devel xorg-x11-libSM-devel  pulseaudio-module-x11  pulseaudio-utils cups-devel libgsm-devel alsa-devel zlib-devel xmlto</span></pre></td></tr></table></figure>
+<h3 id="1-4-可选"><a href="#1-4-可选" class="headerlink" title="1.4 可选"></a>1.4 可选</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">alias zp&#x3D;&quot;zypper&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">alias zpi&#x3D;&quot;zypper install&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">alias zpy&#x3D;&quot;zypper install -y&quot;</span></pre></td></tr></table></figure>
+<h2 id="2-安装-FFmpeg-n3-2-14"><a href="#2-安装-FFmpeg-n3-2-14" class="headerlink" title="2. 安装 FFmpeg-n3.2.14"></a>2. 安装 FFmpeg-n3.2.14</h2><h3 id="2-1-安装依赖git"><a href="#2-1-安装依赖git" class="headerlink" title="2.1 安装依赖git"></a>2.1 安装依赖<code>git</code></h3><p>####2.1.1 下载<code>git</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;git&#x2F;git-2.9.5.tar.gz</span></pre></td></tr></table></figure>
+<p>####2.1.2 编译安装<code>git</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h3 id="2-2-安装yasm"><a href="#2-2-安装yasm" class="headerlink" title="2.2 安装yasm"></a>2.2 安装yasm</h3><h4 id="2-2-1-下载"><a href="#2-2-1-下载" class="headerlink" title="2.2.1 下载"></a>2.2.1 下载</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;asm&#x2F;yasm-1.3.0.tar.gz</span></pre></td></tr></table></figure>
+<h4 id="2-2-2-编译"><a href="#2-2-2-编译" class="headerlink" title="2.2.2 编译"></a>2.2.2 编译</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h3 id="2-3-安装FFmpeg"><a href="#2-3-安装FFmpeg" class="headerlink" title="2.3 安装FFmpeg"></a>2.3 安装<code>FFmpeg</code></h3><p>####2.3.1 下载<code>FFmpeg</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;FFmpeg&#x2F;FFmpeg-n3.2.14.tar.gz</span></pre></td></tr></table></figure>
+<p>####2.3.2 编译安装<code>FFmpeg</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<p>##3 安装FreeRDP</p>
+<h3 id="3-1-下载FreeRDP"><a href="#3-1-下载FreeRDP" class="headerlink" title="3.1 下载FreeRDP"></a>3.1 下载FreeRDP</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;FreeRDP&#x2F;FreeRDP-1.0.2.tar.gz</span></pre></td></tr></table></figure>
+<h3 id="3-2-编译安装FreeRDP"><a href="#3-2-编译安装FreeRDP" class="headerlink" title="3.2 编译安装FreeRDP"></a>3.2 编译安装FreeRDP</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">echo &quot;pkg_check_modules(ALSA alsa)&quot; &gt; cmake&#x2F;FindALSA.cmake</span></pre></td></tr><tr><td class="code"><pre><span class="line">cmake -DCHANNEL_URBDRC&#x3D;ON -DWITH_FFMPEG&#x3D;OFF -DWITH_CUPS&#x3D;ON -DWITH_PULSE&#x3D;ON  -DWITH_GSM&#x3D;ON -DCMAKE_INSTALL_PREFIX&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F; .</span></pre></td></tr><tr><td class="code"><pre><span class="line">make</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h3 id="3-3-FreeRDP-增加到ld"><a href="#3-3-FreeRDP-增加到ld" class="headerlink" title="3.3 FreeRDP 增加到ld"></a>3.3 FreeRDP 增加到ld</h3><p><code>vim /etc/ld.so.conf.d/FreeRDPx64.conf</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
+<h2 id="4-安装-guacamole"><a href="#4-安装-guacamole" class="headerlink" title="4   安装 guacamole"></a>4   安装 guacamole</h2><h3 id="4-1-安装-libwebp"><a href="#4-1-安装-libwebp" class="headerlink" title="4.1 安装 libwebp"></a>4.1 安装 libwebp</h3><h4 id="4-1-1-下载"><a href="#4-1-1-下载" class="headerlink" title="4.1.1 下载"></a>4.1.1 下载</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libwebp-1.0.3.tar.gz</span></pre></td></tr></table></figure>
+<h4 id="4-1-2-安装"><a href="#4-1-2-安装" class="headerlink" title="4.1.2 安装"></a>4.1.2 安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h3 id="4-2-安装uuid-devel"><a href="#4-2-安装uuid-devel" class="headerlink" title="4.2 安装uuid-devel"></a>4.2 安装uuid-devel</h3><h4 id="4-2-1-下载依赖"><a href="#4-2-1-下载依赖" class="headerlink" title="4.2.1 下载依赖"></a>4.2.1 下载依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid%2B%2B16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libuuid-devel-2.19.1-6.29.3.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
+<h4 id="4-2-2-安装依赖"><a href="#4-2-2-安装依赖" class="headerlink" title="4.2.2 安装依赖"></a>4.2.2 安装依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install libossp-uuid++16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper install uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
+<h3 id="4-3-安装libtelnet"><a href="#4-3-安装libtelnet" class="headerlink" title="4.3 安装libtelnet"></a>4.3 安装libtelnet</h3><p>####4.3.1 下载libtelnet</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libtelnet-0.23.tar.gz</span></pre></td></tr></table></figure>
+<h4 id="4-3-2-编译安装libtelnet"><a href="#4-3-2-编译安装libtelnet" class="headerlink" title="4.3.2 编译安装libtelnet"></a>4.3.2 编译安装libtelnet</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h3 id="4-4-安装libjpeg"><a href="#4-4-安装libjpeg" class="headerlink" title="4.4 安装libjpeg"></a>4.4 安装libjpeg</h3><h4 id="4-4-1-下载-libjpeg"><a href="#4-4-1-下载-libjpeg" class="headerlink" title="4.4.1 下载 libjpeg"></a>4.4.1 下载 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
+<h4 id="4-4-1-安装-libjpeg"><a href="#4-4-1-安装-libjpeg" class="headerlink" title="4.4.1 安装 libjpeg"></a>4.4.1 安装 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
+<h2 id="4-5-安装-guacamole"><a href="#4-5-安装-guacamole" class="headerlink" title="4.5 安装 guacamole"></a>4.5 安装 guacamole</h2><h4 id="2-5-5-1-下载guacamole"><a href="#2-5-5-1-下载guacamole" class="headerlink" title="2.5.5.1 下载guacamole"></a>2.5.5.1 下载guacamole</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-server-1.0.0.tar.gz</span></pre></td></tr></table></figure>
+<h4 id="2-5-5-2-安装-guacamole"><a href="#2-5-5-2-安装-guacamole" class="headerlink" title="2.5.5.2 安装 guacamole"></a>2.5.5.2 安装 guacamole</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export C_INCLUDE_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;include&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;-L&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr><tr><td class="code"><pre><span class="line"># 磁盘映射</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so</span></pre></td></tr></table></figure>
+<h2 id="5-安装-guacamole-client"><a href="#5-安装-guacamole-client" class="headerlink" title="5 安装 guacamole-client"></a>5 安装 guacamole-client</h2><h3 id="5-1-安装jdk"><a href="#5-1-安装jdk" class="headerlink" title="5.1 安装jdk"></a>5.1 安装jdk</h3><h4 id="5-1-1下载-jdk"><a href="#5-1-1下载-jdk" class="headerlink" title="5.1.1下载 jdk"></a>5.1.1下载 jdk</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;jdk-8u101-linux-x64.tar.gz</span></pre></td></tr></table></figure>
+<p>####5.1.2 安装jdk</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf jdk-8u101-linux-x64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s jdk1.8.0_101&#x2F; jdk</span></pre></td></tr></table></figure>
+<p>####5.1.3 添加环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk</span></pre></td></tr><tr><td class="code"><pre><span class="line">export JRE_HOME&#x3D;$&#123;JAVA_HOME&#125;&#x2F;jre</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CLASSPATH&#x3D;.:$&#123;JAVA_HOME&#125;&#x2F;lib:$&#123;JRE_HOME&#125;&#x2F;lib:$CLASSPATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export JAVA_PATH&#x3D;$&#123;JAVA_HOME&#125;&#x2F;bin:$&#123;JRE_HOME&#125;&#x2F;bin</span></pre></td></tr><tr><td class="code"><pre><span class="line">export PATH&#x3D;$PATH:$&#123;JAVA_PATH&#125;</span></pre></td></tr></table></figure>
+<h4 id="安装client"><a href="#安装client" class="headerlink" title="安装client"></a>安装client</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;java&#x2F;apache-tomcat-8.5.50&#x2F;webapps</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-1.0.0.war</span></pre></td></tr></table></figure>
+<h4 id="5-1-4-安装扩展"><a href="#5-1-4-安装扩展" class="headerlink" title="5.1.4 安装扩展"></a>5.1.4 安装扩展</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir  -p &#x2F;etc&#x2F;guacamole&#x2F;extensions</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;guacamole&#x2F;extensions&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-auth-quickconnect-1.0.0&#x2F;guacamole-auth-quickconnect-1.0.0.jar</span></pre></td></tr></table></figure>
+<h2 id="6-配置文件"><a href="#6-配置文件" class="headerlink" title="6 配置文件"></a>6 配置文件</h2><h3 id="6-1-添加guacamole-properties配置文件"><a href="#6-1-添加guacamole-properties配置文件" class="headerlink" title="6.1 添加guacamole.properties配置文件"></a>6.1 添加<code>guacamole.properties</code>配置文件</h3><p><code>vi /etc/guacamole/guacamole.properties</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">guacd-hostname: localhost</span></pre></td></tr><tr><td class="code"><pre><span class="line">guacd-port: 4822</span></pre></td></tr><tr><td class="code"><pre><span class="line">enable-clipboard-integration: true</span></pre></td></tr></table></figure>
+<h3 id="6-2-配置user-mapping-xml"><a href="#6-2-配置user-mapping-xml" class="headerlink" title="6.2 配置user-mapping.xml"></a>6.2 配置<code>user-mapping.xml</code></h3><p><code>vi /etc/guacamole/user-mapping.xml</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;user-mapping&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;authorize username&#x3D;&quot;admin&quot; password&#x3D;&quot;1&quot; &gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;connection name&#x3D;&quot;10.10.10.26&quot;&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;protocol&gt;rdp&lt;&#x2F;protocol&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;hostname&quot;&gt;10.10.10.26&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;port&quot;&gt;3389&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;username&quot;&gt;su&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;password&quot;&gt;su123456&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;resize-method&quot;&gt;display-update&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;enable-drive&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;drive-path&quot;&gt;&#x2F;tmp&#x2F;upload&#x2F;&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;ignore-cert&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;&#x2F;connection&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;connection name&#x3D;&quot;10.10.50.88&quot;&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;protocol&gt;ssh&lt;&#x2F;protocol&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;hostname&quot;&gt;10.10.50.88&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;port&quot;&gt;22&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;username&quot;&gt;su&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;password&quot;&gt;su123456&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;color-scheme&quot;&gt;white-black&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                &lt;param name&#x3D;&quot;enable-sftp&quot;&gt;true&lt;&#x2F;param&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        &lt;&#x2F;connection&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;authorize&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;user-mapping&gt;</span></pre></td></tr></table></figure>
+<p>###6.3 添加环境变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export GUACAMOLE_HOME&#x3D;&#x2F;etc&#x2F;guacamole</span></pre></td></tr><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span></pre></td></tr></table></figure>
+<h2 id="7-注意事项"><a href="#7-注意事项" class="headerlink" title="7. 注意事项"></a>7. 注意事项</h2><p>编译完成后执行<code>ldconfig</code></p>
+<p>win10以上使用需要关闭 NLA<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp]</span></pre></td></tr><tr><td class="code"><pre><span class="line">Change “SecurityLayer” value to 1</span></pre></td></tr><tr><td class="code"><pre><span class="line">Verify “UserAuthentication” value is 0</span></pre></td></tr></table></figure></p>
+<h2 id="8-参考文档"><a href="#8-参考文档" class="headerlink" title="8.参考文档"></a>8.参考文档</h2><p>[1]. <a href="http://guacamole.apache.org/doc/gug/configuring-guacamole.html#rdp" target="_blank" rel="noopener">Configuring Guacamole</a></p>
+<p>[2]. <a href="https://guacamole.apache.org/doc/1.0.0/gug/installing-guacamole.html#idp123248" target="_blank" rel="noopener">Installing Guacamole natively</a></p>
+<p>[3]. <a href="https://blog.csdn.net/piaopiaopiaopiaopiao/article/details/81564029" target="_blank" rel="noopener">Linux头文件和库的搜索路径</a></p>
+<p>[4]. <a href="https://blog.csdn.net/hejinjing_tom_com/article/details/52454478" target="_blank" rel="noopener">linux动态链接库的加载顺序:</a></p>
+<p>[5]. <a href="https://www.cnblogs.com/flyinggod/p/8026567.html" target="_blank" rel="noopener">动态库的链接和链接选项-L，-rpath-link，-rpath</a></p>
+]]></content>
+      <categories>
+        <category>Install</category>
+      </categories>
+      <tags>
+        <tag>Guacame</tag>
       </tags>
   </entry>
   <entry>
@@ -1214,6 +1597,42 @@
 ]]></content>
       <tags>
         <tag>openssl update</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常见的端口转发技巧</title>
+    <url>/2017/05/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/</url>
+    <content><![CDATA[<h1 id="常见的端口转发技巧"><a href="#常见的端口转发技巧" class="headerlink" title="常见的端口转发技巧"></a>常见的端口转发技巧</h1><p>如果你只有一个公网IP 但是有几台服务器需要对外提供服务。可以使用以下几种方式</p>
+<h2 id="1-windows-下使用-netsh"><a href="#1-windows-下使用-netsh" class="headerlink" title="1. windows 下使用 netsh"></a>1. windows 下使用 netsh</h2><p>​      不用重启机器，还长记性。命令即时生效,重启系统后配置仍然存在。但是不支持UDP，XP 需要安装 IPV6 支持</p>
+<ul>
+<li><p>安装支持</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">netsh interface ipv6 install</span></pre></td></tr></table></figure>
+</li>
+<li><p>查看已经添加的端口映射</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">netsh interface portproxy show v4tov4</span></pre></td></tr></table></figure>
+</li>
+<li><p>添加端口映射支持</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">netsh interface portproxy add v4tov4 listenaddress&#x3D;192.168.0.101 listenport&#x3D;2133 connectaddress&#x3D;192.168.0.251 connectport&#x3D;2133</span></pre></td></tr></table></figure>
+<p> 将本机<code>192.168.0.101</code> 的 2133端口映射到<code>192.168.0.251</code>  的2133 端口</p>
+</li>
+<li><p>删除端口</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">netsh interface portproxy delete v4tov4 listenaddress&#x3D;192.168.0.101 listenport&#x3D;2133</span></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="2-SSH-实现"><a href="#2-SSH-实现" class="headerlink" title="2. SSH 实现"></a>2. SSH 实现</h2><p><a href="https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/" target="_blank" rel="noopener">https://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/</a></p>
+<p>##3. Nginx 实现</p>
+<p>贴出配置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">stream&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">log_format proxy &#39;&#123; &quot;@timestamp&quot;: &quot;$time_local&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;@fields&quot;: &#123; &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;remote_addr&quot;: &quot;$remote_addr&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;protocol&quot;: &quot;$protocol&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;status&quot;: &quot;$status&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;bytes_sent&quot;: &quot;$bytes_sent&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;bytes_received&quot;: &quot;$bytes_received&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;session_time&quot;: &quot;$session_time&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;upstream_addr&quot;: &quot;$upstream_addr&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;upstream_bytes_sent&quot;: &quot;$upstream_bytes_sent&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;upstream_bytes_received&quot;: &quot;$upstream_bytes_received&quot;, &#39;</span></pre></td></tr><tr><td class="code"><pre><span class="line">                         &#39;&quot;upstream_connect_time&quot;: &quot;$upstream_connect_time&quot; &#125; &#125;&#39;;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    access_log &#x2F;home&#x2F;www&#x2F;log&#x2F;proxy.log proxy;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    open_log_file_cache off;</span></pre></td></tr><tr><td class="code"><pre><span class="line">include &#x2F;etc&#x2F;nginx&#x2F;stream.d&#x2F;*.conf;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<p>stream.d/proxy.conf</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">server &#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        # 本机监听端口 8080</span></pre></td></tr><tr><td class="code"><pre><span class="line">        listen                3389;</span></pre></td></tr><tr><td class="code"><pre><span class="line">        # 请求抛给 stream_backend 组</span></pre></td></tr><tr><td class="code"><pre><span class="line">        proxy_pass            192.168.0.101:3389;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;</span></pre></td></tr></table></figure>
+<h2 id="4-socat"><a href="#4-socat" class="headerlink" title="4. socat"></a>4. socat</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">socat tcp4-listen:4342,reuseaddr,fork unix-connect:&#x2F;var&#x2F;run&#x2F;docker.sock</span></pre></td></tr><tr><td class="code"><pre><span class="line">socat TCP4-LISTEN:188,reuseaddr,fork TCP4:192.168.1.22:123</span></pre></td></tr></table></figure>
+<h1 id="5-NC"><a href="#5-NC" class="headerlink" title="5. NC"></a>5. NC</h1><h1 id="6-iptable"><a href="#6-iptable" class="headerlink" title="6. iptable"></a>6. iptable</h1><p>iptables -t nat -I PREROUTING -i eth0 -p TCP –dport 4040 -j DNAT –to-destination :4040</p>
+<h1 id="7-haproxy"><a href="#7-haproxy" class="headerlink" title="7. haproxy"></a>7. haproxy</h1>]]></content>
+      <categories>
+        <category>language</category>
+      </categories>
+      <tags>
+        <tag>language</tag>
       </tags>
   </entry>
   <entry>
