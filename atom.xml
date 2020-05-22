@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://becivells.github.io/"/>
-  <updated>2020-05-22T03:21:04.806Z</updated>
+  <updated>2020-05-22T03:23:32.390Z</updated>
   <id>https://becivells.github.io/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>如何写好注释-转</title>
+    <title>CentOS下 rpm 包制作</title>
     <link href="https://becivells.github.io/2020/05/rpm/"/>
     <id>https://becivells.github.io/2020/05/rpm/</id>
     <published>2020-05-20T12:37:04.000Z</published>
-    <updated>2020-05-22T03:21:04.806Z</updated>
+    <updated>2020-05-22T03:23:32.390Z</updated>
     
     <summary type="html">
     
@@ -30,6 +30,32 @@
         
         
           &lt;h1 id=&quot;CentOS下-rpm-包制作&quot;&gt;&lt;a href=&quot;#CentOS下-rpm-包制作&quot; class=&quot;headerlink&quot; title=&quot;CentOS下 rpm 包制作&quot;&gt;&lt;/a&gt;CentOS下 rpm 包制作&lt;/h1&gt;&lt;p&gt;RPM（Red Hat
+        
+      
+    
+    </summary>
+    
+      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
+    
+    
+      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux 编译软件常见问题解析</title>
+    <link href="https://becivells.github.io/2020/05/Linux_gcc_configure/"/>
+    <id>https://becivells.github.io/2020/05/Linux_gcc_configure/</id>
+    <published>2020-05-10T12:37:04.000Z</published>
+    <updated>2020-05-22T03:12:40.685Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;Linux-编译软件常见问题解析&quot;&gt;&lt;a href=&quot;#Linux-编译软件常见问题解析&quot; class=&quot;headerlink&quot; title=&quot;Linux 编译软件常见问题解析&quot;&gt;&lt;/a&gt;Linux
         
       
     
@@ -69,32 +95,6 @@
   </entry>
   
   <entry>
-    <title>Linux 编译软件常见问题解析</title>
-    <link href="https://becivells.github.io/2020/05/Linux_gcc_configure/"/>
-    <id>https://becivells.github.io/2020/05/Linux_gcc_configure/</id>
-    <published>2020-05-10T12:37:04.000Z</published>
-    <updated>2020-05-22T03:12:40.685Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;Linux-编译软件常见问题解析&quot;&gt;&lt;a href=&quot;#Linux-编译软件常见问题解析&quot; class=&quot;headerlink&quot; title=&quot;Linux 编译软件常见问题解析&quot;&gt;&lt;/a&gt;Linux
-        
-      
-    
-    </summary>
-    
-      <category term="Linux" scheme="https://becivells.github.io/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
-    
-  </entry>
-  
-  <entry>
     <title>vulfocus install</title>
     <link href="https://becivells.github.io/2020/04/vulfocus_install/"/>
     <id>https://becivells.github.io/2020/04/vulfocus_install/</id>
@@ -121,32 +121,6 @@
   </entry>
   
   <entry>
-    <title>使用 YubiKey u2f 认证方式登录OpenSSH Server</title>
-    <link href="https://becivells.github.io/2020/03/openssh-u2f/"/>
-    <id>https://becivells.github.io/2020/03/openssh-u2f/</id>
-    <published>2020-03-24T12:37:04.000Z</published>
-    <updated>2020-03-24T01:39:04.012Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h2 id=&quot;使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot;&gt;&lt;a href=&quot;#使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot; class=&quot;headerlink&quot; title=&quot;使用 YubiKey u2f
-        
-      
-    
-    </summary>
-    
-      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
-    
-    
-      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
-    
-  </entry>
-  
-  <entry>
     <title>https 自签发证书问题</title>
     <link href="https://becivells.github.io/2020/03/http-ssl/"/>
     <id>https://becivells.github.io/2020/03/http-ssl/</id>
@@ -169,6 +143,32 @@
     
     
       <category term="https" scheme="https://becivells.github.io/tags/https/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 YubiKey u2f 认证方式登录OpenSSH Server</title>
+    <link href="https://becivells.github.io/2020/03/openssh-u2f/"/>
+    <id>https://becivells.github.io/2020/03/openssh-u2f/</id>
+    <published>2020-03-24T12:37:04.000Z</published>
+    <updated>2020-03-24T01:39:04.012Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot;&gt;&lt;a href=&quot;#使用-YubiKey-u2f-认证方式登录OpenSSH-Server&quot; class=&quot;headerlink&quot; title=&quot;使用 YubiKey u2f
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
     
   </entry>
   
