@@ -43,32 +43,6 @@
   </entry>
   
   <entry>
-    <title>如何写好注释-转</title>
-    <link href="https://becivells.github.io/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/"/>
-    <id>https://becivells.github.io/2020/05/如何写好注释-转/</id>
-    <published>2020-05-10T12:37:04.000Z</published>
-    <updated>2020-05-22T03:18:17.046Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;如何写好注释-转&quot;&gt;&lt;a href=&quot;#如何写好注释-转&quot; class=&quot;headerlink&quot;
-        
-      
-    
-    </summary>
-    
-      <category term="language" scheme="https://becivells.github.io/categories/language/"/>
-    
-    
-      <category term="language" scheme="https://becivells.github.io/tags/language/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Linux 编译软件常见问题解析</title>
     <link href="https://becivells.github.io/2020/05/Linux_gcc_configure/"/>
     <id>https://becivells.github.io/2020/05/Linux_gcc_configure/</id>
@@ -91,6 +65,32 @@
     
     
       <category term="Linux" scheme="https://becivells.github.io/tags/Linux/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何写好注释-转</title>
+    <link href="https://becivells.github.io/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/"/>
+    <id>https://becivells.github.io/2020/05/如何写好注释-转/</id>
+    <published>2020-05-10T12:37:04.000Z</published>
+    <updated>2020-05-22T03:18:17.046Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;如何写好注释-转&quot;&gt;&lt;a href=&quot;#如何写好注释-转&quot; class=&quot;headerlink&quot;
+        
+      
+    
+    </summary>
+    
+      <category term="language" scheme="https://becivells.github.io/categories/language/"/>
+    
+    
+      <category term="language" scheme="https://becivells.github.io/tags/language/"/>
     
   </entry>
   
@@ -173,38 +173,11 @@
   </entry>
   
   <entry>
-    <title>win-openssh</title>
-    <link href="https://becivells.github.io/2020/03/win-openssh/"/>
-    <id>https://becivells.github.io/2020/03/win-openssh/</id>
-    <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-24T01:47:36.906Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;p&gt;微软官方的解决方案：&lt;/p&gt;
-&lt;p&gt;基于PowerShell的OpenSSH：&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
-    
-    
-      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Guacame 安装</title>
     <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
     <id>https://becivells.github.io/2020/03/suse-guacame/</id>
     <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-05-27T05:05:15.291Z</updated>
+    <updated>2020-05-27T07:38:07.848Z</updated>
     
     <summary type="html">
     
@@ -248,6 +221,33 @@
     
     
       <category term="Install" scheme="https://becivells.github.io/tags/Install/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>win-openssh</title>
+    <link href="https://becivells.github.io/2020/03/win-openssh/"/>
+    <id>https://becivells.github.io/2020/03/win-openssh/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-03-24T01:47:36.906Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;微软官方的解决方案：&lt;/p&gt;
+&lt;p&gt;基于PowerShell的OpenSSH：&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
     
   </entry>
   

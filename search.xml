@@ -192,6 +192,90 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux 编译软件常见问题解析</title>
+    <url>/2020/05/Linux_gcc_configure/</url>
+    <content><![CDATA[<h1 id="Linux-编译软件常见问题解析"><a href="#Linux-编译软件常见问题解析" class="headerlink" title="Linux 编译软件常见问题解析"></a>Linux 编译软件常见问题解析</h1><p>在Linux下编译软件经常碰到各种问题。问题就那么集中。没有动态链接库或者头文件、找不到动态链接库或者头文件或者依赖冲突。下面我介绍一下如何解决此类问题</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><ol>
+<li><p><code>ldconfig</code></p>
+<p>​        主要是在默认搜寻目录/lib和/usr/lib以及动态库配置文件/etc/ld.so.conf内所列的目录下，搜索出可共享的动态链接库（格式如lib<em>.so</em>）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件，缓存文件默认为/etc/ld.so.cache，此文件保存已排好序的动态链接库名字列表。linux下的共享库机制采用了类似高速缓存机制，将库信息保存在/etc/ld.so.cache，程序连接的时候首先从这个文件里查找，然后再到ld.so.conf的路径中查找。为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在/sbin目录下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v或–verbose:ldconfig将显示正在扫描的目录及搜索到的动态链接库,还有它所创建的连接的名字</span></pre></td></tr><tr><td class="code"><pre><span class="line">-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为&#x2F;etc&#x2F;ld.so.conf</span></pre></td></tr><tr><td class="code"><pre><span class="line">-p或–print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。</span></pre></td></tr><tr><td class="code"><pre><span class="line">-V：此选项打印出ldconfig的版本信息，而后退出。</span></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>最常用的命令是 <code>ldconfig</code>  重建缓存文件</p>
+<p><code>ldconfig -p|grep xxx</code>  查找依赖库</p>
+<ol start="2">
+<li><p><code>ldd</code></p>
+<p>ldd是list, dynamic, dependencies的缩写， 意思是列出动态库依赖关系</p>
+</li>
+</ol>
+<h3 id="动态链接库的选择顺序"><a href="#动态链接库的选择顺序" class="headerlink" title="动态链接库的选择顺序"></a>动态链接库的选择顺序</h3><p>编译程序时用到动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时参数-L指定的路径</p>
+</li>
+<li><p>环境变量 LIBRARY_PATH</p>
+</li>
+<li><p>系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<p>运行程序时需要动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时指定的运行时库路径 -Wl,-rpath</p>
+</li>
+<li><p>环境变量 LD_LIBRARY_PATH</p>
+</li>
+<li><p>ldconfig 缓存 /etc/ld.so.cache</p>
+<p>4  系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<h3 id="LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别"><a href="#LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别" class="headerlink" title="LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别"></a>LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别</h3><p>LIBRARY_PATH和LD_LIBRARY_PATH是Linux下的两个环境变量，二者的含义和作用分别如下：</p>
+<p>LIBRARY_PATH环境变量用于在<strong><em>程序编译期间</em></strong>查找动态链接库时指定查找共享库的路径，例如，指定gcc编译需要用到的动态链接库的目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>LD_LIBRARY_PATH环境变量用于在<strong><em>程序加载运行期间</em></strong>查找动态链接库时指定除了系统默认路径之外的其他路径，注意，LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找。设置方法如下（其中，LIBDIR1和LIBDIR2为两个库目录）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>开发时，设置LIBRARY_PATH，以便gcc能够找到编译时需要的动态链接库。</p>
+<p>发布时，设置LD_LIBRARY_PATH，以便程序加载运行时能够自动找到需要的动态链接库。</p>
+<p>长期使用LD_LIBRARY_PATH</p>
+<ol>
+<li><p>在~/目录下打开.bash_profile文件，设置环境变量如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LD_LIBRARY_PATH&#x3D;dir：$LD_LIBRARY_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+</li>
+<li><p><code>/etc/ld.so.conf</code></p>
+</li>
+</ol>
+<h3 id="链接选项-I-l-L-Wl-rpath"><a href="#链接选项-I-l-L-Wl-rpath" class="headerlink" title="链接选项-I,-l,-L,-Wl:rpath"></a>链接选项-I,-l,-L,-Wl:rpath</h3><p>-I,添加包含路径</p>
+<p>-I 在编译时用，告诉编译器去哪个路径下找文件</p>
+<p>如：-I /home/hello/include</p>
+<p>表示将/home/hello/include目录作为第一个寻找头文件的目录。</p>
+<p>编译器的寻找顺序是：/home/hello/include–&gt;/usr/include–&gt;/usr/local/include。如果在/home/hello/include中有个文件hello.h，则在程序中用#include&lt;hello.h&gt;就能引用到这个文件。</p>
+<p>可以加多个包含路径，编译器的寻找顺序为添加的顺序。</p>
+<p>-l,添加引用链接库</p>
+<p>-l 在链接时用到，它的作用是告诉链接器，要用到哪个库。<br>如：-l pthread</p>
+<p>告诉链接器(linker)，程序需要链接pthread这个库,这里的pthread是库名不是文件名，具体来说文件句是libpthread.so。</p>
+<p>-L,添加链接库路径<br>-L 后跟路径，告诉链接器从哪找库(.so文件)，只有在链接时会用到。</p>
+<p>如：-L /home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为第一个寻找库文件的目录，寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<p>可以加多个包含路径，链接器的寻找顺序为添加的顺序。</p>
+<p>-Wl:rpath,添加运行时库路径</p>
+<p>-Wl:rpath 后面也是路径，运行的时候用。这条编译指令会在编译时记录到target文件中，所以编译之后的target文件在执行时会按这里给出的路径去找库文件。</p>
+<p>如：-Wl:rpath=/home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为程序运行时第一个寻找库文件的目录，程序寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<h1 id="链接选项和路径"><a href="#链接选项和路径" class="headerlink" title="链接选项和路径"></a>链接选项和路径</h1><p>现代连接器在处理动态库时将链接时路径（Link-time path）和运行时路径（Run-time path）分开,用户可以通过-L指定连接时库的路径，通过-R（或-rpath）指定程序运行时库的路径，大大提高了库应用的灵活性。比如我们做嵌入式移植时#arm-linux-gcc $(CFLAGS) –o target –L/work/lib/zlib/ -llibz-1.2.3 (work/lib/zlib下是交叉编译好的zlib库)，将target编译好后我们只要把zlib库拷贝到开发板的系统默认路径下即可。或者通过-rpath（或-R ）、LD_LIBRARY_PATH指定查找路径。</p>
+<p>链接器ld的选项有 -L，-rpath 和 -rpath-link，看了下 man ld，大致是这个意思：</p>
+<p>-L: “链接”的时候，去找的目录，也就是所有的 -lFOO 选项里的库，都会先从 -L 指定的目录去找，然后是默认的地方。编译时的-L选项并不影响环境变量LD_LIBRARY_PATH，-L只是指定了程序编译连接时库的路径，并不影响程序执行时库的路径，系统还是会到默认路径下查找该程序所需要的库，如果找不到，还是会报错，类似cannot open shared object file。</p>
+<p>-rpath-link：这个也是用于“链接”的时候的，例如你显示指定的需要 FOO.so，但是 FOO.so 本身是需要 BAR.so 的，后者你并没有指定，而是 FOO.so 引用到它，这个时候，会先从 -rpath-link 给的路径里找。</p>
+<p>-rpath: “运行”的时候，去找的目录。运行的时候，要找 .so 文件，会从这个选项里指定的地方去找。对于交叉编译，交叉编译链接器需已经配置 –with-sysroot 选项才能起作用。也就是说，-rpath指定的路径会被记录在生成的可执行程序中，用于运行时查找需要加载的动态库。-rpath-link 则只用于链接时查找。</p>
+<h1 id="gcc和链接选项的使用"><a href="#gcc和链接选项的使用" class="headerlink" title="gcc和链接选项的使用"></a>gcc和链接选项的使用</h1><p>-Wl选项告诉编译器将后面的参数传递给链接器</p>
+<p>在gcc中使用ld链接选项时，需要在选项前面加上前缀-Wl(是字母l，不是1），以区别不是编译器的选项。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://github.com/Becivells/linux-compile" target="_blank" rel="noopener">https://github.com/Becivells/linux-compile</a><br><a href="https://blog.csdn.net/byxdaz/article/details/89405588" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/89405588</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>如何写好注释-转</title>
     <url>/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/</url>
     <content><![CDATA[<h1 id="如何写好注释-转"><a href="#如何写好注释-转" class="headerlink" title="如何写好注释-转"></a>如何写好注释-转</h1><p>许多人认为，如果代码写得足够扎实，注释就没什么用了。在他们看来，当一切都设计妥当时，代码本身会记录其作用，因此代码注释是多余的。我对此持不同意见，主要出于两个原因：</p>
@@ -296,90 +380,6 @@
       </categories>
       <tags>
         <tag>language</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux 编译软件常见问题解析</title>
-    <url>/2020/05/Linux_gcc_configure/</url>
-    <content><![CDATA[<h1 id="Linux-编译软件常见问题解析"><a href="#Linux-编译软件常见问题解析" class="headerlink" title="Linux 编译软件常见问题解析"></a>Linux 编译软件常见问题解析</h1><p>在Linux下编译软件经常碰到各种问题。问题就那么集中。没有动态链接库或者头文件、找不到动态链接库或者头文件或者依赖冲突。下面我介绍一下如何解决此类问题</p>
-<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><ol>
-<li><p><code>ldconfig</code></p>
-<p>​        主要是在默认搜寻目录/lib和/usr/lib以及动态库配置文件/etc/ld.so.conf内所列的目录下，搜索出可共享的动态链接库（格式如lib<em>.so</em>）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件，缓存文件默认为/etc/ld.so.cache，此文件保存已排好序的动态链接库名字列表。linux下的共享库机制采用了类似高速缓存机制，将库信息保存在/etc/ld.so.cache，程序连接的时候首先从这个文件里查找，然后再到ld.so.conf的路径中查找。为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在/sbin目录下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v或–verbose:ldconfig将显示正在扫描的目录及搜索到的动态链接库,还有它所创建的连接的名字</span></pre></td></tr><tr><td class="code"><pre><span class="line">-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为&#x2F;etc&#x2F;ld.so.conf</span></pre></td></tr><tr><td class="code"><pre><span class="line">-p或–print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。</span></pre></td></tr><tr><td class="code"><pre><span class="line">-V：此选项打印出ldconfig的版本信息，而后退出。</span></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>最常用的命令是 <code>ldconfig</code>  重建缓存文件</p>
-<p><code>ldconfig -p|grep xxx</code>  查找依赖库</p>
-<ol start="2">
-<li><p><code>ldd</code></p>
-<p>ldd是list, dynamic, dependencies的缩写， 意思是列出动态库依赖关系</p>
-</li>
-</ol>
-<h3 id="动态链接库的选择顺序"><a href="#动态链接库的选择顺序" class="headerlink" title="动态链接库的选择顺序"></a>动态链接库的选择顺序</h3><p>编译程序时用到动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
-<ol>
-<li><p>gcc 编译时参数-L指定的路径</p>
-</li>
-<li><p>环境变量 LIBRARY_PATH</p>
-</li>
-<li><p>系统默认库位置 /lib   /usr/lib</p>
-</li>
-</ol>
-<p>运行程序时需要动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
-<ol>
-<li><p>gcc 编译时指定的运行时库路径 -Wl,-rpath</p>
-</li>
-<li><p>环境变量 LD_LIBRARY_PATH</p>
-</li>
-<li><p>ldconfig 缓存 /etc/ld.so.cache</p>
-<p>4  系统默认库位置 /lib   /usr/lib</p>
-</li>
-</ol>
-<h3 id="LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别"><a href="#LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别" class="headerlink" title="LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别"></a>LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别</h3><p>LIBRARY_PATH和LD_LIBRARY_PATH是Linux下的两个环境变量，二者的含义和作用分别如下：</p>
-<p>LIBRARY_PATH环境变量用于在<strong><em>程序编译期间</em></strong>查找动态链接库时指定查找共享库的路径，例如，指定gcc编译需要用到的动态链接库的目录</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LIBRARY_PATH</span></pre></td></tr></table></figure>
-<p>LD_LIBRARY_PATH环境变量用于在<strong><em>程序加载运行期间</em></strong>查找动态链接库时指定除了系统默认路径之外的其他路径，注意，LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找。设置方法如下（其中，LIBDIR1和LIBDIR2为两个库目录）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
-<p>开发时，设置LIBRARY_PATH，以便gcc能够找到编译时需要的动态链接库。</p>
-<p>发布时，设置LD_LIBRARY_PATH，以便程序加载运行时能够自动找到需要的动态链接库。</p>
-<p>长期使用LD_LIBRARY_PATH</p>
-<ol>
-<li><p>在~/目录下打开.bash_profile文件，设置环境变量如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LD_LIBRARY_PATH&#x3D;dir：$LD_LIBRARY_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
-</li>
-<li><p><code>/etc/ld.so.conf</code></p>
-</li>
-</ol>
-<h3 id="链接选项-I-l-L-Wl-rpath"><a href="#链接选项-I-l-L-Wl-rpath" class="headerlink" title="链接选项-I,-l,-L,-Wl:rpath"></a>链接选项-I,-l,-L,-Wl:rpath</h3><p>-I,添加包含路径</p>
-<p>-I 在编译时用，告诉编译器去哪个路径下找文件</p>
-<p>如：-I /home/hello/include</p>
-<p>表示将/home/hello/include目录作为第一个寻找头文件的目录。</p>
-<p>编译器的寻找顺序是：/home/hello/include–&gt;/usr/include–&gt;/usr/local/include。如果在/home/hello/include中有个文件hello.h，则在程序中用#include&lt;hello.h&gt;就能引用到这个文件。</p>
-<p>可以加多个包含路径，编译器的寻找顺序为添加的顺序。</p>
-<p>-l,添加引用链接库</p>
-<p>-l 在链接时用到，它的作用是告诉链接器，要用到哪个库。<br>如：-l pthread</p>
-<p>告诉链接器(linker)，程序需要链接pthread这个库,这里的pthread是库名不是文件名，具体来说文件句是libpthread.so。</p>
-<p>-L,添加链接库路径<br>-L 后跟路径，告诉链接器从哪找库(.so文件)，只有在链接时会用到。</p>
-<p>如：-L /home/hello/lib</p>
-<p>表示将/home/hello/lib目录作为第一个寻找库文件的目录，寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
-<p>可以加多个包含路径，链接器的寻找顺序为添加的顺序。</p>
-<p>-Wl:rpath,添加运行时库路径</p>
-<p>-Wl:rpath 后面也是路径，运行的时候用。这条编译指令会在编译时记录到target文件中，所以编译之后的target文件在执行时会按这里给出的路径去找库文件。</p>
-<p>如：-Wl:rpath=/home/hello/lib</p>
-<p>表示将/home/hello/lib目录作为程序运行时第一个寻找库文件的目录，程序寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
-<h1 id="链接选项和路径"><a href="#链接选项和路径" class="headerlink" title="链接选项和路径"></a>链接选项和路径</h1><p>现代连接器在处理动态库时将链接时路径（Link-time path）和运行时路径（Run-time path）分开,用户可以通过-L指定连接时库的路径，通过-R（或-rpath）指定程序运行时库的路径，大大提高了库应用的灵活性。比如我们做嵌入式移植时#arm-linux-gcc $(CFLAGS) –o target –L/work/lib/zlib/ -llibz-1.2.3 (work/lib/zlib下是交叉编译好的zlib库)，将target编译好后我们只要把zlib库拷贝到开发板的系统默认路径下即可。或者通过-rpath（或-R ）、LD_LIBRARY_PATH指定查找路径。</p>
-<p>链接器ld的选项有 -L，-rpath 和 -rpath-link，看了下 man ld，大致是这个意思：</p>
-<p>-L: “链接”的时候，去找的目录，也就是所有的 -lFOO 选项里的库，都会先从 -L 指定的目录去找，然后是默认的地方。编译时的-L选项并不影响环境变量LD_LIBRARY_PATH，-L只是指定了程序编译连接时库的路径，并不影响程序执行时库的路径，系统还是会到默认路径下查找该程序所需要的库，如果找不到，还是会报错，类似cannot open shared object file。</p>
-<p>-rpath-link：这个也是用于“链接”的时候的，例如你显示指定的需要 FOO.so，但是 FOO.so 本身是需要 BAR.so 的，后者你并没有指定，而是 FOO.so 引用到它，这个时候，会先从 -rpath-link 给的路径里找。</p>
-<p>-rpath: “运行”的时候，去找的目录。运行的时候，要找 .so 文件，会从这个选项里指定的地方去找。对于交叉编译，交叉编译链接器需已经配置 –with-sysroot 选项才能起作用。也就是说，-rpath指定的路径会被记录在生成的可执行程序中，用于运行时查找需要加载的动态库。-rpath-link 则只用于链接时查找。</p>
-<h1 id="gcc和链接选项的使用"><a href="#gcc和链接选项的使用" class="headerlink" title="gcc和链接选项的使用"></a>gcc和链接选项的使用</h1><p>-Wl选项告诉编译器将后面的参数传递给链接器</p>
-<p>在gcc中使用ld链接选项时，需要在选项前面加上前缀-Wl(是字母l，不是1），以区别不是编译器的选项。</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://github.com/Becivells/linux-compile" target="_blank" rel="noopener">https://github.com/Becivells/linux-compile</a><br><a href="https://blog.csdn.net/byxdaz/article/details/89405588" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/89405588</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -504,44 +504,6 @@
       </tags>
   </entry>
   <entry>
-    <title>win-openssh</title>
-    <url>/2020/03/win-openssh/</url>
-    <content><![CDATA[<p>微软官方的解决方案：</p>
-<p>基于PowerShell的OpenSSH：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Freleases" target="_blank" rel="noopener">https://github.com/PowerShell/Win32-OpenSSH/releases</a></p>
-<p>详细说明可以参考Github的Wiki，这里简单说下安装步骤：</p>
-<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><p>1、进入链接下载最新 OpenSSH-Win64.zip<em>（64位系统）</em>，解压至C:\Program Files\OpenSSH</p>
-<p>2、打开cmd，cd进入C:\Program Files\OpenSSH<em>（安装目录）</em>，执行命令：</p>
-<blockquote>
-<p>powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1</p>
-</blockquote>
-<p>3、设置服务自动启动并启动服务：</p>
-<blockquote>
-<p>sc config sshd start= auto</p>
-</blockquote>
-<blockquote>
-<p>net start sshd</p>
-</blockquote>
-<p>到此服务已经安装完毕，默认端口一样是22，默认用户名密码为Window账户名和密码，当然防火墙还是要设置对应端口允许通讯</p>
-<h1 id="修改设置："><a href="#修改设置：" class="headerlink" title="修改设置："></a>修改设置：</h1><p>ssh_config文件在<strong>C:\ProgramData\ssh</strong>目录下<em>（此目录为隐藏目录）</em></p>
-<blockquote>
-<p>端口号：Port 22</p>
-<p>密钥访问：PubkeyAuthentication yes</p>
-<p>密码访问：PasswordAuthentication no</p>
-<p>空密码：PermitEmptyPasswords no</p>
-</blockquote>
-<h2 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h2><h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><p>Windows Service即使配置了.ssh/authorized_keys公钥，连接时依然显示没有注册公钥查阅了官方wiki判断可能是权限问题：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FOpenSSH-utility-scripts-to-fix-file-permissions" target="_blank" rel="noopener">Fix SSH file permissions</a></p>
-<p>进入C:\Program Files\OpenSSH<em>（安装目录），</em>右键 FixHostFilePermissions.ps1【使用PowerShell运行】，命令行提示全选是，重启sshd服务后密钥连接正常</p>
-<p>参考官方wiki：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FSecurity-protection-of-various-files-in-Win32-OpenSSH%23administrators_authorized_keys" target="_blank" rel="noopener">administrators_authorized_keys</a></p>
-<h3 id="特权账户"><a href="#特权账户" class="headerlink" title="特权账户"></a>特权账户</h3><p>Administrators用户组的用户连接公钥，默认位置为<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\ProgramData\ssh\administrators_authorized_keys</span></pre></td></tr></table></figure><br>并且需要设置权限，在CMD中执行命令：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;inheritance:r</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant SYSTEM:(F)</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant BUILTIN\Administrators:(F)</span></pre></td></tr></table></figure><br>修改ssh_config文件：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AuthorizedKeysFile	%programdata%&#x2F;ssh&#x2F;administrators_authorized_keys</span></pre></td></tr></table></figure><br>设置完成后重启sshd服务，接下来就可以使用了</p>
-]]></content>
-      <categories>
-        <category>Install</category>
-      </categories>
-      <tags>
-        <tag>OpenSSH</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Guacame 安装</title>
     <url>/2020/03/suse-guacame/</url>
     <content><![CDATA[<h1 id="OpenSuse-安装-guacamole"><a href="#OpenSuse-安装-guacamole" class="headerlink" title="OpenSuse  安装 guacamole"></a>OpenSuse  安装 guacamole</h1><h2 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h2><h3 id="1-1-添加zypper源"><a href="#1-1-添加zypper源" class="headerlink" title="1.1 添加zypper源"></a>1.1 添加zypper源</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD1&#x2F; isoSDK</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar  http:&#x2F;&#x2F;172.16.1.168&#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD2&#x2F; iosSDKsrc</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD1&#x2F; iosDVD</span></pre></td></tr><tr><td class="code"><pre><span class="line">zypper ar http:&#x2F;&#x2F;172.16.1.168&#x2F;SLES-11-SP3-DVD-x86_64-GM-DVD2&#x2F; iosDVDsrc</span></pre></td></tr></table></figure>
@@ -576,8 +538,8 @@
 <h3 id="4-4-安装libjpeg"><a href="#4-4-安装libjpeg" class="headerlink" title="4.4 安装libjpeg"></a>4.4 安装libjpeg</h3><h4 id="4-4-1-下载-libjpeg"><a href="#4-4-1-下载-libjpeg" class="headerlink" title="4.4.1 下载 libjpeg"></a>4.4.1 下载 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
 <h4 id="4-4-1-安装-libjpeg"><a href="#4-4-1-安装-libjpeg" class="headerlink" title="4.4.1 安装 libjpeg"></a>4.4.1 安装 libjpeg</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">zypper install libjpeg-turbo-official-2.0.3.x86_64.rpm</span></pre></td></tr></table></figure>
 <h2 id="4-5-安装-guacamole"><a href="#4-5-安装-guacamole" class="headerlink" title="4.5 安装 guacamole"></a>4.5 安装 guacamole</h2><h4 id="2-5-5-1-下载guacamole"><a href="#2-5-5-1-下载guacamole" class="headerlink" title="2.5.5.1 下载guacamole"></a>2.5.5.1 下载guacamole</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;guacamole-server-1.0.0.tar.gz</span></pre></td></tr></table></figure>
-<h4 id="2-5-5-2-安装-guacamole0-9"><a href="#2-5-5-2-安装-guacamole0-9" class="headerlink" title="2.5.5.2 安装 guacamole0.9"></a>2.5.5.2 安装 guacamole0.9</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export C_INCLUDE_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;include&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;-L&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr><tr><td class="code"><pre><span class="line"># 磁盘映射</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so</span></pre></td></tr></table></figure>
-<h5 id="安装gucamole1-1"><a href="#安装gucamole1-1" class="headerlink" title="安装gucamole1.1"></a>安装gucamole1.1</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;&quot; -D_GNU_SOURCE&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export PKG_CONFIG_PATH&#x3D;&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;pkgconfig:$PKG_CONFIG_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
+<h4 id="2-5-5-2-安装-guacamole-1-0"><a href="#2-5-5-2-安装-guacamole-1-0" class="headerlink" title="2.5.5.2 安装 guacamole 1.0"></a>2.5.5.2 安装 guacamole 1.0</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export C_INCLUDE_PATH&#x3D;&#x2F;usr&#x2F;FreeRDPx64&#x2F;include&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;-L&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr><tr><td class="code"><pre><span class="line"># 磁盘映射</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -sn &#x2F;usr&#x2F;local&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacsnd.so</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -f &#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;freerdp&#x2F;guacdr.so</span></pre></td></tr></table></figure>
+<h5 id="安装gucamole1-1"><a href="#安装gucamole1-1" class="headerlink" title="安装gucamole1.1"></a>安装gucamole1.1</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export CFLAGS&#x3D;&quot; -D_GNU_SOURCE&quot;</span></pre></td></tr><tr><td class="code"><pre><span class="line">export PKG_CONFIG_PATH&#x3D;&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;pkgconfig:$PKG_CONFIG_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --disable-guacenc </span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"># 官方给出的指定freerdp的位置</span></pre></td></tr><tr><td class="code"><pre><span class="line">#.&#x2F;configure --with-init-dir&#x3D;&#x2F;etc&#x2F;init.d  --with-freerdp-plugins-dir&#x3D;&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;freerdp2&#x2F; --disable-guacenc</span></pre></td></tr></table></figure>
 <h2 id="5-安装-guacamole-client"><a href="#5-安装-guacamole-client" class="headerlink" title="5 安装 guacamole-client"></a>5 安装 guacamole-client</h2><h3 id="5-1-安装jdk"><a href="#5-1-安装jdk" class="headerlink" title="5.1 安装jdk"></a>5.1 安装jdk</h3><h4 id="5-1-1下载-jdk"><a href="#5-1-1下载-jdk" class="headerlink" title="5.1.1下载 jdk"></a>5.1.1下载 jdk</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;java&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;jdk-8u101-linux-x64.tar.gz</span></pre></td></tr></table></figure>
 <p>####5.1.2 安装jdk</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -xvf jdk-8u101-linux-x64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s jdk1.8.0_101&#x2F; jdk</span></pre></td></tr></table></figure>
@@ -642,6 +604,44 @@
       </categories>
       <tags>
         <tag>Install</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>win-openssh</title>
+    <url>/2020/03/win-openssh/</url>
+    <content><![CDATA[<p>微软官方的解决方案：</p>
+<p>基于PowerShell的OpenSSH：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Freleases" target="_blank" rel="noopener">https://github.com/PowerShell/Win32-OpenSSH/releases</a></p>
+<p>详细说明可以参考Github的Wiki，这里简单说下安装步骤：</p>
+<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><p>1、进入链接下载最新 OpenSSH-Win64.zip<em>（64位系统）</em>，解压至C:\Program Files\OpenSSH</p>
+<p>2、打开cmd，cd进入C:\Program Files\OpenSSH<em>（安装目录）</em>，执行命令：</p>
+<blockquote>
+<p>powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1</p>
+</blockquote>
+<p>3、设置服务自动启动并启动服务：</p>
+<blockquote>
+<p>sc config sshd start= auto</p>
+</blockquote>
+<blockquote>
+<p>net start sshd</p>
+</blockquote>
+<p>到此服务已经安装完毕，默认端口一样是22，默认用户名密码为Window账户名和密码，当然防火墙还是要设置对应端口允许通讯</p>
+<h1 id="修改设置："><a href="#修改设置：" class="headerlink" title="修改设置："></a>修改设置：</h1><p>ssh_config文件在<strong>C:\ProgramData\ssh</strong>目录下<em>（此目录为隐藏目录）</em></p>
+<blockquote>
+<p>端口号：Port 22</p>
+<p>密钥访问：PubkeyAuthentication yes</p>
+<p>密码访问：PasswordAuthentication no</p>
+<p>空密码：PermitEmptyPasswords no</p>
+</blockquote>
+<h2 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h2><h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><p>Windows Service即使配置了.ssh/authorized_keys公钥，连接时依然显示没有注册公钥查阅了官方wiki判断可能是权限问题：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FOpenSSH-utility-scripts-to-fix-file-permissions" target="_blank" rel="noopener">Fix SSH file permissions</a></p>
+<p>进入C:\Program Files\OpenSSH<em>（安装目录），</em>右键 FixHostFilePermissions.ps1【使用PowerShell运行】，命令行提示全选是，重启sshd服务后密钥连接正常</p>
+<p>参考官方wiki：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FSecurity-protection-of-various-files-in-Win32-OpenSSH%23administrators_authorized_keys" target="_blank" rel="noopener">administrators_authorized_keys</a></p>
+<h3 id="特权账户"><a href="#特权账户" class="headerlink" title="特权账户"></a>特权账户</h3><p>Administrators用户组的用户连接公钥，默认位置为<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\ProgramData\ssh\administrators_authorized_keys</span></pre></td></tr></table></figure><br>并且需要设置权限，在CMD中执行命令：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;inheritance:r</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant SYSTEM:(F)</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant BUILTIN\Administrators:(F)</span></pre></td></tr></table></figure><br>修改ssh_config文件：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AuthorizedKeysFile	%programdata%&#x2F;ssh&#x2F;administrators_authorized_keys</span></pre></td></tr></table></figure><br>设置完成后重启sshd服务，接下来就可以使用了</p>
+]]></content>
+      <categories>
+        <category>Install</category>
+      </categories>
+      <tags>
+        <tag>OpenSSH</tag>
       </tags>
   </entry>
   <entry>
