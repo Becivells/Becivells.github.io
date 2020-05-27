@@ -121,32 +121,6 @@
   </entry>
   
   <entry>
-    <title>https 自签发证书问题</title>
-    <link href="https://becivells.github.io/2020/03/http-ssl/"/>
-    <id>https://becivells.github.io/2020/03/http-ssl/</id>
-    <published>2020-03-24T12:37:04.000Z</published>
-    <updated>2020-03-24T01:51:56.437Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;自签发SSL证书问题&quot;&gt;&lt;a href=&quot;#自签发SSL证书问题&quot; class=&quot;headerlink&quot; title=&quot;自签发SSL证书问题&quot;&gt;&lt;/a&gt;自签发SSL证书问题&lt;/h1&gt;&lt;h2 id=&quot;1-导入申请的证书（最终解决方法）&quot;&gt;&lt;a
-        
-      
-    
-    </summary>
-    
-      <category term="问题" scheme="https://becivells.github.io/categories/%E9%97%AE%E9%A2%98/"/>
-    
-    
-      <category term="https" scheme="https://becivells.github.io/tags/https/"/>
-    
-  </entry>
-  
-  <entry>
     <title>使用 YubiKey u2f 认证方式登录OpenSSH Server</title>
     <link href="https://becivells.github.io/2020/03/openssh-u2f/"/>
     <id>https://becivells.github.io/2020/03/openssh-u2f/</id>
@@ -169,6 +143,32 @@
     
     
       <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>https 自签发证书问题</title>
+    <link href="https://becivells.github.io/2020/03/http-ssl/"/>
+    <id>https://becivells.github.io/2020/03/http-ssl/</id>
+    <published>2020-03-24T12:37:04.000Z</published>
+    <updated>2020-03-24T01:51:56.437Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;自签发SSL证书问题&quot;&gt;&lt;a href=&quot;#自签发SSL证书问题&quot; class=&quot;headerlink&quot; title=&quot;自签发SSL证书问题&quot;&gt;&lt;/a&gt;自签发SSL证书问题&lt;/h1&gt;&lt;h2 id=&quot;1-导入申请的证书（最终解决方法）&quot;&gt;&lt;a
+        
+      
+    
+    </summary>
+    
+      <category term="问题" scheme="https://becivells.github.io/categories/%E9%97%AE%E9%A2%98/"/>
+    
+    
+      <category term="https" scheme="https://becivells.github.io/tags/https/"/>
     
   </entry>
   
@@ -199,6 +199,32 @@
   </entry>
   
   <entry>
+    <title>Guacame 安装</title>
+    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
+    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
+    <published>2020-03-10T12:37:04.000Z</published>
+    <updated>2020-05-27T04:01:05.851Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
+        
+      
+    
+    </summary>
+    
+      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
+    
+    
+      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
+    
+  </entry>
+  
+  <entry>
     <title>win-openssh</title>
     <link href="https://becivells.github.io/2020/03/win-openssh/"/>
     <id>https://becivells.github.io/2020/03/win-openssh/</id>
@@ -222,32 +248,6 @@
     
     
       <category term="OpenSSH" scheme="https://becivells.github.io/tags/OpenSSH/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Guacame 安装</title>
-    <link href="https://becivells.github.io/2020/03/suse-guacame/"/>
-    <id>https://becivells.github.io/2020/03/suse-guacame/</id>
-    <published>2020-03-10T12:37:04.000Z</published>
-    <updated>2020-03-24T02:03:47.384Z</updated>
-    
-    <summary type="html">
-    
-      
-      
-        
-        
-          &lt;h1 id=&quot;OpenSuse-安装-guacamole&quot;&gt;&lt;a href=&quot;#OpenSuse-安装-guacamole&quot; class=&quot;headerlink&quot; title=&quot;OpenSuse  安装 guacamole&quot;&gt;&lt;/a&gt;OpenSuse  安装
-        
-      
-    
-    </summary>
-    
-      <category term="Install" scheme="https://becivells.github.io/categories/Install/"/>
-    
-    
-      <category term="Guacame" scheme="https://becivells.github.io/tags/Guacame/"/>
     
   </entry>
   
