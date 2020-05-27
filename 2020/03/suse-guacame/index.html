@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Becivells 的 Blog">
 <meta property="og:description" content="OpenSuse  安装 guacamole1. 安装依赖1.1 添加zypper源1zypper ar http:&amp;#x2F;&amp;#x2F;172.16.1.168&amp;#x2F;SLE-11-SP3-SDK-DVD-x86_64-GM-DVD1&amp;#x2F; isoSDK2zypper ar  http:&amp;#x2F;&amp;#x2F;172.16.1.168&amp;#x2F;SLE-11-SP3-SDK-DVD-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2020-05-27T04:01:05.851Z">
+<meta property="og:updated_time" content="2020-05-27T05:05:15.291Z">
 <meta name="twitter:card" content="summary">
 
 
@@ -448,7 +448,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_SYSTEM_NAME STREQUAL &quot;Linux&quot;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">    #  older systems</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">    # (pre POSIX.1-2008: glibc 2.11 and earlier).</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    add_definitions(-D_GNU_SOURCE)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">endif()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">cmake -DCHANNEL_URBDRC&#x3D;ON  -DWITH_CUPS&#x3D;ON -DWITH_PULSE&#x3D;ON  -DWITH_GSM&#x3D;ON -DCMAKE_INSTALL_PREFIX&#x3D;&#x2F;usr&#x2F;FreeRDP2x64&#x2F; .</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">make</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
 <h3 id="3-3-FreeRDP-增加到ld"><a href="#3-3-FreeRDP-增加到ld" class="headerlink" title="3.3 FreeRDP 增加到ld"></a>3.3 FreeRDP 增加到ld</h3><p><code>vim /etc/ld.so.conf.d/FreeRDPx64.conf</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
-<h5 id="FreeRDP2"><a href="#FreeRDP2" class="headerlink" title="FreeRDP2"></a>FreeRDP2</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib64&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib64&#x2F;freerdp2&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
+<h5 id="FreeRDP2"><a href="#FreeRDP2" class="headerlink" title="FreeRDP2"></a>FreeRDP2</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;freerdp2&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
 <h2 id="4-安装-guacamole"><a href="#4-安装-guacamole" class="headerlink" title="4   安装 guacamole"></a>4   安装 guacamole</h2><h3 id="4-1-安装-libwebp"><a href="#4-1-安装-libwebp" class="headerlink" title="4.1 安装 libwebp"></a>4.1 安装 libwebp</h3><h4 id="4-1-1-下载"><a href="#4-1-1-下载" class="headerlink" title="4.1.1 下载"></a>4.1.1 下载</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libwebp-1.0.3.tar.gz</span></pre></td></tr></table></figure>
 <h4 id="4-1-2-安装"><a href="#4-1-2-安装" class="headerlink" title="4.1.2 安装"></a>4.1.2 安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
 <h3 id="4-2-安装uuid-devel"><a href="#4-2-安装uuid-devel" class="headerlink" title="4.2 安装uuid-devel"></a>4.2 安装uuid-devel</h3><h4 id="4-2-1-下载依赖"><a href="#4-2-1-下载依赖" class="headerlink" title="4.2.1 下载依赖"></a>4.2.1 下载依赖</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid%2B%2B16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libuuid-devel-2.19.1-6.29.3.x86_64.rpm</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
@@ -512,8 +512,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2020/03/win-openssh/" rel="next" title="win-openssh">
-                <i class="fa fa-chevron-left"></i> win-openssh
+              <a href="/2020/03/openstack_Packstack/" rel="next" title="Packstack - OpenStack 一键安装包">
+                <i class="fa fa-chevron-left"></i> Packstack - OpenStack 一键安装包
               </a>
             
           </div>
@@ -522,8 +522,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2020/03/openstack_Packstack/" rel="prev" title="Packstack - OpenStack 一键安装包">
-                Packstack - OpenStack 一键安装包 <i class="fa fa-chevron-right"></i>
+              <a href="/2020/03/win-openssh/" rel="prev" title="win-openssh">
+                win-openssh <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>

@@ -192,90 +192,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux 编译软件常见问题解析</title>
-    <url>/2020/05/Linux_gcc_configure/</url>
-    <content><![CDATA[<h1 id="Linux-编译软件常见问题解析"><a href="#Linux-编译软件常见问题解析" class="headerlink" title="Linux 编译软件常见问题解析"></a>Linux 编译软件常见问题解析</h1><p>在Linux下编译软件经常碰到各种问题。问题就那么集中。没有动态链接库或者头文件、找不到动态链接库或者头文件或者依赖冲突。下面我介绍一下如何解决此类问题</p>
-<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><ol>
-<li><p><code>ldconfig</code></p>
-<p>​        主要是在默认搜寻目录/lib和/usr/lib以及动态库配置文件/etc/ld.so.conf内所列的目录下，搜索出可共享的动态链接库（格式如lib<em>.so</em>）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件，缓存文件默认为/etc/ld.so.cache，此文件保存已排好序的动态链接库名字列表。linux下的共享库机制采用了类似高速缓存机制，将库信息保存在/etc/ld.so.cache，程序连接的时候首先从这个文件里查找，然后再到ld.so.conf的路径中查找。为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在/sbin目录下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v或–verbose:ldconfig将显示正在扫描的目录及搜索到的动态链接库,还有它所创建的连接的名字</span></pre></td></tr><tr><td class="code"><pre><span class="line">-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为&#x2F;etc&#x2F;ld.so.conf</span></pre></td></tr><tr><td class="code"><pre><span class="line">-p或–print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。</span></pre></td></tr><tr><td class="code"><pre><span class="line">-V：此选项打印出ldconfig的版本信息，而后退出。</span></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>最常用的命令是 <code>ldconfig</code>  重建缓存文件</p>
-<p><code>ldconfig -p|grep xxx</code>  查找依赖库</p>
-<ol start="2">
-<li><p><code>ldd</code></p>
-<p>ldd是list, dynamic, dependencies的缩写， 意思是列出动态库依赖关系</p>
-</li>
-</ol>
-<h3 id="动态链接库的选择顺序"><a href="#动态链接库的选择顺序" class="headerlink" title="动态链接库的选择顺序"></a>动态链接库的选择顺序</h3><p>编译程序时用到动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
-<ol>
-<li><p>gcc 编译时参数-L指定的路径</p>
-</li>
-<li><p>环境变量 LIBRARY_PATH</p>
-</li>
-<li><p>系统默认库位置 /lib   /usr/lib</p>
-</li>
-</ol>
-<p>运行程序时需要动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
-<ol>
-<li><p>gcc 编译时指定的运行时库路径 -Wl,-rpath</p>
-</li>
-<li><p>环境变量 LD_LIBRARY_PATH</p>
-</li>
-<li><p>ldconfig 缓存 /etc/ld.so.cache</p>
-<p>4  系统默认库位置 /lib   /usr/lib</p>
-</li>
-</ol>
-<h3 id="LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别"><a href="#LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别" class="headerlink" title="LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别"></a>LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别</h3><p>LIBRARY_PATH和LD_LIBRARY_PATH是Linux下的两个环境变量，二者的含义和作用分别如下：</p>
-<p>LIBRARY_PATH环境变量用于在<strong><em>程序编译期间</em></strong>查找动态链接库时指定查找共享库的路径，例如，指定gcc编译需要用到的动态链接库的目录</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LIBRARY_PATH</span></pre></td></tr></table></figure>
-<p>LD_LIBRARY_PATH环境变量用于在<strong><em>程序加载运行期间</em></strong>查找动态链接库时指定除了系统默认路径之外的其他路径，注意，LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找。设置方法如下（其中，LIBDIR1和LIBDIR2为两个库目录）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
-<p>开发时，设置LIBRARY_PATH，以便gcc能够找到编译时需要的动态链接库。</p>
-<p>发布时，设置LD_LIBRARY_PATH，以便程序加载运行时能够自动找到需要的动态链接库。</p>
-<p>长期使用LD_LIBRARY_PATH</p>
-<ol>
-<li><p>在~/目录下打开.bash_profile文件，设置环境变量如下</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LD_LIBRARY_PATH&#x3D;dir：$LD_LIBRARY_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
-</li>
-<li><p><code>/etc/ld.so.conf</code></p>
-</li>
-</ol>
-<h3 id="链接选项-I-l-L-Wl-rpath"><a href="#链接选项-I-l-L-Wl-rpath" class="headerlink" title="链接选项-I,-l,-L,-Wl:rpath"></a>链接选项-I,-l,-L,-Wl:rpath</h3><p>-I,添加包含路径</p>
-<p>-I 在编译时用，告诉编译器去哪个路径下找文件</p>
-<p>如：-I /home/hello/include</p>
-<p>表示将/home/hello/include目录作为第一个寻找头文件的目录。</p>
-<p>编译器的寻找顺序是：/home/hello/include–&gt;/usr/include–&gt;/usr/local/include。如果在/home/hello/include中有个文件hello.h，则在程序中用#include&lt;hello.h&gt;就能引用到这个文件。</p>
-<p>可以加多个包含路径，编译器的寻找顺序为添加的顺序。</p>
-<p>-l,添加引用链接库</p>
-<p>-l 在链接时用到，它的作用是告诉链接器，要用到哪个库。<br>如：-l pthread</p>
-<p>告诉链接器(linker)，程序需要链接pthread这个库,这里的pthread是库名不是文件名，具体来说文件句是libpthread.so。</p>
-<p>-L,添加链接库路径<br>-L 后跟路径，告诉链接器从哪找库(.so文件)，只有在链接时会用到。</p>
-<p>如：-L /home/hello/lib</p>
-<p>表示将/home/hello/lib目录作为第一个寻找库文件的目录，寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
-<p>可以加多个包含路径，链接器的寻找顺序为添加的顺序。</p>
-<p>-Wl:rpath,添加运行时库路径</p>
-<p>-Wl:rpath 后面也是路径，运行的时候用。这条编译指令会在编译时记录到target文件中，所以编译之后的target文件在执行时会按这里给出的路径去找库文件。</p>
-<p>如：-Wl:rpath=/home/hello/lib</p>
-<p>表示将/home/hello/lib目录作为程序运行时第一个寻找库文件的目录，程序寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
-<h1 id="链接选项和路径"><a href="#链接选项和路径" class="headerlink" title="链接选项和路径"></a>链接选项和路径</h1><p>现代连接器在处理动态库时将链接时路径（Link-time path）和运行时路径（Run-time path）分开,用户可以通过-L指定连接时库的路径，通过-R（或-rpath）指定程序运行时库的路径，大大提高了库应用的灵活性。比如我们做嵌入式移植时#arm-linux-gcc $(CFLAGS) –o target –L/work/lib/zlib/ -llibz-1.2.3 (work/lib/zlib下是交叉编译好的zlib库)，将target编译好后我们只要把zlib库拷贝到开发板的系统默认路径下即可。或者通过-rpath（或-R ）、LD_LIBRARY_PATH指定查找路径。</p>
-<p>链接器ld的选项有 -L，-rpath 和 -rpath-link，看了下 man ld，大致是这个意思：</p>
-<p>-L: “链接”的时候，去找的目录，也就是所有的 -lFOO 选项里的库，都会先从 -L 指定的目录去找，然后是默认的地方。编译时的-L选项并不影响环境变量LD_LIBRARY_PATH，-L只是指定了程序编译连接时库的路径，并不影响程序执行时库的路径，系统还是会到默认路径下查找该程序所需要的库，如果找不到，还是会报错，类似cannot open shared object file。</p>
-<p>-rpath-link：这个也是用于“链接”的时候的，例如你显示指定的需要 FOO.so，但是 FOO.so 本身是需要 BAR.so 的，后者你并没有指定，而是 FOO.so 引用到它，这个时候，会先从 -rpath-link 给的路径里找。</p>
-<p>-rpath: “运行”的时候，去找的目录。运行的时候，要找 .so 文件，会从这个选项里指定的地方去找。对于交叉编译，交叉编译链接器需已经配置 –with-sysroot 选项才能起作用。也就是说，-rpath指定的路径会被记录在生成的可执行程序中，用于运行时查找需要加载的动态库。-rpath-link 则只用于链接时查找。</p>
-<h1 id="gcc和链接选项的使用"><a href="#gcc和链接选项的使用" class="headerlink" title="gcc和链接选项的使用"></a>gcc和链接选项的使用</h1><p>-Wl选项告诉编译器将后面的参数传递给链接器</p>
-<p>在gcc中使用ld链接选项时，需要在选项前面加上前缀-Wl(是字母l，不是1），以区别不是编译器的选项。</p>
-<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://github.com/Becivells/linux-compile" target="_blank" rel="noopener">https://github.com/Becivells/linux-compile</a><br><a href="https://blog.csdn.net/byxdaz/article/details/89405588" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/89405588</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>如何写好注释-转</title>
     <url>/2020/05/%E5%A6%82%E4%BD%95%E5%86%99%E5%A5%BD%E6%B3%A8%E9%87%8A-%E8%BD%AC/</url>
     <content><![CDATA[<h1 id="如何写好注释-转"><a href="#如何写好注释-转" class="headerlink" title="如何写好注释-转"></a>如何写好注释-转</h1><p>许多人认为，如果代码写得足够扎实，注释就没什么用了。在他们看来，当一切都设计妥当时，代码本身会记录其作用，因此代码注释是多余的。我对此持不同意见，主要出于两个原因：</p>
@@ -383,6 +299,90 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux 编译软件常见问题解析</title>
+    <url>/2020/05/Linux_gcc_configure/</url>
+    <content><![CDATA[<h1 id="Linux-编译软件常见问题解析"><a href="#Linux-编译软件常见问题解析" class="headerlink" title="Linux 编译软件常见问题解析"></a>Linux 编译软件常见问题解析</h1><p>在Linux下编译软件经常碰到各种问题。问题就那么集中。没有动态链接库或者头文件、找不到动态链接库或者头文件或者依赖冲突。下面我介绍一下如何解决此类问题</p>
+<h2 id="预备知识"><a href="#预备知识" class="headerlink" title="预备知识"></a>预备知识</h2><h3 id="常见命令"><a href="#常见命令" class="headerlink" title="常见命令"></a>常见命令</h3><ol>
+<li><p><code>ldconfig</code></p>
+<p>​        主要是在默认搜寻目录/lib和/usr/lib以及动态库配置文件/etc/ld.so.conf内所列的目录下，搜索出可共享的动态链接库（格式如lib<em>.so</em>）,进而创建出动态装入程序(ld.so)所需的连接和缓存文件，缓存文件默认为/etc/ld.so.cache，此文件保存已排好序的动态链接库名字列表。linux下的共享库机制采用了类似高速缓存机制，将库信息保存在/etc/ld.so.cache，程序连接的时候首先从这个文件里查找，然后再到ld.so.conf的路径中查找。为了让动态链接库为系统所共享，需运行动态链接库的管理命令ldconfig，此执行程序存放在/sbin目录下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">-v或–verbose:ldconfig将显示正在扫描的目录及搜索到的动态链接库,还有它所创建的连接的名字</span></pre></td></tr><tr><td class="code"><pre><span class="line">-f CONF：此选项指定动态链接库的配置文件为CONF，系统默认为&#x2F;etc&#x2F;ld.so.conf</span></pre></td></tr><tr><td class="code"><pre><span class="line">-p或–print-cache：此选项指示ldconfig打印出当前缓存文件所保存的所有共享库的名字。</span></pre></td></tr><tr><td class="code"><pre><span class="line">-V：此选项打印出ldconfig的版本信息，而后退出。</span></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>最常用的命令是 <code>ldconfig</code>  重建缓存文件</p>
+<p><code>ldconfig -p|grep xxx</code>  查找依赖库</p>
+<ol start="2">
+<li><p><code>ldd</code></p>
+<p>ldd是list, dynamic, dependencies的缩写， 意思是列出动态库依赖关系</p>
+</li>
+</ol>
+<h3 id="动态链接库的选择顺序"><a href="#动态链接库的选择顺序" class="headerlink" title="动态链接库的选择顺序"></a>动态链接库的选择顺序</h3><p>编译程序时用到动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时参数-L指定的路径</p>
+</li>
+<li><p>环境变量 LIBRARY_PATH</p>
+</li>
+<li><p>系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<p>运行程序时需要动态库，该从那些地方查找，按照怎么样的顺序查找？</p>
+<ol>
+<li><p>gcc 编译时指定的运行时库路径 -Wl,-rpath</p>
+</li>
+<li><p>环境变量 LD_LIBRARY_PATH</p>
+</li>
+<li><p>ldconfig 缓存 /etc/ld.so.cache</p>
+<p>4  系统默认库位置 /lib   /usr/lib</p>
+</li>
+</ol>
+<h3 id="LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别"><a href="#LIBRARY-PATH和LD-LIBRARY-PATH环境变量的区别" class="headerlink" title="LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别"></a>LIBRARY_PATH和LD_LIBRARY_PATH环境变量的区别</h3><p>LIBRARY_PATH和LD_LIBRARY_PATH是Linux下的两个环境变量，二者的含义和作用分别如下：</p>
+<p>LIBRARY_PATH环境变量用于在<strong><em>程序编译期间</em></strong>查找动态链接库时指定查找共享库的路径，例如，指定gcc编译需要用到的动态链接库的目录</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>LD_LIBRARY_PATH环境变量用于在<strong><em>程序加载运行期间</em></strong>查找动态链接库时指定除了系统默认路径之外的其他路径，注意，LD_LIBRARY_PATH中指定的路径会在系统默认路径之前进行查找。设置方法如下（其中，LIBDIR1和LIBDIR2为两个库目录）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH&#x3D;LIBDIR1:LIBDIR2:$LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+<p>开发时，设置LIBRARY_PATH，以便gcc能够找到编译时需要的动态链接库。</p>
+<p>发布时，设置LD_LIBRARY_PATH，以便程序加载运行时能够自动找到需要的动态链接库。</p>
+<p>长期使用LD_LIBRARY_PATH</p>
+<ol>
+<li><p>在~/目录下打开.bash_profile文件，设置环境变量如下</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LD_LIBRARY_PATH&#x3D;dir：$LD_LIBRARY_PATH</span></pre></td></tr><tr><td class="code"><pre><span class="line">export LD_LIBRARY_PATH</span></pre></td></tr></table></figure>
+</li>
+<li><p><code>/etc/ld.so.conf</code></p>
+</li>
+</ol>
+<h3 id="链接选项-I-l-L-Wl-rpath"><a href="#链接选项-I-l-L-Wl-rpath" class="headerlink" title="链接选项-I,-l,-L,-Wl:rpath"></a>链接选项-I,-l,-L,-Wl:rpath</h3><p>-I,添加包含路径</p>
+<p>-I 在编译时用，告诉编译器去哪个路径下找文件</p>
+<p>如：-I /home/hello/include</p>
+<p>表示将/home/hello/include目录作为第一个寻找头文件的目录。</p>
+<p>编译器的寻找顺序是：/home/hello/include–&gt;/usr/include–&gt;/usr/local/include。如果在/home/hello/include中有个文件hello.h，则在程序中用#include&lt;hello.h&gt;就能引用到这个文件。</p>
+<p>可以加多个包含路径，编译器的寻找顺序为添加的顺序。</p>
+<p>-l,添加引用链接库</p>
+<p>-l 在链接时用到，它的作用是告诉链接器，要用到哪个库。<br>如：-l pthread</p>
+<p>告诉链接器(linker)，程序需要链接pthread这个库,这里的pthread是库名不是文件名，具体来说文件句是libpthread.so。</p>
+<p>-L,添加链接库路径<br>-L 后跟路径，告诉链接器从哪找库(.so文件)，只有在链接时会用到。</p>
+<p>如：-L /home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为第一个寻找库文件的目录，寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<p>可以加多个包含路径，链接器的寻找顺序为添加的顺序。</p>
+<p>-Wl:rpath,添加运行时库路径</p>
+<p>-Wl:rpath 后面也是路径，运行的时候用。这条编译指令会在编译时记录到target文件中，所以编译之后的target文件在执行时会按这里给出的路径去找库文件。</p>
+<p>如：-Wl:rpath=/home/hello/lib</p>
+<p>表示将/home/hello/lib目录作为程序运行时第一个寻找库文件的目录，程序寻找顺序是：/home/hello/lib–&gt;/usr/lib–&gt;/usr/local/lib。</p>
+<h1 id="链接选项和路径"><a href="#链接选项和路径" class="headerlink" title="链接选项和路径"></a>链接选项和路径</h1><p>现代连接器在处理动态库时将链接时路径（Link-time path）和运行时路径（Run-time path）分开,用户可以通过-L指定连接时库的路径，通过-R（或-rpath）指定程序运行时库的路径，大大提高了库应用的灵活性。比如我们做嵌入式移植时#arm-linux-gcc $(CFLAGS) –o target –L/work/lib/zlib/ -llibz-1.2.3 (work/lib/zlib下是交叉编译好的zlib库)，将target编译好后我们只要把zlib库拷贝到开发板的系统默认路径下即可。或者通过-rpath（或-R ）、LD_LIBRARY_PATH指定查找路径。</p>
+<p>链接器ld的选项有 -L，-rpath 和 -rpath-link，看了下 man ld，大致是这个意思：</p>
+<p>-L: “链接”的时候，去找的目录，也就是所有的 -lFOO 选项里的库，都会先从 -L 指定的目录去找，然后是默认的地方。编译时的-L选项并不影响环境变量LD_LIBRARY_PATH，-L只是指定了程序编译连接时库的路径，并不影响程序执行时库的路径，系统还是会到默认路径下查找该程序所需要的库，如果找不到，还是会报错，类似cannot open shared object file。</p>
+<p>-rpath-link：这个也是用于“链接”的时候的，例如你显示指定的需要 FOO.so，但是 FOO.so 本身是需要 BAR.so 的，后者你并没有指定，而是 FOO.so 引用到它，这个时候，会先从 -rpath-link 给的路径里找。</p>
+<p>-rpath: “运行”的时候，去找的目录。运行的时候，要找 .so 文件，会从这个选项里指定的地方去找。对于交叉编译，交叉编译链接器需已经配置 –with-sysroot 选项才能起作用。也就是说，-rpath指定的路径会被记录在生成的可执行程序中，用于运行时查找需要加载的动态库。-rpath-link 则只用于链接时查找。</p>
+<h1 id="gcc和链接选项的使用"><a href="#gcc和链接选项的使用" class="headerlink" title="gcc和链接选项的使用"></a>gcc和链接选项的使用</h1><p>-Wl选项告诉编译器将后面的参数传递给链接器</p>
+<p>在gcc中使用ld链接选项时，需要在选项前面加上前缀-Wl(是字母l，不是1），以区别不是编译器的选项。</p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://github.com/Becivells/linux-compile" target="_blank" rel="noopener">https://github.com/Becivells/linux-compile</a><br><a href="https://blog.csdn.net/byxdaz/article/details/89405588" target="_blank" rel="noopener">https://blog.csdn.net/byxdaz/article/details/89405588</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>vulfocus install</title>
     <url>/2020/04/vulfocus_install/</url>
     <content><![CDATA[<h1 id="生产环境下的-Vulfocus-安装"><a href="#生产环境下的-Vulfocus-安装" class="headerlink" title="生产环境下的 Vulfocus 安装"></a>生产环境下的 Vulfocus 安装</h1><h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><h3 id="安装需要的软件和开发环境"><a href="#安装需要的软件和开发环境" class="headerlink" title="安装需要的软件和开发环境"></a>安装需要的软件和开发环境</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum -y install epel-release</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum install gcc -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum install  nginx supervisor net-tools wget git -y</span></pre></td></tr></table></figure>
@@ -431,6 +431,26 @@
       </categories>
       <tags>
         <tag>install</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>https 自签发证书问题</title>
+    <url>/2020/03/http-ssl/</url>
+    <content><![CDATA[<h1 id="自签发SSL证书问题"><a href="#自签发SSL证书问题" class="headerlink" title="自签发SSL证书问题"></a>自签发SSL证书问题</h1><h2 id="1-导入申请的证书（最终解决方法）"><a href="#1-导入申请的证书（最终解决方法）" class="headerlink" title="1. 导入申请的证书（最终解决方法）"></a>1. 导入申请的证书（最终解决方法）</h2><p>这种方式就如同我们访问百度一样不会出现<code>此服务器无法证明它是10.10.60.180；其安全证书来自www.xxx.net。出现此问题的原因可能是配置有误或您的连接被拦截了</code> 这种错误</p>
+<p>替换证书</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost 0.0.0.0:443&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">     DocumentRoot &quot;&#x2F;var&#x2F;www&#x2F;html&quot; </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #填写证书名称</span></pre></td></tr><tr><td class="code"><pre><span class="line">     ServerName www.xxx.net </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #启用 SSL 功能</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLEngine on </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;2_www.xxx.net.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #私钥文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateKeyFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;3_www.xxx.net.key </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书链文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateChainFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;1_root_bundle.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;VirtualHost&gt;</span></pre></td></tr></table></figure>
+<h2 id="2-safari访问"><a href="#2-safari访问" class="headerlink" title="2.safari访问"></a>2.safari访问</h2><p>证书错误。点击访问此网站输入密码即可，如果这样也报错请在钥匙串中删除登录证书重试</p>
+<h2 id="3-Chrome-浏览器访问"><a href="#3-Chrome-浏览器访问" class="headerlink" title="3. Chrome 浏览器访问"></a>3. Chrome 浏览器访问</h2><p>证书错误,这种问题只出现在chrome访问自签发证书以后再替换证书</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10.10.60.180 通常会使用加密技术来保护您的信息。Google Chrome 此次尝试连接到 10.10.60.180 时，此网站发回了异常的错误凭据。这可能是因为有攻击者在试图冒充 10.10.60.180，或 Wi-Fi 登录屏幕中断了此次连接。请放心，您的信息仍然是安全的，因为 Google Chrome 尚未进行任何数据交换便停止了连接。</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">您目前无法访问 10.10.60.180，因为此网站发送了 Google Chrome 无法处理的杂乱凭据。网络错误和攻击通常是暂时的，因此，此网页稍后可能会恢复正常。</span></pre></td></tr></table></figure>
+<p>原因：自签发证书替换以后浏览器认为这个网站不是以前的网站误认为是中间人攻击</p>
+<p>解决方法在报错页面输入</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">thisisunsafe</span></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>问题</category>
+      </categories>
+      <tags>
+        <tag>https</tag>
       </tags>
   </entry>
   <entry>
@@ -484,60 +504,41 @@
       </tags>
   </entry>
   <entry>
-    <title>https 自签发证书问题</title>
-    <url>/2020/03/http-ssl/</url>
-    <content><![CDATA[<h1 id="自签发SSL证书问题"><a href="#自签发SSL证书问题" class="headerlink" title="自签发SSL证书问题"></a>自签发SSL证书问题</h1><h2 id="1-导入申请的证书（最终解决方法）"><a href="#1-导入申请的证书（最终解决方法）" class="headerlink" title="1. 导入申请的证书（最终解决方法）"></a>1. 导入申请的证书（最终解决方法）</h2><p>这种方式就如同我们访问百度一样不会出现<code>此服务器无法证明它是10.10.60.180；其安全证书来自www.xxx.net。出现此问题的原因可能是配置有误或您的连接被拦截了</code> 这种错误</p>
-<p>替换证书</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;VirtualHost 0.0.0.0:443&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">     DocumentRoot &quot;&#x2F;var&#x2F;www&#x2F;html&quot; </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #填写证书名称</span></pre></td></tr><tr><td class="code"><pre><span class="line">     ServerName www.xxx.net </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #启用 SSL 功能</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLEngine on </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;2_www.xxx.net.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #私钥文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateKeyFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;3_www.xxx.net.key </span></pre></td></tr><tr><td class="code"><pre><span class="line">     #证书链文件的路径</span></pre></td></tr><tr><td class="code"><pre><span class="line">     SSLCertificateChainFile &#x2F;usr&#x2F;local&#x2F;httpd&#x2F;conf&#x2F;ssl.key&#x2F;1_root_bundle.crt </span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;&#x2F;VirtualHost&gt;</span></pre></td></tr></table></figure>
-<h2 id="2-safari访问"><a href="#2-safari访问" class="headerlink" title="2.safari访问"></a>2.safari访问</h2><p>证书错误。点击访问此网站输入密码即可，如果这样也报错请在钥匙串中删除登录证书重试</p>
-<h2 id="3-Chrome-浏览器访问"><a href="#3-Chrome-浏览器访问" class="headerlink" title="3. Chrome 浏览器访问"></a>3. Chrome 浏览器访问</h2><p>证书错误,这种问题只出现在chrome访问自签发证书以后再替换证书</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">10.10.60.180 通常会使用加密技术来保护您的信息。Google Chrome 此次尝试连接到 10.10.60.180 时，此网站发回了异常的错误凭据。这可能是因为有攻击者在试图冒充 10.10.60.180，或 Wi-Fi 登录屏幕中断了此次连接。请放心，您的信息仍然是安全的，因为 Google Chrome 尚未进行任何数据交换便停止了连接。</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">您目前无法访问 10.10.60.180，因为此网站发送了 Google Chrome 无法处理的杂乱凭据。网络错误和攻击通常是暂时的，因此，此网页稍后可能会恢复正常。</span></pre></td></tr></table></figure>
-<p>原因：自签发证书替换以后浏览器认为这个网站不是以前的网站误认为是中间人攻击</p>
-<p>解决方法在报错页面输入</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">thisisunsafe</span></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>问题</category>
-      </categories>
-      <tags>
-        <tag>https</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Packstack - OpenStack 一键安装包</title>
-    <url>/2020/03/openstack_Packstack/</url>
-    <content><![CDATA[<h2 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h2><p>目前不支持CentOS8 支持CentOS7.x使用的镜像<code>centos7.7-mini</code></p>
-<p>安装完成可以关闭selinux 也可以不关闭</p>
-<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo useradd -s &#x2F;bin&#x2F;bash  -m stack</span></pre></td></tr><tr><td class="code"><pre><span class="line">echo &quot;stack ALL&#x3D;(ALL) NOPASSWD: ALL&quot; | sudo tee &#x2F;etc&#x2F;sudoers.d&#x2F;stack</span></pre></td></tr></table></figure>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>如果您使用的是非英语语言环境，请确保您/etc/environment已填充：</p>
-   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LANG&#x3D;en_US.utf-8</span></pre></td></tr><tr><td class="code"><pre><span class="line">LC_ALL&#x3D;en_US.utf-8</span></pre></td></tr></table></figure>
-<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum update -y</span></pre></td></tr></table></figure>
-<h3 id="查看最新版本号"><a href="#查看最新版本号" class="headerlink" title="查看最新版本号"></a>查看最新版本号</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;releases.openstack.org&#x2F;</span></pre></td></tr></table></figure>
-<p>   稳定版本为<strong>train</strong> yum 源搜索稳定版本为<br>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">centos-release-openstack-train</span></pre></td></tr></table></figure></p>
-<p>配置源</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.bak</span></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># CentOS-Base.repo</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"># The mirror system uses the connecting IP address of the client and the</span></pre></td></tr><tr><td class="code"><pre><span class="line"># update status of each mirror to pick mirrors that are updated to and</span></pre></td></tr><tr><td class="code"><pre><span class="line"># geographically close to the client.  You should use this for CentOS updates</span></pre></td></tr><tr><td class="code"><pre><span class="line"># unless you are manually picking other mirrors.</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"># If the mirrorlist&#x3D; does not work for you, as a fall back you can try the</span></pre></td></tr><tr><td class="code"><pre><span class="line"># remarked out baseurl&#x3D; line instead.</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">[base]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Base</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;os&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;os</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#released updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">[updates]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;updates&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#additional packages that may be useful</span></pre></td></tr><tr><td class="code"><pre><span class="line">[extras]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Extras</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;extras&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;extras</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#additional packages that extend functionality of existing packages</span></pre></td></tr><tr><td class="code"><pre><span class="line">[centosplus]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Plus</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;centosplus&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;centosplus</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;0</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr></table></figure>
-<h3 id="安装openstack"><a href="#安装openstack" class="headerlink" title="安装openstack"></a>安装openstack</h3><p>注意官网给出的CentOS 安装方式实测不行</p>
-   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum install -y https:&#x2F;&#x2F;rdoproject.org&#x2F;repos&#x2F;rdo-release.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum update -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum install -y openstack-packstack</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo packstack --allinone</span></pre></td></tr></table></figure>
-<h2 id="设置启动"><a href="#设置启动" class="headerlink" title="设置启动"></a>设置启动</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install openstack-utils -y</span></pre></td></tr></table></figure>
-<h3 id="第一种操作方式"><a href="#第一种操作方式" class="headerlink" title="第一种操作方式"></a>第一种操作方式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openstack-service --help</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service list</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
-<p>openstack-service 实际是一个shell脚本，底层实际调用的是centos的systemctl工具，因此我们也可以使用systemctl工具来重启服务</p>
-<h3 id="自启动"><a href="#自启动" class="headerlink" title="自启动"></a>自启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable openstack-ceilometer-polling</span></pre></td></tr></table></figure>
-<p>使用systemctl列出所有openstack服务</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service --ful --no-legend --no-pager | egrep <span class="string">"^(openstack|neutron|quantum)"</span> | grep -v <span class="string">'neutron-.*-cleanup'</span> | grep <span class="built_in">enable</span></span></pre></td></tr></table></figure>
-<p>查看指定服务当前的运行状态</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status openstack-ceilometer-polling</span></pre></td></tr></table></figure>
-<p>重启指定服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
-<p>停止指定服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop openstack-ceilometer-polling</span></pre></td></tr></table></figure>
-<h2 id="卸载脚本"><a href="#卸载脚本" class="headerlink" title="卸载脚本"></a>卸载脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;bash</span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Destroys VMs</span></pre></td></tr><tr><td class="code"><pre><span class="line">for x in $(virsh list --all | grep instance- | awk &#39;&#123;print $2&#125;&#39;) ; do</span></pre></td></tr><tr><td class="code"><pre><span class="line">    virsh destroy $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    virsh undefine $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">done ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Removes lots of packages, including many</span></pre></td></tr><tr><td class="code"><pre><span class="line"># which may be unrelated to RDO.</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum remove -y nrpe &quot;*nagios*&quot; puppet ntp ntp-perl ntpdate &quot;*openstack*&quot; \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&quot;*nova*&quot; &quot;*keystone*&quot; &quot;*glance*&quot; &quot;*cinder*&quot; &quot;*swift*&quot; \</span></pre></td></tr><tr><td class="code"><pre><span class="line">mysql mysql-server httpd &quot;*memcache*&quot; scsi-target-utils \</span></pre></td></tr><tr><td class="code"><pre><span class="line">iscsi-initiator-utils perl-DBI perl-DBD-MySQL ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">ps -ef | grep -i repli | grep swift | awk &#39;&#123;print $2&#125;&#39; | xargs kill ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Deletes local application data</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -rf &#x2F;etc&#x2F;nagios &#x2F;etc&#x2F;yum.repos.d&#x2F;packstack_* &#x2F;root&#x2F;.my.cnf \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;var&#x2F;lib&#x2F;mysql&#x2F; &#x2F;var&#x2F;lib&#x2F;glance &#x2F;var&#x2F;lib&#x2F;nova &#x2F;etc&#x2F;nova &#x2F;etc&#x2F;swift \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;srv&#x2F;node&#x2F;device*&#x2F;* &#x2F;var&#x2F;lib&#x2F;cinder&#x2F; &#x2F;etc&#x2F;rsync.d&#x2F;frag* \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;var&#x2F;cache&#x2F;swift &#x2F;var&#x2F;log&#x2F;keystone ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">umount &#x2F;srv&#x2F;node&#x2F;device* ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">killall -9 dnsmasq tgtd httpd ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">setenforce 1 ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">vgremove -f cinder-volumes ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">losetup -a | sed -e &#39;s&#x2F;:.*&#x2F;&#x2F;g&#39; | xargs losetup -d ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">find &#x2F;etc&#x2F;pki&#x2F;tls -name &quot;ssl_ps*&quot; | xargs rm -rf ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">for x in $(df | grep &quot;&#x2F;lib&#x2F;&quot; | sed -e &#39;s&#x2F;.* &#x2F;&#x2F;g&#39;) ; do</span></pre></td></tr><tr><td class="code"><pre><span class="line">    umount $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">done</span></pre></td></tr></table></figure>
+    <title>win-openssh</title>
+    <url>/2020/03/win-openssh/</url>
+    <content><![CDATA[<p>微软官方的解决方案：</p>
+<p>基于PowerShell的OpenSSH：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Freleases" target="_blank" rel="noopener">https://github.com/PowerShell/Win32-OpenSSH/releases</a></p>
+<p>详细说明可以参考Github的Wiki，这里简单说下安装步骤：</p>
+<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><p>1、进入链接下载最新 OpenSSH-Win64.zip<em>（64位系统）</em>，解压至C:\Program Files\OpenSSH</p>
+<p>2、打开cmd，cd进入C:\Program Files\OpenSSH<em>（安装目录）</em>，执行命令：</p>
+<blockquote>
+<p>powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1</p>
+</blockquote>
+<p>3、设置服务自动启动并启动服务：</p>
+<blockquote>
+<p>sc config sshd start= auto</p>
+</blockquote>
+<blockquote>
+<p>net start sshd</p>
+</blockquote>
+<p>到此服务已经安装完毕，默认端口一样是22，默认用户名密码为Window账户名和密码，当然防火墙还是要设置对应端口允许通讯</p>
+<h1 id="修改设置："><a href="#修改设置：" class="headerlink" title="修改设置："></a>修改设置：</h1><p>ssh_config文件在<strong>C:\ProgramData\ssh</strong>目录下<em>（此目录为隐藏目录）</em></p>
+<blockquote>
+<p>端口号：Port 22</p>
+<p>密钥访问：PubkeyAuthentication yes</p>
+<p>密码访问：PasswordAuthentication no</p>
+<p>空密码：PermitEmptyPasswords no</p>
+</blockquote>
+<h2 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h2><h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><p>Windows Service即使配置了.ssh/authorized_keys公钥，连接时依然显示没有注册公钥查阅了官方wiki判断可能是权限问题：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FOpenSSH-utility-scripts-to-fix-file-permissions" target="_blank" rel="noopener">Fix SSH file permissions</a></p>
+<p>进入C:\Program Files\OpenSSH<em>（安装目录），</em>右键 FixHostFilePermissions.ps1【使用PowerShell运行】，命令行提示全选是，重启sshd服务后密钥连接正常</p>
+<p>参考官方wiki：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FSecurity-protection-of-various-files-in-Win32-OpenSSH%23administrators_authorized_keys" target="_blank" rel="noopener">administrators_authorized_keys</a></p>
+<h3 id="特权账户"><a href="#特权账户" class="headerlink" title="特权账户"></a>特权账户</h3><p>Administrators用户组的用户连接公钥，默认位置为<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\ProgramData\ssh\administrators_authorized_keys</span></pre></td></tr></table></figure><br>并且需要设置权限，在CMD中执行命令：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;inheritance:r</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant SYSTEM:(F)</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant BUILTIN\Administrators:(F)</span></pre></td></tr></table></figure><br>修改ssh_config文件：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AuthorizedKeysFile	%programdata%&#x2F;ssh&#x2F;administrators_authorized_keys</span></pre></td></tr></table></figure><br>设置完成后重启sshd服务，接下来就可以使用了</p>
 ]]></content>
       <categories>
         <category>Install</category>
       </categories>
       <tags>
-        <tag>Install</tag>
+        <tag>OpenSSH</tag>
       </tags>
   </entry>
   <entry>
@@ -564,7 +565,7 @@
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if(CMAKE_COMPILER_IS_GNUCXX AND CMAKE_SYSTEM_NAME STREQUAL &quot;Linux&quot;)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    #  older systems</span></pre></td></tr><tr><td class="code"><pre><span class="line">    # (pre POSIX.1-2008: glibc 2.11 and earlier).</span></pre></td></tr><tr><td class="code"><pre><span class="line">    add_definitions(-D_GNU_SOURCE)</span></pre></td></tr><tr><td class="code"><pre><span class="line">endif()</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cmake -DCHANNEL_URBDRC&#x3D;ON  -DWITH_CUPS&#x3D;ON -DWITH_PULSE&#x3D;ON  -DWITH_GSM&#x3D;ON -DCMAKE_INSTALL_PREFIX&#x3D;&#x2F;usr&#x2F;FreeRDP2x64&#x2F; .</span></pre></td></tr><tr><td class="code"><pre><span class="line">make</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
 <h3 id="3-3-FreeRDP-增加到ld"><a href="#3-3-FreeRDP-增加到ld" class="headerlink" title="3.3 FreeRDP 增加到ld"></a>3.3 FreeRDP 增加到ld</h3><p><code>vim /etc/ld.so.conf.d/FreeRDPx64.conf</code></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
-<h5 id="FreeRDP2"><a href="#FreeRDP2" class="headerlink" title="FreeRDP2"></a>FreeRDP2</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib64&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDPx64&#x2F;lib64&#x2F;freerdp2&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
+<h5 id="FreeRDP2"><a href="#FreeRDP2" class="headerlink" title="FreeRDP2"></a>FreeRDP2</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;FreeRDP2x64&#x2F;lib64&#x2F;freerdp2&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;lib&#x2F;</span></pre></td></tr></table></figure>
 <h2 id="4-安装-guacamole"><a href="#4-安装-guacamole" class="headerlink" title="4   安装 guacamole"></a>4   安装 guacamole</h2><h3 id="4-1-安装-libwebp"><a href="#4-1-安装-libwebp" class="headerlink" title="4.1 安装 libwebp"></a>4.1 安装 libwebp</h3><h4 id="4-1-1-下载"><a href="#4-1-1-下载" class="headerlink" title="4.1.1 下载"></a>4.1.1 下载</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libwebp-1.0.3.tar.gz</span></pre></td></tr></table></figure>
 <h4 id="4-1-2-安装"><a href="#4-1-2-安装" class="headerlink" title="4.1.2 安装"></a>4.1.2 安装</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;configure</span></pre></td></tr><tr><td class="code"><pre><span class="line">make -j 4</span></pre></td></tr><tr><td class="code"><pre><span class="line">make install</span></pre></td></tr></table></figure>
 <h3 id="4-2-安装uuid-devel"><a href="#4-2-安装uuid-devel" class="headerlink" title="4.2 安装uuid-devel"></a>4.2 安装uuid-devel</h3><h4 id="4-2-1-下载依赖"><a href="#4-2-1-下载依赖" class="headerlink" title="4.2.1 下载依赖"></a>4.2.1 下载依赖</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid%2B%2B16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libossp-uuid_dce16-1.6.2-7.1.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;libuuid-devel-2.19.1-6.29.3.x86_64.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;172.16.1.168&#x2F;rpm_build&#x2F;source&#x2F;guacamole&#x2F;uuid-devel-1.6.2-7.1.x86_64.rpm</span></pre></td></tr></table></figure>
@@ -607,41 +608,40 @@
       </tags>
   </entry>
   <entry>
-    <title>win-openssh</title>
-    <url>/2020/03/win-openssh/</url>
-    <content><![CDATA[<p>微软官方的解决方案：</p>
-<p>基于PowerShell的OpenSSH：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Freleases" target="_blank" rel="noopener">https://github.com/PowerShell/Win32-OpenSSH/releases</a></p>
-<p>详细说明可以参考Github的Wiki，这里简单说下安装步骤：</p>
-<h1 id="安装步骤："><a href="#安装步骤：" class="headerlink" title="安装步骤："></a>安装步骤：</h1><p>1、进入链接下载最新 OpenSSH-Win64.zip<em>（64位系统）</em>，解压至C:\Program Files\OpenSSH</p>
-<p>2、打开cmd，cd进入C:\Program Files\OpenSSH<em>（安装目录）</em>，执行命令：</p>
-<blockquote>
-<p>powershell.exe -ExecutionPolicy Bypass -File install-sshd.ps1</p>
-</blockquote>
-<p>3、设置服务自动启动并启动服务：</p>
-<blockquote>
-<p>sc config sshd start= auto</p>
-</blockquote>
-<blockquote>
-<p>net start sshd</p>
-</blockquote>
-<p>到此服务已经安装完毕，默认端口一样是22，默认用户名密码为Window账户名和密码，当然防火墙还是要设置对应端口允许通讯</p>
-<h1 id="修改设置："><a href="#修改设置：" class="headerlink" title="修改设置："></a>修改设置：</h1><p>ssh_config文件在<strong>C:\ProgramData\ssh</strong>目录下<em>（此目录为隐藏目录）</em></p>
-<blockquote>
-<p>端口号：Port 22</p>
-<p>密钥访问：PubkeyAuthentication yes</p>
-<p>密码访问：PasswordAuthentication no</p>
-<p>空密码：PermitEmptyPasswords no</p>
-</blockquote>
-<h2 id="密钥登录"><a href="#密钥登录" class="headerlink" title="密钥登录"></a>密钥登录</h2><h3 id="普通用户"><a href="#普通用户" class="headerlink" title="普通用户"></a>普通用户</h3><p>Windows Service即使配置了.ssh/authorized_keys公钥，连接时依然显示没有注册公钥查阅了官方wiki判断可能是权限问题：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FOpenSSH-utility-scripts-to-fix-file-permissions" target="_blank" rel="noopener">Fix SSH file permissions</a></p>
-<p>进入C:\Program Files\OpenSSH<em>（安装目录），</em>右键 FixHostFilePermissions.ps1【使用PowerShell运行】，命令行提示全选是，重启sshd服务后密钥连接正常</p>
-<p>参考官方wiki：<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FPowerShell%2FWin32-OpenSSH%2Fwiki%2FSecurity-protection-of-various-files-in-Win32-OpenSSH%23administrators_authorized_keys" target="_blank" rel="noopener">administrators_authorized_keys</a></p>
-<h3 id="特权账户"><a href="#特权账户" class="headerlink" title="特权账户"></a>特权账户</h3><p>Administrators用户组的用户连接公钥，默认位置为<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">C:\ProgramData\ssh\administrators_authorized_keys</span></pre></td></tr></table></figure><br>并且需要设置权限，在CMD中执行命令：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;inheritance:r</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant SYSTEM:(F)</span></pre></td></tr><tr><td class="code"><pre><span class="line">icacls administrators_authorized_keys &#x2F;grant BUILTIN\Administrators:(F)</span></pre></td></tr></table></figure><br>修改ssh_config文件：<br><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">AuthorizedKeysFile	%programdata%&#x2F;ssh&#x2F;administrators_authorized_keys</span></pre></td></tr></table></figure><br>设置完成后重启sshd服务，接下来就可以使用了</p>
+    <title>Packstack - OpenStack 一键安装包</title>
+    <url>/2020/03/openstack_Packstack/</url>
+    <content><![CDATA[<h2 id="预备环境"><a href="#预备环境" class="headerlink" title="预备环境"></a>预备环境</h2><p>目前不支持CentOS8 支持CentOS7.x使用的镜像<code>centos7.7-mini</code></p>
+<p>安装完成可以关闭selinux 也可以不关闭</p>
+<h3 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo useradd -s &#x2F;bin&#x2F;bash  -m stack</span></pre></td></tr><tr><td class="code"><pre><span class="line">echo &quot;stack ALL&#x3D;(ALL) NOPASSWD: ALL&quot; | sudo tee &#x2F;etc&#x2F;sudoers.d&#x2F;stack</span></pre></td></tr></table></figure>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><h3 id="设置环境变量"><a href="#设置环境变量" class="headerlink" title="设置环境变量"></a>设置环境变量</h3><p>如果您使用的是非英语语言环境，请确保您/etc/environment已填充：</p>
+   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">LANG&#x3D;en_US.utf-8</span></pre></td></tr><tr><td class="code"><pre><span class="line">LC_ALL&#x3D;en_US.utf-8</span></pre></td></tr></table></figure>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum update -y</span></pre></td></tr></table></figure>
+<h3 id="查看最新版本号"><a href="#查看最新版本号" class="headerlink" title="查看最新版本号"></a>查看最新版本号</h3>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">https:&#x2F;&#x2F;releases.openstack.org&#x2F;</span></pre></td></tr></table></figure>
+<p>   稳定版本为<strong>train</strong> yum 源搜索稳定版本为<br>   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">centos-release-openstack-train</span></pre></td></tr></table></figure></p>
+<p>配置源</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo mv &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo.bak</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># CentOS-Base.repo</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"># The mirror system uses the connecting IP address of the client and the</span></pre></td></tr><tr><td class="code"><pre><span class="line"># update status of each mirror to pick mirrors that are updated to and</span></pre></td></tr><tr><td class="code"><pre><span class="line"># geographically close to the client.  You should use this for CentOS updates</span></pre></td></tr><tr><td class="code"><pre><span class="line"># unless you are manually picking other mirrors.</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"># If the mirrorlist&#x3D; does not work for you, as a fall back you can try the</span></pre></td></tr><tr><td class="code"><pre><span class="line"># remarked out baseurl&#x3D; line instead.</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line">#</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">[base]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Base</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;os&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;os</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#released updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">[updates]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;updates&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;updates</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#additional packages that may be useful</span></pre></td></tr><tr><td class="code"><pre><span class="line">[extras]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Extras</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;extras&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;extras</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">#additional packages that extend functionality of existing packages</span></pre></td></tr><tr><td class="code"><pre><span class="line">[centosplus]</span></pre></td></tr><tr><td class="code"><pre><span class="line">name&#x3D;CentOS-$releasever - Plus</span></pre></td></tr><tr><td class="code"><pre><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;centos&#x2F;$releasever&#x2F;centosplus&#x2F;$basearch&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">#mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;$releasever&amp;arch&#x3D;$basearch&amp;repo&#x3D;centosplus</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgcheck&#x3D;1</span></pre></td></tr><tr><td class="code"><pre><span class="line">enabled&#x3D;0</span></pre></td></tr><tr><td class="code"><pre><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-7</span></pre></td></tr></table></figure>
+<h3 id="安装openstack"><a href="#安装openstack" class="headerlink" title="安装openstack"></a>安装openstack</h3><p>注意官网给出的CentOS 安装方式实测不行</p>
+   <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo yum install -y https:&#x2F;&#x2F;rdoproject.org&#x2F;repos&#x2F;rdo-release.rpm</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum update -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo yum install -y openstack-packstack</span></pre></td></tr><tr><td class="code"><pre><span class="line">sudo packstack --allinone</span></pre></td></tr></table></figure>
+<h2 id="设置启动"><a href="#设置启动" class="headerlink" title="设置启动"></a>设置启动</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install openstack-utils -y</span></pre></td></tr></table></figure>
+<h3 id="第一种操作方式"><a href="#第一种操作方式" class="headerlink" title="第一种操作方式"></a>第一种操作方式</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">openstack-service --help</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service list</span></pre></td></tr><tr><td class="code"><pre><span class="line">openstack-service restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>openstack-service 实际是一个shell脚本，底层实际调用的是centos的systemctl工具，因此我们也可以使用systemctl工具来重启服务</p>
+<h3 id="自启动"><a href="#自启动" class="headerlink" title="自启动"></a>自启动</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>使用systemctl列出所有openstack服务</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">systemctl list-unit-files --<span class="built_in">type</span>=service --ful --no-legend --no-pager | egrep <span class="string">"^(openstack|neutron|quantum)"</span> | grep -v <span class="string">'neutron-.*-cleanup'</span> | grep <span class="built_in">enable</span></span></pre></td></tr></table></figure>
+<p>查看指定服务当前的运行状态</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl status openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>重启指定服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl restart openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<p>停止指定服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl stop openstack-ceilometer-polling</span></pre></td></tr></table></figure>
+<h2 id="卸载脚本"><a href="#卸载脚本" class="headerlink" title="卸载脚本"></a>卸载脚本</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;bash</span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Destroys VMs</span></pre></td></tr><tr><td class="code"><pre><span class="line">for x in $(virsh list --all | grep instance- | awk &#39;&#123;print $2&#125;&#39;) ; do</span></pre></td></tr><tr><td class="code"><pre><span class="line">    virsh destroy $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">    virsh undefine $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">done ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Removes lots of packages, including many</span></pre></td></tr><tr><td class="code"><pre><span class="line"># which may be unrelated to RDO.</span></pre></td></tr><tr><td class="code"><pre><span class="line">yum remove -y nrpe &quot;*nagios*&quot; puppet ntp ntp-perl ntpdate &quot;*openstack*&quot; \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&quot;*nova*&quot; &quot;*keystone*&quot; &quot;*glance*&quot; &quot;*cinder*&quot; &quot;*swift*&quot; \</span></pre></td></tr><tr><td class="code"><pre><span class="line">mysql mysql-server httpd &quot;*memcache*&quot; scsi-target-utils \</span></pre></td></tr><tr><td class="code"><pre><span class="line">iscsi-initiator-utils perl-DBI perl-DBD-MySQL ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">ps -ef | grep -i repli | grep swift | awk &#39;&#123;print $2&#125;&#39; | xargs kill ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"># Warning! Dangerous step! Deletes local application data</span></pre></td></tr><tr><td class="code"><pre><span class="line">rm -rf &#x2F;etc&#x2F;nagios &#x2F;etc&#x2F;yum.repos.d&#x2F;packstack_* &#x2F;root&#x2F;.my.cnf \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;var&#x2F;lib&#x2F;mysql&#x2F; &#x2F;var&#x2F;lib&#x2F;glance &#x2F;var&#x2F;lib&#x2F;nova &#x2F;etc&#x2F;nova &#x2F;etc&#x2F;swift \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;srv&#x2F;node&#x2F;device*&#x2F;* &#x2F;var&#x2F;lib&#x2F;cinder&#x2F; &#x2F;etc&#x2F;rsync.d&#x2F;frag* \</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#x2F;var&#x2F;cache&#x2F;swift &#x2F;var&#x2F;log&#x2F;keystone ;</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">umount &#x2F;srv&#x2F;node&#x2F;device* ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">killall -9 dnsmasq tgtd httpd ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">setenforce 1 ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">vgremove -f cinder-volumes ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">losetup -a | sed -e &#39;s&#x2F;:.*&#x2F;&#x2F;g&#39; | xargs losetup -d ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">find &#x2F;etc&#x2F;pki&#x2F;tls -name &quot;ssl_ps*&quot; | xargs rm -rf ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">for x in $(df | grep &quot;&#x2F;lib&#x2F;&quot; | sed -e &#39;s&#x2F;.* &#x2F;&#x2F;g&#39;) ; do</span></pre></td></tr><tr><td class="code"><pre><span class="line">    umount $x ;</span></pre></td></tr><tr><td class="code"><pre><span class="line">done</span></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Install</category>
       </categories>
       <tags>
-        <tag>OpenSSH</tag>
+        <tag>Install</tag>
       </tags>
   </entry>
   <entry>
@@ -962,27 +962,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Prometheus 安装</title>
-    <url>/2019/01/prometheus_install/</url>
-    <content><![CDATA[<h2 id="1-下载-Prometheus"><a href="#1-下载-Prometheus" class="headerlink" title="1. 下载 Prometheus"></a>1. 下载 Prometheus</h2><p><a href="https://prometheus.io/download/" target="_blank" rel="noopener">https://prometheus.io/download/</a></p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install net-tools vim superviosr wget  -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd /opt/</span></pre></td></tr><tr><td class="code"><pre><span class="line">useradd -s /usr/sbin/nologin prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https://github.com/prometheus/prometheus/releases/download/v2.4.3/prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s prometheus-2.4.3.linux-amd64  prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/prometheus/prometheus  --storage.tsdb.retention=90d  --config.file=/opt/prometheus/prometheus.yml</span></pre></td></tr><tr><td class="code"><pre><span class="line">user=prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">directory=/opt/prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/opt/prometheus/sprometheus.log</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=20MB</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr></table></figure>
-<h2 id="2-node"><a href="#2-node" class="headerlink" title="2. node"></a>2. node</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v0.16.0&#x2F;node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s node_exporter-0.16.0.linux-amd64 node_exporter</span></pre></td></tr></table></figure>
-<p><a href="https://github.com/percona/grafana-dashboards" target="_blank" rel="noopener">https://github.com/percona/grafana-dashboards</a></p>
-<h2 id="3-监控-MySQL"><a href="#3-监控-MySQL" class="headerlink" title="3. 监控 MySQL"></a>3. 监控 MySQL</h2><p><a href="https://prometheus.io/docs/visualization/grafana/" target="_blank" rel="noopener">https://prometheus.io/docs/visualization/grafana/</a></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;mysqld_exporter&#x2F;releases&#x2F;download&#x2F;v0.11.0&#x2F;mysqld_exporter-0.11.0.linux-amd64.tar.gz</span></pre></td></tr></table></figure>
-<p>授权</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER &#39;exporter&#39;@&#39;127.0.0.1&#39; IDENTIFIED BY &#39;3Xporter&#39; WITH MAX_USER_CONNECTIONS 3;</span></pre></td></tr><tr><td class="code"><pre><span class="line">GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;exporter&#39;@&#39;127.0.0.1&#39;;</span></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus_export.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_mysql]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/mysqld_exporter/mysqld_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">environment=DATA_SOURCE_NAME='exporter:3Xporter@(localhost:3306)/'</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_os]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/node_exporter/node_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl reload</span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl status</span></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Prometheus</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-        <tag>Prometheus</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>MySQL 备份脚本</title>
     <url>/2019/01/mysqlbak/</url>
     <content><![CDATA[<h2 id="1-MySQL-备份脚本"><a href="#1-MySQL-备份脚本" class="headerlink" title="1. MySQL 备份脚本"></a>1. MySQL 备份脚本</h2><p>最初脚本为在某个 QQ 群里看到然后又改的。</p>
@@ -1003,6 +982,27 @@
       <tags>
         <tag>Linux</tag>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Prometheus 安装</title>
+    <url>/2019/01/prometheus_install/</url>
+    <content><![CDATA[<h2 id="1-下载-Prometheus"><a href="#1-下载-Prometheus" class="headerlink" title="1. 下载 Prometheus"></a>1. 下载 Prometheus</h2><p><a href="https://prometheus.io/download/" target="_blank" rel="noopener">https://prometheus.io/download/</a></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">yum install net-tools vim superviosr wget  -y</span></pre></td></tr><tr><td class="code"><pre><span class="line">cd /opt/</span></pre></td></tr><tr><td class="code"><pre><span class="line">useradd -s /usr/sbin/nologin prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https://github.com/prometheus/prometheus/releases/download/v2.4.3/prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf prometheus-2.4.3.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s prometheus-2.4.3.linux-amd64  prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/prometheus/prometheus  --storage.tsdb.retention=90d  --config.file=/opt/prometheus/prometheus.yml</span></pre></td></tr><tr><td class="code"><pre><span class="line">user=prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">directory=/opt/prometheus</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/opt/prometheus/sprometheus.log</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=20MB</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr></table></figure>
+<h2 id="2-node"><a href="#2-node" class="headerlink" title="2. node"></a>2. node</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;opt&#x2F;</span></pre></td></tr><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;node_exporter&#x2F;releases&#x2F;download&#x2F;v0.16.0&#x2F;node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">tar -xvf node_exporter-0.16.0.linux-amd64.tar.gz</span></pre></td></tr><tr><td class="code"><pre><span class="line">ln -s node_exporter-0.16.0.linux-amd64 node_exporter</span></pre></td></tr></table></figure>
+<p><a href="https://github.com/percona/grafana-dashboards" target="_blank" rel="noopener">https://github.com/percona/grafana-dashboards</a></p>
+<h2 id="3-监控-MySQL"><a href="#3-监控-MySQL" class="headerlink" title="3. 监控 MySQL"></a>3. 监控 MySQL</h2><p><a href="https://prometheus.io/docs/visualization/grafana/" target="_blank" rel="noopener">https://prometheus.io/docs/visualization/grafana/</a></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;prometheus&#x2F;mysqld_exporter&#x2F;releases&#x2F;download&#x2F;v0.11.0&#x2F;mysqld_exporter-0.11.0.linux-amd64.tar.gz</span></pre></td></tr></table></figure>
+<p>授权</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">CREATE USER &#39;exporter&#39;@&#39;127.0.0.1&#39; IDENTIFIED BY &#39;3Xporter&#39; WITH MAX_USER_CONNECTIONS 3;</span></pre></td></tr><tr><td class="code"><pre><span class="line">GRANT PROCESS, REPLICATION CLIENT, SELECT ON *.* TO &#39;exporter&#39;@&#39;127.0.0.1&#39;;</span></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">cat &gt; /etc/supervisord.d/prometheus_export.ini &lt;&lt; EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_mysql]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/mysqld_exporter/mysqld_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">environment=DATA_SOURCE_NAME='exporter:3Xporter@(localhost:3306)/'</span></pre></td></tr><tr><td class="code"><pre><span class="line">[program:p_os]</span></pre></td></tr><tr><td class="code"><pre><span class="line">command=/opt/node_exporter/node_exporter</span></pre></td></tr><tr><td class="code"><pre><span class="line">autostart = true</span></pre></td></tr><tr><td class="code"><pre><span class="line">autorestart=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">redirect_stderr=true</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile=/dev/stdout</span></pre></td></tr><tr><td class="code"><pre><span class="line">stdout_logfile_maxbytes=0</span></pre></td></tr><tr><td class="code"><pre><span class="line">EOF</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl reload</span></pre></td></tr><tr><td class="code"><pre><span class="line">supervisorctl status</span></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Prometheus</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>Prometheus</tag>
       </tags>
   </entry>
   <entry>
@@ -1663,8 +1663,8 @@
       </categories>
       <tags>
         <tag>Linux</tag>
-        <tag>sysbench</tag>
         <tag>MySQL</tag>
+        <tag>sysbench</tag>
       </tags>
   </entry>
   <entry>
